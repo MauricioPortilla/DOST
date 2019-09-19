@@ -1,0 +1,44 @@
+﻿<Window x:Class="DOST.GameLobbyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DOST"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:p="clr-namespace:DOST.Properties"
+        Title="{x:Static p:Resources.LobbyWindowTitle}" Height="687" Width="1073" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Image HorizontalAlignment="Left" Height="687" VerticalAlignment="Top" Width="1073" Source="Images/DOST_GameLobby.png" Stretch="Fill"/>
+        <TextBlock x:Name="lobbyStatusTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="{x:Static p:Resources.WaitingForPlayersText}" Foreground="White" Margin="443,94,444,563" TextAlignment="Center"/>
+        <Button x:Name="exitButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.ExitButton}" Margin="20,24,987,631" Click="ExitButton_Click"/>
+        <Button x:Name="startGameButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.StartGameButton}" Margin="907,24,23,631" Click="StartGameButton_Click"/>
+        <Button x:Name="configurationButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.ConfigurationButton}" Margin="91,24,856,631" Click="ConfigurationButton_Click"/>
+        <TextBlock x:Name="playerOneUsernameTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Foreground="White" Margin="20,411,856,253" HorizontalAlignment="Center" Text="HOST_USERNAME" Width="197" VerticalAlignment="Center" TextAlignment="Center"/>
+        <TextBlock x:Name="playerOneTypeTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="{x:Static p:Resources.HostPlayerText}" Foreground="White" Margin="20,434,856,230" HorizontalAlignment="Center" Width="197" TextAlignment="Center" />
+        <TextBlock x:Name="playerOneRankTitleTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="Clasificación" Foreground="White" Margin="20,154,856,510" HorizontalAlignment="Center" Width="197" TextAlignment="Center" />
+        <TextBlock x:Name="playerOneRankTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="#0" Foreground="White" Margin="20,174,856,490" HorizontalAlignment="Center" Width="197" TextAlignment="Center" />
+        <TextBlock x:Name="playerTwoUsernameTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Foreground="White" Margin="301,412,575,255" HorizontalAlignment="Center" Text="..." Width="197" VerticalAlignment="Center" TextAlignment="Center"/>
+        <TextBlock x:Name="playerTwoTypeTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="{x:Static p:Resources.WaitingForPlayerText}" Foreground="White" Margin="300,434,576,230" HorizontalAlignment="Center" Width="197" TextAlignment="Center"/>
+        <TextBlock x:Name="playerTwoRankTitleTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="Clasificación" Foreground="White" Margin="300,154,576,510" HorizontalAlignment="Center" Width="197" TextAlignment="Center" Visibility="Hidden" />
+        <TextBlock x:Name="playerTwoRankTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="#0" Foreground="White" Margin="300,174,576,490" HorizontalAlignment="Center" Width="197" TextAlignment="Center" Visibility="Hidden" />
+        <TextBlock x:Name="playerThreeRankTitleTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="Clasificación" Foreground="White" Margin="570,154,306,510" HorizontalAlignment="Center" Width="197" TextAlignment="Center" Visibility="Hidden" />
+        <TextBlock x:Name="playerThreeRankTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="#0" Foreground="White" Margin="570,174,306,490" HorizontalAlignment="Center" Width="197" TextAlignment="Center" Visibility="Hidden" />
+        <TextBlock x:Name="playerFourRankTitleTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="Clasificación" Foreground="White" Margin="850,154,26,510" HorizontalAlignment="Center" Width="197" TextAlignment="Center" Visibility="Hidden" />
+        <TextBlock x:Name="playerFourRankTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="#0" Foreground="White" Margin="850,174,26,490" HorizontalAlignment="Center" Width="197" TextAlignment="Center" Visibility="Hidden" />
+        <TextBlock x:Name="playerThreeUsernameTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Foreground="White" Margin="571,412,305,255" HorizontalAlignment="Center" Text="..." Width="197" VerticalAlignment="Center" TextAlignment="Center"/>
+        <TextBlock x:Name="playerThreeTypeTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="{x:Static p:Resources.WaitingForPlayerText}" Foreground="White" Margin="570,434,304,230" HorizontalAlignment="Center" Width="199" TextAlignment="Center"/>
+        <TextBlock x:Name="playerFourUsernameTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Foreground="White" Margin="851,412,25,255" HorizontalAlignment="Center" Text="..." Width="197" VerticalAlignment="Center" TextAlignment="Center"/>
+        <TextBlock x:Name="playerFourTypeTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="{x:Static p:Resources.WaitingForPlayerText}" Foreground="White" Margin="849,434,23,230" HorizontalAlignment="Center" Width="201" TextAlignment="Center"/>
+        <ListBox x:Name="chatListBox" Margin="10,483,10,45" Foreground="#DDFFFFFF" VerticalAlignment="Bottom">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="8, 0, 0, 0"/>
+                    <Setter Property="Focusable" Value="False" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <TextBlock Text="{x:Static p:Resources.ChatWelcomeText}" Margin="0,0,0,10" Focusable="False" />
+        </ListBox>
+        <TextBox x:Name="chatMessageTextBox" Margin="19,643,15,19" Foreground="White" materialDesign:HintAssist.Hint="Escribe un mensaje..." KeyDown="ChatMessageTextBox_KeyDown" />
+    </Grid>
+</Window>

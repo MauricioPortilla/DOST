@@ -1,0 +1,39 @@
+﻿<Window x:Class="DOST.MainMenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DOST;assembly=DOST"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:p="clr-namespace:DOST.Properties"
+        x:Name="MainMenu"
+        Title="{x:Static p:Resources.MainMenuWindowTitle}" Height="686.975" Width="1073.529" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Rectangle Fill="#00F4F4F5" HorizontalAlignment="Left" Height="19" Stroke="Black" VerticalAlignment="Top" Width="1074" MouseDown="WindowHeader_MouseDown" />
+        <Image HorizontalAlignment="Left" Height="689" VerticalAlignment="Top" Width="1076" Source="Images/DOST_MainMenu.png" Stretch="Fill" Margin="-2,-2,0,0"/>
+        <TextBlock x:Name="usernameTextBlock" Style="{StaticResource MaterialDesignDisplay1TextBlock}" Foreground="White" Margin="0,32,38,607" HorizontalAlignment="Right">
+            USERNAME
+        </TextBlock>
+        <Label Margin="0,92,34,558" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="463">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Text="{x:Static p:Resources.CoinsText}" Foreground="White"/>
+                <TextBlock x:Name="coinsTextBlock" Style="{StaticResource MaterialDesignTitleTextBlock}" Text="0" Foreground="White"/>
+                <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Text="{x:Static p:Resources.RankText}" Foreground="White" Margin="25,0,0,0"/>
+                <TextBlock x:Name="rankTextBlock" Style="{StaticResource MaterialDesignTitleTextBlock}" Text="#0" Foreground="White"/>
+            </StackPanel>
+        </Label>
+        <ListView x:Name="gamesListView" ItemsSource="{Binding GamesList}" Margin="47,237,49,55">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Nombre}" Header="{x:Static p:Resources.GameText}" />
+                    <GridViewColumn DisplayMemberBinding="{Binding NumeroJugadores}" Header="{x:Static p:Resources.NumberOfPlayersText}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="joinGameButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.JoinGameButton}" Margin="861,636,49,19" Click="JoinGameButton_Click"/>
+        <Button x:Name="createGameButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.CreateGameButton}" Margin="682,636,228,19" Click="CreateGameButton_Click"/>
+        <Button x:Name="bestScoresButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.BestScoresButton}" Margin="47,636,851,19" Click="BestScoresButton_Click"/>
+        <Button x:Name="logoutButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.LogoutButton}" Margin="872,134,38,521" Click="LogoutButton_Click"/>
+    </Grid>
+</Window>
