@@ -22,6 +22,7 @@ namespace DOST {
     public partial class GameLobbyWindow : Window {
         public bool IsClosed { get; private set; } = false;
         private Partida partida;
+        private Jugador jugador;
         private List<TextBlock> lobbyPlayersUsernameTextBlocks;
         private List<TextBlock> lobbyPlayersTypeTextBlocks;
         private List<TextBlock> lobbyPlayersRankTextBlocks;
@@ -50,11 +51,15 @@ namespace DOST {
             };
             Thread loadPlayersJoinedDataThread = new Thread(LoadPlayersJoinedData);
             loadPlayersJoinedDataThread.Start();
-            //Thread receiveChatMessagesThread = new Thread(ReceiveChatMessages);
-            //receiveChatMessagesThread.Start();
             InstanceContext chatInstance = new InstanceContext(new ChatCallbackHandler(chatListBox));
             chatService = new ChatServiceClient(chatInstance);
-            chatService.EnterChat("Frey");
+            while (true) {
+                jugador = partida.Jugadores.Find(player => player.Cuenta.Id == Session.Cuenta.Id);
+                if (jugador != null) {
+                    chatService.EnterChat(jugador.Cuenta.Usuario);
+                    break;
+                }
+            }
         }
 
         public class ChatCallbackHandler : IChatServiceCallback {
@@ -134,7 +139,7 @@ namespace DOST {
         private void ChatMessageTextBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
                 //Session.Cuenta.SendChatMessage(partida, chatMessageTextBox.Text);
-                chatService.BroadcastMessage("Frey", chatMessageTextBox.Text);
+                chatService.BroadcastMessage(jugador.Cuenta.Usuario, chatMessageTextBox.Text);
                 chatMessageTextBox.Clear();
             }
         }

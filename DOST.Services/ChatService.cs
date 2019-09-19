@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.Text;
 
 namespace DOST.Services {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class ChatService : IChatService {
         private static readonly Dictionary<string, IChatServiceCallback> clients = new Dictionary<string, IChatServiceCallback>();
         public void BroadcastMessage(string username, string message) {
@@ -22,6 +22,7 @@ namespace DOST.Services {
         }
     }
 
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class ChatServiceClient : DuplexClientBase<IChatService>, IChatService {
         public ChatServiceClient(InstanceContext callbackContext) : base(callbackContext) {
         }
