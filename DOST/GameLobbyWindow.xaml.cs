@@ -91,6 +91,14 @@ namespace DOST {
                             startGameButton.Content = Properties.Resources.ReadyButton;
                         }
                     }
+                    // Can be improved
+                    for (int index = 0; index < MAX_NUMBER_OF_PLAYERS; index++) {
+                        lobbyPlayersUsernameTextBlocks[index].Text = "...";
+                        lobbyPlayersTypeTextBlocks[index].Text = Properties.Resources.WaitingForPlayerText;
+                        // lobbyPlayersRankTextBlocks[index].Text = "#0";
+                        lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Hidden;
+                        lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Hidden;
+                    }
                     for (int index = 0; index < partida.Jugadores.Count; index++) {
                         if (lobbyPlayersUsernameTextBlocks[index].Text == partida.Jugadores[index].Cuenta.Usuario) {
                             continue;
@@ -101,16 +109,6 @@ namespace DOST {
                         // lobbyPlayersRankTextBlocks[index].Text = partida.Jugadores[index].GetRank();
                         lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Visible;
                         lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Visible;
-                    }
-                    var countPlayers = lobbyPlayersUsernameTextBlocks.Count(x => !string.IsNullOrWhiteSpace(x.Text));
-                    if (partida.Jugadores.Count < countPlayers) {
-                        for (int index = countPlayers; index < MAX_NUMBER_OF_PLAYERS; index++) {
-                            lobbyPlayersUsernameTextBlocks[index].Text = "...";
-                            lobbyPlayersTypeTextBlocks[index].Text = Properties.Resources.WaitingForPlayerText;
-                            // lobbyPlayersRankTextBlocks[index].Text = "#0";
-                            lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Hidden;
-                            lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Hidden;
-                        }
                     }
                     if (partida.Jugadores.Count == MAX_NUMBER_OF_PLAYERS) {
                         lobbyStatusTextBlock.Text = "";

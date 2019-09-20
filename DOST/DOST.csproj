@@ -63,6 +63,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Cuenta.cs" />
+    <Compile Include="GameConfigurationWindow.xaml.cs">
+      <DependentUpon>GameConfigurationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GameLobbyWindow.xaml.cs">
       <DependentUpon>GameLobbyWindow.xaml</DependentUpon>
     </Compile>
@@ -85,6 +88,10 @@
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Session.cs" />
+    <Page Include="GameConfigurationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GameLobbyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
