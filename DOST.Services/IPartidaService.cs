@@ -22,9 +22,6 @@ namespace DOST.Services {
         bool RemoveJugador(int idcuenta, int idpartida);
 
         [OperationContract]
-        void BroadcastChatMessage(int idpartida, int idjugador, string message);
-
-        //[OperationContract]
-        //string[] GetLastChatMessage(int idpartida);
+        bool CreatePartida(out int idpartida);
     }
 }

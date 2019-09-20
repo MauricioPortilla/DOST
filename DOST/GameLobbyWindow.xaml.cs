@@ -51,26 +51,31 @@ namespace DOST {
             };
             Thread loadPlayersJoinedDataThread = new Thread(LoadPlayersJoinedData);
             loadPlayersJoinedDataThread.Start();
-            InstanceContext chatInstance = new InstanceContext(new ChatCallbackHandler(chatListBox));
+            InstanceContext chatInstance = new InstanceContext(new ChatCallbackHandler(partida, chatListBox));
             chatService = new ChatServiceClient(chatInstance);
             while (true) {
                 jugador = partida.Jugadores.Find(player => player.Cuenta.Id == Session.Cuenta.Id);
                 if (jugador != null) {
-                    chatService.EnterChat(jugador.Cuenta.Usuario);
+                    chatService.EnterChat(partida.Id, jugador.Cuenta.Usuario);
                     break;
                 }
             }
         }
 
         public class ChatCallbackHandler : IChatServiceCallback {
+            private Partida partida;
             private ListBox chatListBox;
-            public ChatCallbackHandler(ListBox chatListBox) {
+            public ChatCallbackHandler(Partida partida, ListBox chatListBox) {
+                this.partida = partida;
                 this.chatListBox = chatListBox;
             }
-            public void BroadcastMessage(string username, string message) {
-                chatListBox.Items.Add(new TextBlock() {
-                    Text = username + ": " + message
-                });
+            public void BroadcastMessage(int idpartida, string username, string message) {
+                if (idpartida == partida.Id) {    
+                    chatListBox.Items.Add(new TextBlock() {
+                        Text = username + ": " + message
+                    });
+                    chatListBox.ScrollIntoView(chatListBox.Items[chatListBox.Items.Count - 1]);
+                }
             }
         }
 
@@ -116,12 +121,9 @@ namespace DOST {
             }
         }
 
-        public void ReceiveChatMessages() {
-            
-        }
-
         private void ExitButton_Click(object sender, RoutedEventArgs e) {
             if (Session.Cuenta.LeaveGame(partida)) {
+                chatService.LeaveChat(partida.Id, jugador.Cuenta.Usuario);
                 Session.GameLobbyWindow = null;
                 Session.MainMenu.Show();
                 Close();
@@ -138,8 +140,7 @@ namespace DOST {
 
         private void ChatMessageTextBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
-                //Session.Cuenta.SendChatMessage(partida, chatMessageTextBox.Text);
-                chatService.BroadcastMessage(jugador.Cuenta.Usuario, chatMessageTextBox.Text);
+                chatService.BroadcastMessage(partida.Id, jugador.Cuenta.Usuario, chatMessageTextBox.Text);
                 chatMessageTextBox.Clear();
             }
         }

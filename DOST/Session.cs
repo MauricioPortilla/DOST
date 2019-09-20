@@ -41,20 +41,6 @@ namespace DOST {
                 return gamesList;
             }
         }
-        //public static Thread gameThreads = new Thread(GameThreads);
-
-        public static void GameThreads() {
-            while (true) {
-                if (mainMenu != null) {
-                    GetGamesList();
-                    mainMenu.JoinGameIfNeeded();
-                }
-                if (gameLobbyWindow != null) {
-                    gameLobbyWindow.LoadPlayersJoinedData();
-                    gameLobbyWindow.ReceiveChatMessages();
-                }
-            }
-        }
 
         public static void GetGamesList() {
             EngineNetwork.EstablishChannel<IPartidaService>((service) => {
@@ -96,6 +82,16 @@ namespace DOST {
                             gamesList.Add(partida);
                         });
                     }
+                    List<Partida> gamesToRemove = new List<Partida>();
+                    foreach (var game in gamesList) {
+                        var getGame = serviceGamesList.Find(gameInServiceList => gameInServiceList.Id == game.Id);
+                        if (getGame == null) {
+                            gamesToRemove.Add(game);
+                        }
+                    }
+                    //Application.Current.Dispatcher.Invoke(delegate {
+                    //    gamesToRemove.ForEach(x => gamesList.Remove(x));
+                    //});
                 }
                 return true;
             });

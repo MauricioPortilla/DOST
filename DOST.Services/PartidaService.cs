@@ -109,8 +109,13 @@ namespace DOST.Services {
             );
         }
 
-        public void BroadcastChatMessage(int idpartida, int idjugador, string message) {
-
+        public bool CreatePartida(out int idpartida) {
+            return Database.ExecuteUpdate(
+                "INSERT INTO partida OUTPUT INSERTED.idpartida VALUES (0, @fecha)",
+                new Dictionary<string, object>() {
+                    { "@fecha", DateTime.Now }
+                }, out idpartida
+            );
         }
     }
 }

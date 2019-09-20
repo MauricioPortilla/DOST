@@ -9,16 +9,19 @@ namespace DOST.Services {
     [ServiceContract(CallbackContract = typeof(IChatServiceCallback))]
     public interface IChatService {
         [OperationContract(IsOneWay = true)]
-        void BroadcastMessage(string username, string message);
+        void BroadcastMessage(int idpartida, string username, string message);
 
         [OperationContract(IsOneWay = true)]
-        void EnterChat(string username);
+        void EnterChat(int idpartida, string username);
+
+        [OperationContract(IsOneWay = true)]
+        void LeaveChat(int idpartida, string username);
     }
 
 
-    //[ServiceContract]
+    [ServiceContract]
     public interface IChatServiceCallback {
-        [OperationContract]
-        void BroadcastMessage(string username, string message);
+        [OperationContract(IsOneWay = true)]
+        void BroadcastMessage(int idpartida, string username, string message);
     }
 }

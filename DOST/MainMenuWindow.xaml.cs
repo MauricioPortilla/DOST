@@ -28,6 +28,7 @@ namespace DOST {
             }
         }
         private bool didCreateGame = false;
+        private int lastIdGameCreated = 0;
 
         public MainMenuWindow() {
             DataContext = this;
@@ -36,8 +37,8 @@ namespace DOST {
             coinsTextBlock.Text = Session.Cuenta.Monedas.ToString();
             // rankTextBlock.Text = Session.Cuenta.GetRank();
             GamesList.CollectionChanged += GamesList_CollectionChanged;
-            //Session.gameThreads.Start();
             new Thread(Session.GetGamesList).Start();
+            new Thread(JoinGameIfNeeded).Start();
         }
 
         void GamesList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
@@ -49,7 +50,7 @@ namespace DOST {
                 return;
             }
             var selectedGame = (Partida) gamesListView.SelectedItem;
-            if (Session.Cuenta.JoinGame(selectedGame)) {
+            if (Session.Cuenta.JoinGame(selectedGame, false)) {
                 Session.GameLobbyWindow = new GameLobbyWindow(ref selectedGame);
                 Session.GameLobbyWindow.Show();
                 Hide();
@@ -69,29 +70,36 @@ namespace DOST {
         }
 
         private void CreateGameButton_Click(object sender, RoutedEventArgs e) {
-            if (!Session.Cuenta.CreateGame()) {
+            int idpartida = 0;
+            if (!Session.Cuenta.CreateGame(out idpartida)) {
                 MessageBox.Show("Error al crear la partida");
                 return;
             }
             didCreateGame = true;
+            lastIdGameCreated = idpartida;
         }
 
         public void JoinGameIfNeeded() {
-            Application.Current.Dispatcher.Invoke(delegate {
-                if (!didCreateGame) {
-                    return;
-                }
-                Partida game = Session.GamesList.ToList().Find(
-                    x => x.Jugadores.Find(j => j.Cuenta.Id == Session.Cuenta.Id) != null
-                );
-                if (game == null) {
-                    return;
-                }
-                didCreateGame = false;
-                Session.GameLobbyWindow = new GameLobbyWindow(ref game);
-                Session.GameLobbyWindow.Show();
-                Hide();
-            });
+            while (true) {
+                Application.Current.Dispatcher.Invoke(delegate {
+                    if (!didCreateGame) {
+                        return;
+                    } else if (lastIdGameCreated == 0) {
+                        return;
+                    }
+                    Partida gameCreated = Session.GamesList.ToList().Find(game => game.Id == lastIdGameCreated);
+                    if (gameCreated == null) {
+                        return;
+                    }
+                    didCreateGame = false;
+                    lastIdGameCreated = 0;
+                    if (Session.Cuenta.JoinGame(gameCreated, true)) {
+                        Session.GameLobbyWindow = new GameLobbyWindow(ref gameCreated);
+                        Session.GameLobbyWindow.Show();
+                        Hide();
+                    }
+                });
+            }
         }
 
         private void WindowHeader_MouseDown(object sender, MouseButtonEventArgs e) {

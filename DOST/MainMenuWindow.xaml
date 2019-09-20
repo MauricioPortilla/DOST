@@ -23,9 +23,30 @@
                 <TextBlock x:Name="rankTextBlock" Style="{StaticResource MaterialDesignTitleTextBlock}" Text="#0" Foreground="White"/>
             </StackPanel>
         </Label>
-        <ListView x:Name="gamesListView" ItemsSource="{Binding GamesList}" Margin="47,237,49,55">
+        <ListView x:Name="gamesListView" ItemsSource="{Binding GamesList}" Margin="47,237,49,55" Background="#4C000000" BorderBrush="Transparent" Focusable="False">
+            <ListView.Style>
+                <Style/>
+            </ListView.Style>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignGridViewItem}">
+                    <Style.Setters>
+                        <Setter Property="Foreground" Value="White" />
+                    </Style.Setters>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Background" Value="#19FFFFFF" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
-                <GridView>
+                <GridView x:Name="gamesListGridView">
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                            <Setter Property="Foreground" Value="White" />
+                        </Style>
+                    </GridView.ColumnHeaderContainerStyle>
                     <GridViewColumn DisplayMemberBinding="{Binding Nombre}" Header="{x:Static p:Resources.GameText}" />
                     <GridViewColumn DisplayMemberBinding="{Binding NumeroJugadores}" Header="{x:Static p:Resources.NumberOfPlayersText}" />
                 </GridView>

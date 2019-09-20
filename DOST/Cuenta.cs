@@ -109,14 +109,10 @@ namespace DOST {
 
         }
 
-        public bool JoinGame(Partida game) {
+        public bool JoinGame(Partida game, bool asAnfitrion) {
             return EngineNetwork.EstablishChannel<IPartidaService>((service) => {
-                return service.AddJugador(id, game.Id, false);
+                return service.AddJugador(id, game.Id, asAnfitrion);
             });
-        }
-
-        public void SendChatMessage(Partida game, string message) {
-
         }
 
         public bool LeaveGame(Partida game) {
@@ -125,9 +121,13 @@ namespace DOST {
             });
         }
 
-        public bool CreateGame() {
-
-            return true;
+        public bool CreateGame(out int idpartida) {
+            int idgame = 0;
+            bool returnedValue = EngineNetwork.EstablishChannel<IPartidaService>((service) => {
+                return service.CreatePartida(out idgame);
+            });
+            idpartida = idgame;
+            return returnedValue;
         }
     }
 }

@@ -30,11 +30,12 @@
         <TextBlock x:Name="playerThreeTypeTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="{x:Static p:Resources.WaitingForPlayerText}" Foreground="White" Margin="570,434,304,230" HorizontalAlignment="Center" Width="199" TextAlignment="Center"/>
         <TextBlock x:Name="playerFourUsernameTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Foreground="White" Margin="851,412,25,255" HorizontalAlignment="Center" Text="..." Width="197" VerticalAlignment="Center" TextAlignment="Center"/>
         <TextBlock x:Name="playerFourTypeTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="{x:Static p:Resources.WaitingForPlayerText}" Foreground="White" Margin="849,434,23,230" HorizontalAlignment="Center" Width="201" TextAlignment="Center"/>
-        <ListBox x:Name="chatListBox" Margin="10,483,10,45" Foreground="#DDFFFFFF" VerticalAlignment="Bottom">
+        <ListBox x:Name="chatListBox" Margin="10,0,10,49" Foreground="#DDFFFFFF" VerticalAlignment="Bottom" MaxHeight="156">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Padding" Value="8, 0, 0, 0"/>
                     <Setter Property="Focusable" Value="False" />
+                    <Setter Property="IsHitTestVisible" Value="False" />
                 </Style>
             </ListBox.ItemContainerStyle>
             <TextBlock Text="{x:Static p:Resources.ChatWelcomeText}" Margin="0,0,0,10" Focusable="False" />
