@@ -6,45 +6,30 @@ using System.Net;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using DOST.DataAccess;
 
 namespace DOST.Services {
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Single)]
-    public class LoginService : ILoginService {
+    public class CuentaService : ICuentaService {
         public Cuenta TryLogin(string usuario, string password) {
-            Database.InitializeDatabase();
             string hashedPassword = Engine.HashWithSHA256(password);
             Cuenta cuenta = new Cuenta();
-            Database.ExecuteStoreQuery(
-                "SELECT * FROM cuenta WHERE usuario = @username AND password = @password",
-                new Dictionary<string, object>() {
-                    { "@username", usuario }, { "@password", hashedPassword }
-                }, (results) => {
-                    var row = results[0];
-                    if ((int) row["confirmado"] == 0) {
-                        if (!TryValidateAccount(row["codigoValidacion"].ToString())) {
-                            cuenta.Confirmada = false;
-                            return;
-                        } else {
-                            Database.ExecuteUpdate(
-                                "UPDATE cuenta SET confirmado = 1 WHERE idcuenta = @idcuenta",
-                                new Dictionary<string, object>() {
-                                    { "@idcuenta", (int) row["idcuenta"] }
-                                }
-                            );
-                            row["confirmado"] = 1;
-                        }
-                    }
-                    cuenta.Id = (int) row["idcuenta"];
-                    cuenta.Usuario = row["usuario"].ToString();
-                    cuenta.Password = row["password"].ToString();
-                    cuenta.Correo = row["correo"].ToString();
-                    cuenta.Monedas = (int) row["monedas"];
-                    cuenta.FechaCreacion = DateTime.Parse(row["fechaCreacion"].ToString());
-                    cuenta.Confirmada = true;
-                    cuenta.CodigoValidacion = row["codigoValidacion"].ToString();
+            using (DostDatabase db = new DostDatabase()) {
+                var cuentaDb = db.Cuenta.ToList().Find(
+                    account => account.usuario == usuario && account.password == hashedPassword
+                );
+                if (cuentaDb != null) {
+                    cuenta.Id = cuentaDb.idcuenta;
+                    cuenta.Usuario = cuentaDb.usuario;
+                    cuenta.Password = cuentaDb.password;
+                    cuenta.Correo = cuentaDb.correo;
+                    cuenta.Monedas = cuentaDb.monedas;
+                    cuenta.FechaCreacion = cuentaDb.fechaCreacion;
+                    cuenta.Confirmada = cuentaDb.confirmada == 1;
+                    cuenta.CodigoValidacion = cuentaDb.codigoValidacion;
                 }
-            );
+            }
             return cuenta;
         }
 

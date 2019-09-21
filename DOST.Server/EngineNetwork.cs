@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 namespace DOST.Server {
     static class EngineNetwork {
         public static readonly Dictionary<string, Uri[]> URIS_SERVICES = new Dictionary<string, Uri[]>() {
-            { "LoginService", new Uri[] {
-                new Uri("net.tcp://localhost:25618/LoginService")
+            { "CuentaService", new Uri[] {
+                new Uri("net.tcp://localhost:25618/CuentaService")
             } },
             { "PartidaService", new Uri[] {
                 new Uri("net.tcp://localhost:25618/PartidaService")
@@ -22,10 +22,10 @@ namespace DOST.Server {
 
         public static void CreateHosts() {
             try {
-                ServiceHost loginHost = new ServiceHost(typeof(LoginService), URIS_SERVICES["LoginService"]);
-                loginHost.AddServiceEndpoint(typeof(ILoginService), new NetTcpBinding(SecurityMode.None), "");
+                ServiceHost loginHost = new ServiceHost(typeof(CuentaService), URIS_SERVICES["CuentaService"]);
+                loginHost.AddServiceEndpoint(typeof(ICuentaService), new NetTcpBinding(SecurityMode.None), "");
                 loginHost.Opened += (sender, e) => {
-                    Console.WriteLine("Login service opened.");
+                    Console.WriteLine("Cuenta service opened.");
                 };
                 loginHost.Open();
 

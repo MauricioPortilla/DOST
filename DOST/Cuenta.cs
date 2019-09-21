@@ -81,7 +81,7 @@ namespace DOST {
         }
 
         public bool Login() {
-            return EngineNetwork.EstablishChannel<ILoginService>((loginService) => {
+            return EngineNetwork.EstablishChannel<ICuentaService>((loginService) => {
                 var cuenta = loginService.TryLogin(usuario, password);
                 if (cuenta.Id == 0) {
                     return false;

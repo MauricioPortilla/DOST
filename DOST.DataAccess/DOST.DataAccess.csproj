@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C4F0D848-6F33-4E81-A5C1-27898B34E90A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>DOST.Server</RootNamespace>
-    <AssemblyName>DOST.Server</AssemblyName>
+    <ProjectGuid>{322B7641-B6D0-401D-B07A-72DA3596F5DC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DOST.DataAccess</RootNamespace>
+    <AssemblyName>DOST.DataAccess</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,7 +40,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,19 +50,63 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EngineNetwork.cs" />
-    <Compile Include="Server.cs" />
+    <Compile Include="CategoriaPartida.cs">
+      <DependentUpon>DOSTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Cuenta.cs">
+      <DependentUpon>DOSTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DOSTModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DOSTModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DOSTModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DOSTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DOSTModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DOSTModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Jugador.cs">
+      <DependentUpon>DOSTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partida.cs">
+      <DependentUpon>DOSTModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RespuestaCategoriaJugador.cs">
+      <DependentUpon>DOSTModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.Config" />
+    <EntityDeploy Include="DOSTModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DOSTModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DOSTModel.edmx.diagram">
+      <DependentUpon>DOSTModel.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DOST.Services\DOST.Services.csproj">
-      <Project>{FC69A572-A019-41F2-B57E-01599E7404F3}</Project>
-      <Name>DOST.Services</Name>
-    </ProjectReference>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DOSTModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DOSTModel.edmx</DependentUpon>
+      <LastGenOutput>DOSTModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DOSTModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DOSTModel.edmx</DependentUpon>
+      <LastGenOutput>DOSTModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using DOST.DataAccess;
 
 namespace DOST.Services {
     [DataContract]
@@ -45,23 +46,34 @@ namespace DOST.Services {
         public Cuenta() {
         }
 
+        public Cuenta(
+            int id, string usuario, string password, string correo, int monedas,
+            DateTime fechaCreacion, bool confirmada, string codigoValidacion
+        ) {
+            this.id = id;
+            this.usuario = usuario;
+            this.password = password;
+            this.correo = correo;
+            this.monedas = monedas;
+            this.fechaCreacion = fechaCreacion;
+            this.confirmada = confirmada;
+            this.codigoValidacion = codigoValidacion;
+        }
+
         public Cuenta(int id) {
             this.id = id;
-            Database.ExecuteStoreQuery(
-                "SELECT * FROM cuenta WHERE idcuenta = @idcuenta",
-                new Dictionary<string, object>() {
-                    { "@idcuenta", id }
-                }, (results) => {
-                    var row = results[0];
-                    usuario = row["usuario"].ToString();
-                    password = row["password"].ToString();
-                    correo = row["correo"].ToString();
-                    monedas = (int) row["monedas"];
-                    fechaCreacion = DateTime.Parse(row["fechaCreacion"].ToString());
-                    confirmada = (int) row["confirmado"] == 1;
-                    codigoValidacion = row["codigoValidacion"].ToString();
+            using (DostDatabase db = new DostDatabase()) {
+                var cuentaDb = db.Cuenta.ToList().Find(account => account.idcuenta == id);
+                if (cuentaDb != null) {
+                    usuario = cuentaDb.usuario;
+                    password = cuentaDb.password;
+                    correo = cuentaDb.correo;
+                    monedas = cuentaDb.monedas;
+                    fechaCreacion = cuentaDb.fechaCreacion;
+                    confirmada = cuentaDb.confirmada == 1;
+                    codigoValidacion = cuentaDb.codigoValidacion;
                 }
-            );
+            }
         }
     }
 }

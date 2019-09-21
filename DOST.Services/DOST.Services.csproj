@@ -34,8 +34,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
@@ -46,22 +53,27 @@
   <ItemGroup>
     <Compile Include="ChatService.cs" />
     <Compile Include="Cuenta.cs" />
-    <Compile Include="Database.cs" />
-    <Compile Include="DatabaseStruct.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="IChatService.cs" />
-    <Compile Include="ILoginService.cs" />
+    <Compile Include="ICuentaService.cs" />
     <Compile Include="IPartidaService.cs" />
     <Compile Include="Jugador.cs" />
     <Compile Include="Partida.cs" />
     <Compile Include="PartidaService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LoginService.cs" />
+    <Compile Include="CuentaService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DOST.DataAccess\DOST.DataAccess.csproj">
+      <Project>{322b7641-b6d0-401d-b07a-72da3596f5dc}</Project>
+      <Name>DOST.DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

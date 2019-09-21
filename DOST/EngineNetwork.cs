@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 namespace DOST {
     static class EngineNetwork {
         public static readonly Dictionary<string, Uri[]> URIS_SERVICES = new Dictionary<string, Uri[]>() {
-            { "LoginService", new Uri[] {
-                new Uri("net.tcp://localhost:25618/LoginService")
+            { "CuentaService", new Uri[] {
+                new Uri("net.tcp://localhost:25618/CuentaService")
             } },
             { "PartidaService", new Uri[] {
                 new Uri("net.tcp://localhost:25618/PartidaService")
@@ -20,7 +20,7 @@ namespace DOST {
             } }
         };
         private static readonly Dictionary<Type, string> CHANNEL_SERVICES = new Dictionary<Type, string>() {
-            { typeof(ILoginService), "LoginService" },
+            { typeof(ICuentaService), "CuentaService" },
             { typeof(IPartidaService), "PartidaService" },
             { typeof(IChatService), "ChatService" }
         };
