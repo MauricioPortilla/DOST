@@ -15,8 +15,14 @@ namespace DOST {
     /// Lógica de interacción para App.xaml
     /// </summary>
     public partial class App : Application {
+        public static string ConnectionIP = "localhost";
+        public static int ConnectionPort = 25618;
+
         public App() {
-            var language = GetAppConfiguration()["DOST"]["Language"];
+            var appConfig = GetAppConfiguration();
+            ConnectionIP = appConfig["Connection"]["IP"];
+            ConnectionPort = int.Parse(appConfig["Connection"]["Port"]);
+            var language = appConfig["DOST"]["Language"];
             if (language == "en-US") {
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
             }
@@ -46,7 +52,12 @@ namespace DOST {
                     new XElement("Configuration",
                         new XElement(
                             "DOST",
-                            new XElement("Language", "")
+                            new XElement("Language", "es-MX")
+                        ),
+                        new XElement(
+                            "Connection",
+                            new XElement("IP", "localhost"),
+                            new XElement("Port", "25618")
                         )
                     )
                 ).Save(dir + "config.xml");

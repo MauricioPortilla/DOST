@@ -124,11 +124,31 @@ namespace DOST.Services {
                 db.Partida.Add(newGame);
                 if (db.SaveChanges() != 0) {
                     idpartida = newGame.idpartida;
+                    Engine.CategoriesList.ForEach((category) => {
+                        db.CategoriaPartida.Add(new DataAccess.CategoriaPartida() {
+                            idpartida = newGame.idpartida,
+                            nombre = category
+                        });
+                    });
+                    db.SaveChanges();
                     return true;
-                } 
+                }
             }
             idpartida = 0;
             return false;
+        }
+
+        public List<CategoriaPartida> GetCategoriasList(int idpartida) {
+            List<CategoriaPartida> categoriesList = new List<CategoriaPartida>();
+            using (DostDatabase db = new DostDatabase()) {
+                var categories = (from category in db.CategoriaPartida
+                                  where category.idpartida == idpartida
+                                  select category).ToList();
+                categories.ForEach(category => categoriesList.Add(
+                    new CategoriaPartida(category.idcategoria, null, category.nombre)
+                ));
+            }
+            return categoriesList;
         }
     }
 }

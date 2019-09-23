@@ -261,4 +261,13 @@
   <data name="CreateGameButton" xml:space="preserve">
     <value>Crear partida</value>
   </data>
+  <data name="AddButton" xml:space="preserve">
+    <value>Añadir</value>
+  </data>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
 </root>

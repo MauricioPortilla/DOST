@@ -10,6 +10,7 @@
         Title="{x:Static p:Resources.LobbyWindowTitle}" Height="687" Width="1073" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Image HorizontalAlignment="Left" Height="687" VerticalAlignment="Top" Width="1073" Source="Images/DOST_GameLobby.png" Stretch="Fill"/>
+        <Rectangle HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="1074" MouseDown="WindowHeader_MouseDown" Fill="#00000000" />
         <TextBlock x:Name="lobbyStatusTextBlock" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Text="{x:Static p:Resources.WaitingForPlayersText}" Foreground="White" Margin="443,94,444,563" TextAlignment="Center"/>
         <Button x:Name="exitButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.ExitButton}" Margin="20,24,987,631" Click="ExitButton_Click"/>
         <Button x:Name="startGameButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.StartGameButton}" Margin="907,24,23,631" Click="StartGameButton_Click"/>

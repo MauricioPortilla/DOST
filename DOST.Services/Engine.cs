@@ -9,6 +9,10 @@ using System.Xml.Linq;
 
 namespace DOST.Services {
     class Engine {
+        public static readonly List<string> CategoriesList = new List<string>() {
+            "Nombre", "Apellido", "Color", "Animal", "Fruta"
+        };
+
         public static Dictionary<string, Dictionary<XName, string>> GetConfigFileElements() {
             string dir = AppDomain.CurrentDomain.BaseDirectory;
             if (!File.Exists(dir + "config.xml")) {

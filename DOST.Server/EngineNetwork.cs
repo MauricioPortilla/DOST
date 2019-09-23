@@ -30,7 +30,14 @@ namespace DOST.Server {
                 loginHost.Open();
 
                 ServiceHost partidaHost = new ServiceHost(typeof(PartidaService), URIS_SERVICES["PartidaService"]);
-                partidaHost.AddServiceEndpoint(typeof(IPartidaService), new NetTcpBinding(SecurityMode.None), "");
+                var binding = new NetTcpBinding(SecurityMode.None);
+                binding.MaxBufferPoolSize = 2147483647;
+                binding.MaxBufferSize = 2147483647;
+                binding.MaxReceivedMessageSize = 2147483647;
+                binding.OpenTimeout = TimeSpan.FromMinutes(59);
+                binding.ReceiveTimeout = TimeSpan.FromMinutes(59);
+                binding.SendTimeout = TimeSpan.FromMinutes(59);
+                partidaHost.AddServiceEndpoint(typeof(IPartidaService), binding, "");
                 partidaHost.Opened += (sender, e) => {
                     Console.WriteLine("Partida service opened.");
                 };

@@ -37,15 +37,22 @@ namespace DOST {
         }
         private static readonly ObservableCollection<Partida> gamesList = new ObservableCollection<Partida>();
         public static ObservableCollection<Partida> GamesList {
-            get {
-                return gamesList;
-            }
+            get { return gamesList; }
+        }
+        private static readonly ObservableCollection<GameConfigurationWindow.GameCategory> categoriesList = new ObservableCollection<GameConfigurationWindow.GameCategory>() {
+            new GameConfigurationWindow.GameCategory() { Nombre = "Nombre" },
+            new GameConfigurationWindow.GameCategory() { Nombre = "Apellido" },
+            new GameConfigurationWindow.GameCategory() { Nombre = "Color" },
+            new GameConfigurationWindow.GameCategory() { Nombre = "Animal" },
+            new GameConfigurationWindow.GameCategory() { Nombre = "Fruta" }
+        };
+        public static ObservableCollection<GameConfigurationWindow.GameCategory> CategoriesList {
+            get { return categoriesList; }
         }
 
         public static void GetGamesList() {
             EngineNetwork.EstablishChannel<IPartidaService>((service) => {
                 while (mainMenu != null) {
-                    Thread.Sleep(200);
                     List<Services.Partida> serviceGamesList = service.GetPartidasList();
                     foreach (var serviceGame in serviceGamesList) {
                         List<Jugador> jugadores = new List<Jugador>();
@@ -72,10 +79,17 @@ namespace DOST {
                                 jugador.Anfitrion)
                             )
                         );
+                        var gameCategories = new List<CategoriaPartida>();
+                        service.GetCategoriasList(serviceGame.Id).ForEach(
+                            categoria => gameCategories.Add(new CategoriaPartida(categoria.Id, partida, categoria.Nombre))
+                        );
+                        partida.Categorias = gameCategories;
                         partida.Jugadores = jugadores;
                         partida.PropertyChanged += Game_PropertyChanged;
                         if (gamesList.ToList().Exists(game => game.Id == serviceGame.Id)) {
-                            gamesList.ToList().Find(game => game.Id == serviceGame.Id).Jugadores = jugadores;
+                            var existentGame = gamesList.ToList().Find(game => game.Id == serviceGame.Id);
+                            existentGame.Jugadores = jugadores;
+                            existentGame.Categorias = gameCategories;
                             continue;
                         }
                         Application.Current.Dispatcher.Invoke(delegate {
@@ -92,6 +106,7 @@ namespace DOST {
                     //Application.Current.Dispatcher.Invoke(delegate {
                     //    gamesToRemove.ForEach(x => gamesList.Remove(x));
                     //});
+                    Thread.Sleep(200);
                 }
                 return true;
             });

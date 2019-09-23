@@ -29,6 +29,7 @@ namespace DOST {
         private List<TextBlock> lobbyPlayersRankTitleTextBlocks;
         private static readonly int MAX_NUMBER_OF_PLAYERS = 4;
         private ChatServiceClient chatService;
+        private int actualNumberOfPlayers = 0;
 
         public GameLobbyWindow(ref Partida partida) {
             InitializeComponent();
@@ -81,41 +82,46 @@ namespace DOST {
 
         public void LoadPlayersJoinedData() {
             while (!IsClosed) {
-                Application.Current.Dispatcher.Invoke(delegate {
-                    if (partida.Jugadores.Count == 0) {
-                        return;
-                    }
-                    var anfitrion = partida.Jugadores.Find(x => x.Cuenta.Id == Session.Cuenta.Id);
-                    if (anfitrion != null) {
-                        if (!anfitrion.Anfitrion) {
-                            startGameButton.Content = Properties.Resources.ReadyButton;
+                this.partida = Session.GamesList.First(game => game.Id == partida.Id);
+                if (actualNumberOfPlayers != partida.Jugadores.Count) {
+                    Application.Current.Dispatcher.Invoke(delegate {
+                        if (partida.Jugadores.Count == 0) {
+                            return;
                         }
-                    }
-                    // Can be improved
-                    for (int index = 0; index < MAX_NUMBER_OF_PLAYERS; index++) {
-                        lobbyPlayersUsernameTextBlocks[index].Text = "...";
-                        lobbyPlayersTypeTextBlocks[index].Text = Properties.Resources.WaitingForPlayerText;
-                        // lobbyPlayersRankTextBlocks[index].Text = "#0";
-                        lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Hidden;
-                        lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Hidden;
-                    }
-                    for (int index = 0; index < partida.Jugadores.Count; index++) {
-                        if (lobbyPlayersUsernameTextBlocks[index].Text == partida.Jugadores[index].Cuenta.Usuario) {
-                            continue;
+                        var anfitrion = partida.Jugadores.Find(x => x.Cuenta.Id == Session.Cuenta.Id);
+                        if (anfitrion != null) {
+                            if (!anfitrion.Anfitrion) {
+                                startGameButton.Content = Properties.Resources.ReadyButton;
+                                configurationButton.Visibility = Visibility.Hidden;
+                            }
                         }
-                        lobbyPlayersUsernameTextBlocks[index].Text = partida.Jugadores[index].Cuenta.Usuario;
-                        lobbyPlayersTypeTextBlocks[index].Text = partida.Jugadores[index].Anfitrion ?
-                            Properties.Resources.HostPlayerText : Properties.Resources.PlayerText;
-                        // lobbyPlayersRankTextBlocks[index].Text = partida.Jugadores[index].GetRank();
-                        lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Visible;
-                        lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Visible;
-                    }
-                    if (partida.Jugadores.Count == MAX_NUMBER_OF_PLAYERS) {
-                        lobbyStatusTextBlock.Text = "";
-                    } else {
-                        lobbyStatusTextBlock.Text = Properties.Resources.WaitingForPlayersText;
-                    }
-                });
+                        // Can be improved
+                        for (int index = 0; index < MAX_NUMBER_OF_PLAYERS; index++) {
+                            lobbyPlayersUsernameTextBlocks[index].Text = "...";
+                            lobbyPlayersTypeTextBlocks[index].Text = Properties.Resources.WaitingForPlayerText;
+                            // lobbyPlayersRankTextBlocks[index].Text = "#0";
+                            lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Hidden;
+                            lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Hidden;
+                        }
+                        for (int index = 0; index < partida.Jugadores.Count; index++) {
+                            if (lobbyPlayersUsernameTextBlocks[index].Text == partida.Jugadores[index].Cuenta.Usuario) {
+                                continue;
+                            }
+                            lobbyPlayersUsernameTextBlocks[index].Text = partida.Jugadores[index].Cuenta.Usuario;
+                            lobbyPlayersTypeTextBlocks[index].Text = partida.Jugadores[index].Anfitrion ?
+                                Properties.Resources.HostPlayerText : Properties.Resources.PlayerText;
+                            // lobbyPlayersRankTextBlocks[index].Text = partida.Jugadores[index].GetRank();
+                            lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Visible;
+                            lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Visible;
+                        }
+                        if (partida.Jugadores.Count == MAX_NUMBER_OF_PLAYERS) {
+                            lobbyStatusTextBlock.Text = "";
+                        } else {
+                            lobbyStatusTextBlock.Text = Properties.Resources.WaitingForPlayersText;
+                        }
+                        actualNumberOfPlayers = partida.Jugadores.Count;
+                    });
+                }
             }
         }
 
@@ -133,7 +139,7 @@ namespace DOST {
         }
 
         private void ConfigurationButton_Click(object sender, RoutedEventArgs e) {
-
+            new GameConfigurationWindow(ref partida).Show();
         }
 
         private void ChatMessageTextBox_KeyDown(object sender, KeyEventArgs e) {
@@ -146,6 +152,12 @@ namespace DOST {
         protected override void OnClosed(EventArgs e) {
             base.OnClosed(e);
             IsClosed = true;
+        }
+
+        private void WindowHeader_MouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.ChangedButton == MouseButton.Left) {
+                DragMove();
+            }
         }
     }
 }

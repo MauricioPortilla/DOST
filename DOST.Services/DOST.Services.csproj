@@ -51,6 +51,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoriaPartida.cs" />
     <Compile Include="ChatService.cs" />
     <Compile Include="Cuenta.cs" />
     <Compile Include="Engine.cs" />

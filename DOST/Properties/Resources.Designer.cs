@@ -70,6 +70,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Añadir.
+        /// </summary>
+        public static string AddButton {
+            get {
+                return ResourceManager.GetString("AddButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Mejores puntuaciones.
         /// </summary>
         public static string BestScoresButton {
@@ -93,6 +102,15 @@ namespace DOST.Properties {
         public static string BestScoresWindowTItle {
             get {
                 return ResourceManager.GetString("BestScoresWindowTItle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Cancelar.
+        /// </summary>
+        public static string CancelButton {
+            get {
+                return ResourceManager.GetString("CancelButton", resourceCulture);
             }
         }
         
@@ -444,6 +462,15 @@ namespace DOST.Properties {
         public static string RoundWindowTitle {
             get {
                 return ResourceManager.GetString("RoundWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Guardar.
+        /// </summary>
+        public static string SaveButton {
+            get {
+                return ResourceManager.GetString("SaveButton", resourceCulture);
             }
         }
         

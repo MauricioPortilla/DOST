@@ -5,8 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DOST"
         mc:Ignorable="d"
-        Title="GameConfigurationWindow" Height="450" Width="800">
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:p="clr-namespace:DOST.Properties"
+        Title="{x:Static p:Resources.ConfigureGameWindowTitle}" Height="687" Width="1073" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <Image HorizontalAlignment="Left" Height="687" VerticalAlignment="Top" Width="1073" Source="Images/DOST_GameConfiguration.png" Stretch="Fill"/>
+        <Label Content="Categorías" HorizontalAlignment="Left" Margin="48,145,0,0" VerticalAlignment="Top" Foreground="#DDECECEC" FontSize="22"/>
+        <ItemsControl ItemsSource="{Binding CategoriesList}" Grid.IsSharedSizeScope="True" Margin="48,189,43,86" Background="#33000000">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border x:Name="Border" Padding="8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition SharedSizeGroup="Checkerz" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsSelected}" />
+                            <StackPanel Margin="8 0 0 0" Grid.Column="1">
+                                <TextBlock FontWeight="Bold" Text="{Binding Nombre}" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Button x:Name="guardarButton" Content="{x:Static p:Resources.SaveButton}" HorizontalAlignment="Left" Margin="899,641,0,0" VerticalAlignment="Top" Width="145" Click="GuardarButton_Click"/>
+        <Button x:Name="addButton" Content="{x:Static p:Resources.AddButton}" HorizontalAlignment="Left" Margin="885,145,0,0" VerticalAlignment="Top" Width="145" Click="AddButton_Click"/>
+        <Button x:Name="cancelButton" Content="{x:Static p:Resources.CancelButton}" HorizontalAlignment="Left" Margin="734,641,0,0" VerticalAlignment="Top" Width="145" Click="CancelButton_Click"/>
     </Grid>
 </Window>

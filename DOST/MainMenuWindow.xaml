@@ -10,8 +10,8 @@
         x:Name="MainMenu"
         Title="{x:Static p:Resources.MainMenuWindowTitle}" Height="686.975" Width="1073.529" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Rectangle Fill="#00F4F4F5" HorizontalAlignment="Left" Height="19" Stroke="Black" VerticalAlignment="Top" Width="1074" MouseDown="WindowHeader_MouseDown" />
         <Image HorizontalAlignment="Left" Height="689" VerticalAlignment="Top" Width="1076" Source="Images/DOST_MainMenu.png" Stretch="Fill" Margin="-2,-2,0,0"/>
+        <Rectangle HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="1074" MouseDown="WindowHeader_MouseDown" Fill="#00000000" />
         <TextBlock x:Name="usernameTextBlock" Style="{StaticResource MaterialDesignDisplay1TextBlock}" Foreground="White" Margin="0,32,38,607" HorizontalAlignment="Right">
             USERNAME
         </TextBlock>
