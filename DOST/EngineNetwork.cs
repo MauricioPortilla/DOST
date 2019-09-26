@@ -26,33 +26,11 @@ namespace DOST {
         };
 
         public static bool EstablishChannel<IService>(Func<IService, bool> onOpen) {
-            var binding = new NetTcpBinding(SecurityMode.None);
-            binding.MaxBufferSize = 2147483647;
-            binding.MaxReceivedMessageSize = 2147483647;
-            binding.OpenTimeout = TimeSpan.FromMinutes(59);
-            binding.SendTimeout = TimeSpan.FromMinutes(59);
-            binding.ReceiveTimeout = TimeSpan.FromMinutes(59);
-            var channel = new ChannelFactory<IService>(
-                binding,
-                new EndpointAddress(URIS_SERVICES[CHANNEL_SERVICES[typeof(IService)]][0])
-            );
+            var channel = new ChannelFactory<IService>(CHANNEL_SERVICES[typeof(IService)], new EndpointAddress(URIS_SERVICES[CHANNEL_SERVICES[typeof(IService)]][0]));
             var serviceChannel = channel.CreateChannel();
             var valueReturned = onOpen.Invoke(serviceChannel);
             channel.Close();
             return valueReturned;
         }
-
-        /*public static bool EstablishDuplexChannel<IService>(Func<IService, bool> onOpen) {
-            var binding = new NetTcpBinding(SecurityMode.None);
-            binding.MaxBufferSize = 2147483647;
-            binding.MaxReceivedMessageSize = 2147483647;
-            binding.OpenTimeout = TimeSpan.FromMinutes(20);
-            binding.SendTimeout = TimeSpan.FromMinutes(20);
-            binding.ReceiveTimeout = TimeSpan.FromMinutes(20);
-            var duplexChannel = new DuplexChannelFactory<IService>(
-                binding,
-                new EndpointAddress(URIS_SERVICES[CHANNEL_SERVICES[typeof(IService)]][0])
-            );
-        }*/
     }
 }

@@ -22,29 +22,22 @@ namespace DOST.Server {
 
         public static void CreateHosts() {
             try {
-                ServiceHost loginHost = new ServiceHost(typeof(CuentaService), URIS_SERVICES["CuentaService"]);
-                loginHost.AddServiceEndpoint(typeof(ICuentaService), new NetTcpBinding(SecurityMode.None), "");
+                ServiceHost loginHost = new ServiceHost(typeof(CuentaService));
+                loginHost.AddServiceEndpoint(typeof(ICuentaService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["CuentaService"][0]);
                 loginHost.Opened += (sender, e) => {
                     Console.WriteLine("Cuenta service opened.");
                 };
                 loginHost.Open();
 
-                ServiceHost partidaHost = new ServiceHost(typeof(PartidaService), URIS_SERVICES["PartidaService"]);
-                var binding = new NetTcpBinding(SecurityMode.None);
-                binding.MaxBufferPoolSize = 2147483647;
-                binding.MaxBufferSize = 2147483647;
-                binding.MaxReceivedMessageSize = 2147483647;
-                binding.OpenTimeout = TimeSpan.FromMinutes(59);
-                binding.ReceiveTimeout = TimeSpan.FromMinutes(59);
-                binding.SendTimeout = TimeSpan.FromMinutes(59);
-                partidaHost.AddServiceEndpoint(typeof(IPartidaService), binding, "");
+                ServiceHost partidaHost = new ServiceHost(typeof(PartidaService));
+                partidaHost.AddServiceEndpoint(typeof(IPartidaService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["PartidaService"][0]);
                 partidaHost.Opened += (sender, e) => {
                     Console.WriteLine("Partida service opened.");
                 };
                 partidaHost.Open();
 
-                ServiceHost chatHost = new ServiceHost(typeof(ChatService), URIS_SERVICES["ChatService"]);
-                chatHost.AddServiceEndpoint(typeof(IChatService), new NetTcpBinding(SecurityMode.None), "");
+                ServiceHost chatHost = new ServiceHost(typeof(ChatService));
+                chatHost.AddServiceEndpoint(typeof(IChatService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["ChatService"][0]);
                 chatHost.Opened += (sender, e) => {
                     Console.WriteLine("Chat service opened.");
                 };

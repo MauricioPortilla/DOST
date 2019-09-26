@@ -102,6 +102,7 @@
       <DependentUpon>DOSTModel.edmx</DependentUpon>
       <LastGenOutput>DOSTModel.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="DOSTModel.edmx.sql" />
     <Content Include="DOSTModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DOSTModel.edmx</DependentUpon>
