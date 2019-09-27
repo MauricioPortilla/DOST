@@ -22,6 +22,9 @@ namespace DOST.Services {
             set { nombre = value; }
         }
 
+        public CategoriaPartida() {
+        }
+
         public CategoriaPartida(int id, Partida partida, string nombre) {
             this.id = id;
             this.partida = partida;

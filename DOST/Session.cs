@@ -103,10 +103,12 @@ namespace DOST {
                             gamesToRemove.Add(game);
                         }
                     }
-                    //Application.Current.Dispatcher.Invoke(delegate {
-                    //    gamesToRemove.ForEach(x => gamesList.Remove(x));
-                    //});
-                    Thread.Sleep(200);
+                    gamesToRemove.ForEach((game) => {
+                        Application.Current.Dispatcher.Invoke(delegate {
+                            gamesList.Remove(game);
+                        });
+                    });
+                    Thread.Sleep(400);
                 }
                 return true;
             });

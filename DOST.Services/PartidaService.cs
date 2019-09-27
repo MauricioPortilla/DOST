@@ -95,6 +95,7 @@ namespace DOST.Services {
                 if (playerAnfitrion != null) {
                     db.Jugador.Remove(playerAnfitrion);
                     if ((db.Jugador.Where(playerDb => playerDb.idpartida == idpartida).Count() - 1) <= 0) {
+                        db.CategoriaPartida.ToList().ForEach(category => db.CategoriaPartida.Remove(category));
                         db.Partida.Remove(db.Partida.ToList().Find(game => game.idpartida == idpartida));
                     } else {
                         db.Jugador.First(playerDatabase => playerDatabase.idpartida == idpartida).anfitrion = 1;
@@ -107,6 +108,7 @@ namespace DOST.Services {
                     if (playerNoAnfitrion != null) {
                         db.Jugador.Remove(playerNoAnfitrion);
                         if (db.Jugador.Where(playerDb => playerDb.idpartida == idpartida).Count() == 0) {
+                            db.CategoriaPartida.ToList().ForEach(category => db.CategoriaPartida.Remove(category));
                             db.Partida.Remove(db.Partida.ToList().Find(game => game.idpartida == idpartida));
                         }
                     }

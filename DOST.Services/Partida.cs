@@ -33,6 +33,9 @@ namespace DOST.Services {
             set { jugadores = value; }
         }
 
+        public Partida() {
+        }
+
         public Partida(int id, int ronda, DateTime fecha) {
             this.id = id;
             this.ronda = ronda;

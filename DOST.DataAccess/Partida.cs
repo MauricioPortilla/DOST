@@ -18,6 +18,7 @@ namespace DOST.DataAccess
         public Partida()
         {
             this.Jugador = new HashSet<Jugador>();
+            this.CategoriaPartida = new HashSet<CategoriaPartida>();
         }
     
         public int idpartida { get; set; }
@@ -26,5 +27,7 @@ namespace DOST.DataAccess
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Jugador> Jugador { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CategoriaPartida> CategoriaPartida { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace DOST {
     /// Lógica de interacción para MainMenuWindow.xaml
     /// </summary>
     public partial class MainMenuWindow : Window {
+        public bool IsClosed { get; private set; } = false;
         private ObservableCollection<Partida> gamesList = Session.GamesList;
         public ObservableCollection<Partida> GamesList {
             get {
@@ -80,7 +81,7 @@ namespace DOST {
         }
 
         public void JoinGameIfNeeded() {
-            while (true) {
+            while (!IsClosed) {
                 Application.Current.Dispatcher.Invoke(delegate {
                     if (!didCreateGame) {
                         return;
@@ -106,6 +107,11 @@ namespace DOST {
             if (e.ChangedButton == MouseButton.Left) {
                 DragMove();
             }
+        }
+
+        protected override void OnClosed(EventArgs e) {
+            base.OnClosed(e);
+            IsClosed = true;
         }
     }
 }

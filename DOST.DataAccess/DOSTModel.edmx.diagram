@@ -14,6 +14,7 @@
         <AssociationConnector Association="DostDB.FK__jugador__idcuent__3B75D760" ManuallyRouted="false" />
         <AssociationConnector Association="DostDB.FK__jugador__idparti__3C69FB99" ManuallyRouted="false" />
         <AssociationConnector Association="DostDB.FK__respuesta__idjug__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="DostDB.PartidaCategoriaPartida" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

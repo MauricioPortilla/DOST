@@ -26,5 +26,6 @@ namespace DOST.DataAccess
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RespuestaCategoriaJugador> RespuestaCategoriaJugador { get; set; }
+        public virtual Partida Partida { get; set; }
     }
 }

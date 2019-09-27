@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 09/24/2019 09:10:21
+-- Date Created: 09/27/2019 08:40:09
 -- Generated from EDMX file: C:\Users\Mauricio CP\Desktop\DOST\DOST.DataAccess\DOSTModel.edmx
 -- --------------------------------------------------
 
@@ -199,6 +199,21 @@ GO
 CREATE INDEX [IX_FK__respuesta__idjug__412EB0B6]
 ON [dbo].[RespuestaCategoriaJugador]
     ([idjugador]);
+GO
+
+-- Creating foreign key on [idpartida] in table 'CategoriaPartida'
+ALTER TABLE [dbo].[CategoriaPartida]
+ADD CONSTRAINT [FK_PartidaCategoriaPartida]
+    FOREIGN KEY ([idpartida])
+    REFERENCES [dbo].[Partida]
+        ([idpartida])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PartidaCategoriaPartida'
+CREATE INDEX [IX_FK_PartidaCategoriaPartida]
+ON [dbo].[CategoriaPartida]
+    ([idpartida]);
 GO
 
 -- --------------------------------------------------
