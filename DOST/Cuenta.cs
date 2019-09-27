@@ -101,8 +101,12 @@ namespace DOST {
         }
 
         public bool Register() {
-
-            return true;
+            return EngineNetwork.EstablishChannel<ICuentaService>((registerService) => {
+                Services.Cuenta cuenta = new Services.Cuenta(
+                    0, usuario, password, correo, 0, DateTime.Now, false, null
+                );
+                return registerService.SignUp(cuenta);
+            });
         }
 
         public void Logout() {
