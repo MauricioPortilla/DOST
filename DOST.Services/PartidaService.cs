@@ -152,5 +152,39 @@ namespace DOST.Services {
             }
             return categoriesList;
         }
+
+        public bool AddCategoria(int idpartida, string name) {
+            using (DostDatabase db = new DostDatabase()) {
+                var game = db.Partida.Find(idpartida);
+                if (game == null) {
+                    return false;
+                }
+                if (game.CategoriaPartida.ToList().Find(
+                    category => category.nombre == name && category.idpartida == idpartida
+                ) != null) {
+                    return false;
+                }
+                game.CategoriaPartida.Add(new DataAccess.CategoriaPartida {
+                    idpartida = game.idpartida,
+                    nombre = name
+                });
+                return db.SaveChanges() != 0;
+            }
+        }
+
+        public bool RemoveCategoria(int idpartida, int idcategoria) {
+            using (DostDatabase db = new DostDatabase()) {
+                var game = db.Partida.Find(idpartida);
+                if (game == null) {
+                    return false;
+                }
+                var categoria = game.CategoriaPartida.ToList().Find(category => category.idcategoria == idcategoria);
+                if (categoria == null) {
+                    return false;
+                }
+                game.CategoriaPartida.Remove(categoria);
+                return db.SaveChanges() != 0;
+            }
+        }
     }
 }

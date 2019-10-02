@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DOST.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -54,6 +55,18 @@ namespace DOST {
             if (PropertyChanged != null) {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(obj));
             }
+        }
+
+        public bool AddCategoria(CategoriaPartida categoria) {
+            return EngineNetwork.EstablishChannel<IPartidaService>((service) => {
+                return service.AddCategoria(id, categoria.Nombre);
+            });
+        }
+
+        public bool RemoveCategoria(CategoriaPartida categoria) {
+            return EngineNetwork.EstablishChannel<IPartidaService>((service) => {
+                return service.RemoveCategoria(id, categoria.Id);
+            });
         }
     }
 }

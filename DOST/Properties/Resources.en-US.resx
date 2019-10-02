@@ -267,4 +267,28 @@
   <data name="CancelButton" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="AccountExistsRegisterErrorText" xml:space="preserve">
+    <value>There's already an account registered with this username or email.</value>
+  </data>
+  <data name="AccountRegisteredText" xml:space="preserve">
+    <value>Account registered. Please, check out your email to validate your account.</value>
+  </data>
+  <data name="ChangesSavedText" xml:space="preserve">
+    <value>Saved changes.</value>
+  </data>
+  <data name="CouldntCreateGameErrorText" xml:space="preserve">
+    <value>Couldn't create the game.</value>
+  </data>
+  <data name="InvalidDataErrorText" xml:space="preserve">
+    <value>You must enter valid data.</value>
+  </data>
+  <data name="MustSelectAtLeastOneCategoryErrorText" xml:space="preserve">
+    <value>You must have at least 1 category selected in the list.</value>
+  </data>
+  <data name="UncompletedFieldsErrorText" xml:space="preserve">
+    <value>You must complete all the fields.</value>
+  </data>
+  <data name="UnmatchedRegisterFieldsErrorText" xml:space="preserve">
+    <value>Email or password doesn't match with its confirmation field.</value>
+  </data>
 </root>

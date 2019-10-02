@@ -73,7 +73,7 @@ namespace DOST {
         private void CreateGameButton_Click(object sender, RoutedEventArgs e) {
             int idpartida = 0;
             if (!Session.Cuenta.CreateGame(out idpartida)) {
-                MessageBox.Show("Error al crear la partida");
+                MessageBox.Show(Properties.Resources.CouldntCreateGameErrorText);
                 return;
             }
             didCreateGame = true;

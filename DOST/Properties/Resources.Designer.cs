@@ -61,11 +61,29 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Ya existe una cuenta registrada con ese nombre de usuario o correo..
+        /// </summary>
+        public static string AccountExistsRegisterErrorText {
+            get {
+                return ResourceManager.GetString("AccountExistsRegisterErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Debes confirmar tu cuenta para iniciar sesión. Verifica tu correo electrónico..
         /// </summary>
         public static string AccountNotConfirmedErrorText {
             get {
                 return ResourceManager.GetString("AccountNotConfirmedErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Cuenta registrada. Por favor, revisa tu correo para activar tu cuenta..
+        /// </summary>
+        public static string AccountRegisteredText {
+            get {
+                return ResourceManager.GetString("AccountRegisteredText", resourceCulture);
             }
         }
         
@@ -124,6 +142,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Cambios guardados..
+        /// </summary>
+        public static string ChangesSavedText {
+            get {
+                return ResourceManager.GetString("ChangesSavedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Bienvenido al chat del lobby de DOST..
         /// </summary>
         public static string ChatWelcomeText {
@@ -174,6 +201,15 @@ namespace DOST.Properties {
         public static string ConfirmPasswordText {
             get {
                 return ResourceManager.GetString("ConfirmPasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error al crear la partida..
+        /// </summary>
+        public static string CouldntCreateGameErrorText {
+            get {
+                return ResourceManager.GetString("CouldntCreateGameErrorText", resourceCulture);
             }
         }
         
@@ -277,6 +313,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Debes ingresar datos válidos..
+        /// </summary>
+        public static string InvalidDataErrorText {
+            get {
+                return ResourceManager.GetString("InvalidDataErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Unirse a partida.
         /// </summary>
         public static string JoinGameButton {
@@ -354,6 +399,15 @@ namespace DOST.Properties {
         public static string MainMenuWindowTitle {
             get {
                 return ResourceManager.GetString("MainMenuWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Debes tener al menos 1 categoría seleccionada en la lista..
+        /// </summary>
+        public static string MustSelectAtLeastOneCategoryErrorText {
+            get {
+                return ResourceManager.GetString("MustSelectAtLeastOneCategoryErrorText", resourceCulture);
             }
         }
         
@@ -489,6 +543,24 @@ namespace DOST.Properties {
         public static string StartGameButton {
             get {
                 return ResourceManager.GetString("StartGameButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Faltan campos por completar..
+        /// </summary>
+        public static string UncompletedFieldsErrorText {
+            get {
+                return ResourceManager.GetString("UncompletedFieldsErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a El correo o la contraseña no coincide con su campo de confirmación..
+        /// </summary>
+        public static string UnmatchedRegisterFieldsErrorText {
+            get {
+                return ResourceManager.GetString("UnmatchedRegisterFieldsErrorText", resourceCulture);
             }
         }
         

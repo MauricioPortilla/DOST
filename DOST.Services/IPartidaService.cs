@@ -26,5 +26,11 @@ namespace DOST.Services {
 
         [OperationContract]
         List<CategoriaPartida> GetCategoriasList(int idpartida);
+
+        [OperationContract]
+        bool AddCategoria(int idpartida, string name);
+
+        [OperationContract]
+        bool RemoveCategoria(int idpartida, int idcategoria);
     }
 }

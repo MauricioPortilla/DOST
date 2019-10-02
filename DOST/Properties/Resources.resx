@@ -270,4 +270,28 @@
   <data name="CancelButton" xml:space="preserve">
     <value>Cancelar</value>
   </data>
+  <data name="AccountExistsRegisterErrorText" xml:space="preserve">
+    <value>Ya existe una cuenta registrada con ese nombre de usuario o correo.</value>
+  </data>
+  <data name="AccountRegisteredText" xml:space="preserve">
+    <value>Cuenta registrada. Por favor, revisa tu correo para activar tu cuenta.</value>
+  </data>
+  <data name="ChangesSavedText" xml:space="preserve">
+    <value>Cambios guardados.</value>
+  </data>
+  <data name="CouldntCreateGameErrorText" xml:space="preserve">
+    <value>Error al crear la partida.</value>
+  </data>
+  <data name="InvalidDataErrorText" xml:space="preserve">
+    <value>Debes ingresar datos válidos.</value>
+  </data>
+  <data name="MustSelectAtLeastOneCategoryErrorText" xml:space="preserve">
+    <value>Debes tener al menos 1 categoría seleccionada en la lista.</value>
+  </data>
+  <data name="UncompletedFieldsErrorText" xml:space="preserve">
+    <value>Faltan campos por completar.</value>
+  </data>
+  <data name="UnmatchedRegisterFieldsErrorText" xml:space="preserve">
+    <value>El correo o la contraseña no coincide con su campo de confirmación.</value>
+  </data>
 </root>

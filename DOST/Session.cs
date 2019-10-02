@@ -40,11 +40,11 @@ namespace DOST {
             get { return gamesList; }
         }
         private static readonly ObservableCollection<GameConfigurationWindow.GameCategory> categoriesList = new ObservableCollection<GameConfigurationWindow.GameCategory>() {
-            new GameConfigurationWindow.GameCategory() { Nombre = "Nombre" },
-            new GameConfigurationWindow.GameCategory() { Nombre = "Apellido" },
-            new GameConfigurationWindow.GameCategory() { Nombre = "Color" },
-            new GameConfigurationWindow.GameCategory() { Nombre = "Animal" },
-            new GameConfigurationWindow.GameCategory() { Nombre = "Fruta" }
+            new GameConfigurationWindow.GameCategory() { Nombre = "Nombre", CategoriaPartida = new CategoriaPartida(0, null, "Nombre") },
+            new GameConfigurationWindow.GameCategory() { Nombre = "Apellido", CategoriaPartida = new CategoriaPartida(0, null, "Apellido") },
+            new GameConfigurationWindow.GameCategory() { Nombre = "Color", CategoriaPartida = new CategoriaPartida(0, null, "Color") },
+            new GameConfigurationWindow.GameCategory() { Nombre = "Animal", CategoriaPartida = new CategoriaPartida(0, null, "Animal") },
+            new GameConfigurationWindow.GameCategory() { Nombre = "Fruta", CategoriaPartida = new CategoriaPartida(0, null, "Fruta") }
         };
         public static ObservableCollection<GameConfigurationWindow.GameCategory> CategoriesList {
             get { return categoriesList; }

@@ -28,17 +28,17 @@ namespace DOST {
                 string.IsNullOrWhiteSpace(emailTextBox.Text) ||
                 string.IsNullOrWhiteSpace(confirmEmailTextBox.Text)
             ) {
-                MessageBox.Show("Faltan campos por completar.");
+                MessageBox.Show(Properties.Resources.UncompletedFieldsErrorText);
                 return;
             }
             if (!emailTextBox.Text.Contains("@")) {
-                MessageBox.Show("Debes introducir datos válidos.");
+                MessageBox.Show(Properties.Resources.InvalidDataErrorText);
                 return;
             }
             if ((passwordPasswordBox.Password != confirmPasswordPasswordBox.Password) ||
                 (emailTextBox.Text != confirmEmailTextBox.Text)
             ) {
-                MessageBox.Show("El correo o la contraseña no coincide con su campo de confirmación.");
+                MessageBox.Show(Properties.Resources.UnmatchedRegisterFieldsErrorText);
                 return;
             }
             Cuenta nuevaCuenta = new Cuenta(
@@ -46,10 +46,10 @@ namespace DOST {
                 emailTextBox.Text, 0, DateTime.Now, false, null
             );
             if (nuevaCuenta.Register()) {
-                MessageBox.Show("Cuenta registrada. Por favor, revisa tu correo para activar tu cuenta.");
+                MessageBox.Show(Properties.Resources.AccountRegisteredText);
                 Close();
             } else {
-                MessageBox.Show("Ya existe una cuenta registrada con ese nombre de usuario o correo.");
+                MessageBox.Show(Properties.Resources.AccountExistsRegisterErrorText);
             }
         }
     }

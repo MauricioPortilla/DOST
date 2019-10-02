@@ -42,7 +42,19 @@ namespace DOST {
         }
 
         private void GuardarButton_Click(object sender, RoutedEventArgs e) {
-
+            if (!categoriesList.ToList().Exists(category => category.IsSelected == true)) {
+                MessageBox.Show(Properties.Resources.MustSelectAtLeastOneCategoryErrorText);
+                return;
+            }
+            categoriesList.ToList().ForEach((category) => {
+                if (category.IsSelected) {
+                    partida.AddCategoria(category.CategoriaPartida);
+                } else {
+                    partida.RemoveCategoria(category.CategoriaPartida);
+                }
+            });
+            MessageBox.Show(Properties.Resources.ChangesSavedText);
+            Close();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e) {
