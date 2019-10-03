@@ -13,7 +13,15 @@ namespace DOST {
             get { return id; }
         }
         private int ronda;
+        public int Ronda {
+            get { return ronda; }
+            set { ronda = value; }
+        }
         private DateTime fecha;
+        public DateTime Fecha {
+            get { return fecha; }
+            set { fecha = value; }
+        }
         private List<Jugador> jugadores;
         public List<Jugador> Jugadores {
             get { return jugadores; }
@@ -66,6 +74,13 @@ namespace DOST {
         public bool RemoveCategoria(CategoriaPartida categoria) {
             return EngineNetwork.EstablishChannel<IPartidaService>((service) => {
                 return service.RemoveCategoria(id, categoria.Id);
+            });
+        }
+
+        public bool Start() {
+            ronda = 1;
+            return EngineNetwork.EstablishChannel<IPartidaService>((service) => {
+                return service.StartPartida(id);
             });
         }
     }

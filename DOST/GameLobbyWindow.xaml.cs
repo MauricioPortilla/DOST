@@ -122,6 +122,7 @@ namespace DOST {
                         actualNumberOfPlayers = partida.Jugadores.Count;
                     });
                 }
+                Thread.Sleep(400);
             }
         }
 
@@ -135,7 +136,18 @@ namespace DOST {
         }
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e) {
-
+            if (partida.Jugadores.Count < 2) {
+                MessageBox.Show(Properties.Resources.MustHaveAtLeastTwoPlayersErrorText);
+                return;
+            }
+            if (!partida.Start()) {
+                MessageBox.Show(Properties.Resources.StartGameErrorText);
+                return;
+            }
+            Session.GameWindow = new GameWindow(ref partida);
+            Session.GameWindow.Show();
+            Session.GameLobbyWindow = null;
+            Close();
         }
 
         private void ConfigurationButton_Click(object sender, RoutedEventArgs e) {

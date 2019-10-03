@@ -32,5 +32,8 @@ namespace DOST.Services {
 
         [OperationContract]
         bool RemoveCategoria(int idpartida, int idcategoria);
+
+        [OperationContract]
+        bool StartPartida(int idpartida);
     }
 }

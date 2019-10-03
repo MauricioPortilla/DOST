@@ -69,8 +69,14 @@
     <Compile Include="GameConfigurationWindow.xaml.cs">
       <DependentUpon>GameConfigurationWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameConfiguration_AddCategoryWindow.xaml.cs">
+      <DependentUpon>GameConfiguration_AddCategoryWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GameLobbyWindow.xaml.cs">
       <DependentUpon>GameLobbyWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GameWindow.xaml.cs">
+      <DependentUpon>GameWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Jugador.cs" />
     <Compile Include="MainMenuWindow.xaml.cs">
@@ -95,7 +101,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GameConfiguration_AddCategoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GameLobbyWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

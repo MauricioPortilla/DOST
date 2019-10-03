@@ -26,13 +26,6 @@ namespace DOST.Server {
                             new XElement("Port", "25618")
                         ),
                         new XElement(
-                            "Database",
-                            new XElement("Server", ""),
-                            new XElement("DatabaseName", ""),
-                            new XElement("DatabaseUser", ""),
-                            new XElement("DatabasePassword", "")
-                        ),
-                        new XElement(
                             "Smtp",
                             new XElement("SMTPServer", "smtp.live.com"),
                             new XElement("Email", ""),

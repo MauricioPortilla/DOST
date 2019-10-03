@@ -35,6 +35,11 @@ namespace DOST {
             get { return gameLobbyWindow; }
             set { gameLobbyWindow = value; }
         }
+        private static GameWindow gameWindow;
+        public static GameWindow GameWindow {
+            get { return gameWindow; }
+            set { gameWindow = value; }
+        }
         private static readonly ObservableCollection<Partida> gamesList = new ObservableCollection<Partida>();
         public static ObservableCollection<Partida> GamesList {
             get { return gamesList; }

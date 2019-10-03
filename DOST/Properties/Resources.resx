@@ -294,4 +294,19 @@
   <data name="UnmatchedRegisterFieldsErrorText" xml:space="preserve">
     <value>El correo o la contraseña no coincide con su campo de confirmación.</value>
   </data>
+  <data name="AddCategoryWindowTitle" xml:space="preserve">
+    <value>Agregar nueva categoría - DOST</value>
+  </data>
+  <data name="AddCategoryNameText" xml:space="preserve">
+    <value>Ingresa el nombre de la nueva categoría</value>
+  </data>
+  <data name="NewCategoryNameEmptyErrorText" xml:space="preserve">
+    <value>Debes ingresar un nombre válido.</value>
+  </data>
+  <data name="MustHaveAtLeastTwoPlayersErrorText" xml:space="preserve">
+    <value>Debe haber un mínimo de 2 jugadores para iniciar la partida.</value>
+  </data>
+  <data name="StartGameErrorText" xml:space="preserve">
+    <value>Error al iniciar la partida.</value>
+  </data>
 </root>

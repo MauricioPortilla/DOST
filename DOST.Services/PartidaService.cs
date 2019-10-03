@@ -182,7 +182,18 @@ namespace DOST.Services {
                 if (categoria == null) {
                     return false;
                 }
-                game.CategoriaPartida.Remove(categoria);
+                db.CategoriaPartida.Remove(categoria);
+                return db.SaveChanges() != 0;
+            }
+        }
+
+        public bool StartPartida(int idpartida) {
+            using (DostDatabase db = new DostDatabase()) {
+                var game = db.Partida.Find(idpartida);
+                if (game == null) {
+                    return false;
+                }
+                game.ronda = 1;
                 return db.SaveChanges() != 0;
             }
         }

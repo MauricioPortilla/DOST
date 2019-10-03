@@ -80,7 +80,7 @@ namespace DOST {
             lastIdGameCreated = idpartida;
         }
 
-        public void JoinGameIfNeeded() {
+        private void JoinGameIfNeeded() {
             while (!IsClosed) {
                 Application.Current.Dispatcher.Invoke(delegate {
                     if (!didCreateGame) {
@@ -97,6 +97,7 @@ namespace DOST {
                     if (Session.Cuenta.JoinGame(gameCreated, true)) {
                         Session.GameLobbyWindow = new GameLobbyWindow(ref gameCreated);
                         Session.GameLobbyWindow.Show();
+                        new GameConfigurationWindow(ref gameCreated).Show();
                         Hide();
                     }
                 });

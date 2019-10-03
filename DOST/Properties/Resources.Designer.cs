@@ -97,6 +97,24 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Ingresa el nombre de la nueva categoría.
+        /// </summary>
+        public static string AddCategoryNameText {
+            get {
+                return ResourceManager.GetString("AddCategoryNameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Agregar nueva categoría - DOST.
+        /// </summary>
+        public static string AddCategoryWindowTitle {
+            get {
+                return ResourceManager.GetString("AddCategoryWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Mejores puntuaciones.
         /// </summary>
         public static string BestScoresButton {
@@ -403,6 +421,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Debe haber un mínimo de 2 jugadores para iniciar la partida..
+        /// </summary>
+        public static string MustHaveAtLeastTwoPlayersErrorText {
+            get {
+                return ResourceManager.GetString("MustHaveAtLeastTwoPlayersErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Debes tener al menos 1 categoría seleccionada en la lista..
         /// </summary>
         public static string MustSelectAtLeastOneCategoryErrorText {
@@ -417,6 +444,15 @@ namespace DOST.Properties {
         public static string NameText {
             get {
                 return ResourceManager.GetString("NameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Debes ingresar un nombre válido..
+        /// </summary>
+        public static string NewCategoryNameEmptyErrorText {
+            get {
+                return ResourceManager.GetString("NewCategoryNameEmptyErrorText", resourceCulture);
             }
         }
         
@@ -543,6 +579,15 @@ namespace DOST.Properties {
         public static string StartGameButton {
             get {
                 return ResourceManager.GetString("StartGameButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error al iniciar la partida..
+        /// </summary>
+        public static string StartGameErrorText {
+            get {
+                return ResourceManager.GetString("StartGameErrorText", resourceCulture);
             }
         }
         

@@ -34,7 +34,8 @@ namespace DOST {
                     CategoriaPartida = category
                 })
             );
-            Session.CategoriesList.ToList().ForEach((category) => {
+            var defaultCategories = Session.CategoriesList.ToList();
+            defaultCategories.ForEach((category) => {
                 if (!categoriesList.ToList().Exists(cat => cat.Nombre == category.Nombre)) {
                     categoriesList.Add(category);
                 }
@@ -58,7 +59,20 @@ namespace DOST {
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e) {
-
+            var addCategoryWindow = new GameConfiguration_AddCategoryWindow();
+            addCategoryWindow.Closed += (windowSender, windowEvent) => {
+                if (!addCategoryWindow.CategoryAdded) {
+                    return;
+                }
+                var newCategory = new CategoriaPartida(0, partida, addCategoryWindow.CategoryName);
+                categoriesList.Add(new GameCategory {
+                    CategoriaPartida = newCategory,
+                    IsSelected = true,
+                    Nombre = addCategoryWindow.CategoryName
+                });
+                categoriesItemsControl.Items.Refresh();
+            };
+            addCategoryWindow.Show();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e) {

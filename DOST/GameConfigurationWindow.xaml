@@ -11,7 +11,7 @@
     <Grid>
         <Image HorizontalAlignment="Left" Height="687" VerticalAlignment="Top" Width="1073" Source="Images/DOST_GameConfiguration.png" Stretch="Fill"/>
         <Label Content="Categorías" HorizontalAlignment="Left" Margin="48,145,0,0" VerticalAlignment="Top" Foreground="#DDECECEC" FontSize="22"/>
-        <ItemsControl ItemsSource="{Binding CategoriesList}" Grid.IsSharedSizeScope="True" Margin="48,189,43,86" Background="#33000000">
+        <ItemsControl x:Name="categoriesItemsControl" ItemsSource="{Binding CategoriesList}" Grid.IsSharedSizeScope="True" Margin="48,189,43,86" Background="#33000000">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Border x:Name="Border" Padding="8">
