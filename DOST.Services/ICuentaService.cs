@@ -13,5 +13,11 @@ namespace DOST.Services {
 
         [OperationContract]
         bool SignUp(Cuenta cuenta);
+
+        [OperationContract]
+        List<UserScore> GetBestScores();
+
+        [OperationContract]
+        string GetRank(int idcuenta);
     }
 }

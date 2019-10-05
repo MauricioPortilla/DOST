@@ -64,6 +64,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BestScoresWindow.xaml.cs">
+      <DependentUpon>BestScoresWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CategoriaPartida.cs" />
     <Compile Include="Cuenta.cs" />
     <Compile Include="GameConfigurationWindow.xaml.cs">
@@ -97,6 +100,10 @@
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Session.cs" />
+    <Page Include="BestScoresWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GameConfigurationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -177,6 +184,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\DOST_GameConfiguration.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DOST_BestScores.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

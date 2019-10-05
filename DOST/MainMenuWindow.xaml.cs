@@ -59,7 +59,7 @@ namespace DOST {
         }
 
         private void BestScoresButton_Click(object sender, RoutedEventArgs e) {
-
+            new BestScoresWindow().Show();
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e) {

@@ -99,7 +99,7 @@ namespace DOST {
                         for (int index = 0; index < MAX_NUMBER_OF_PLAYERS; index++) {
                             lobbyPlayersUsernameTextBlocks[index].Text = "...";
                             lobbyPlayersTypeTextBlocks[index].Text = Properties.Resources.WaitingForPlayerText;
-                            // lobbyPlayersRankTextBlocks[index].Text = "#0";
+                            lobbyPlayersRankTextBlocks[index].Text = "#0";
                             lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Hidden;
                             lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Hidden;
                         }
@@ -110,7 +110,7 @@ namespace DOST {
                             lobbyPlayersUsernameTextBlocks[index].Text = partida.Jugadores[index].Cuenta.Usuario;
                             lobbyPlayersTypeTextBlocks[index].Text = partida.Jugadores[index].Anfitrion ?
                                 Properties.Resources.HostPlayerText : Properties.Resources.PlayerText;
-                            // lobbyPlayersRankTextBlocks[index].Text = partida.Jugadores[index].GetRank();
+                            lobbyPlayersRankTextBlocks[index].Text = partida.Jugadores[index].GetRank();
                             lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Visible;
                             lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Visible;
                         }

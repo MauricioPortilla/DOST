@@ -114,5 +114,40 @@ namespace DOST.Services {
                 return false;
             }
         }
+
+        public List<UserScore> GetBestScores() {
+            List<UserScore> bestScoresList = new List<UserScore>();
+            using (DostDatabase db = new DostDatabase()) {
+                var jugadores = (from jugador in db.Jugador
+                                 where jugador.Partida.ronda == 5
+                                 group jugador by jugador.Cuenta.usuario into groupUsuario
+                                 let puntuacionTotal = groupUsuario.Sum(jugador => jugador.puntuacion)
+                                 orderby puntuacionTotal descending
+                                 select new { Usuario = groupUsuario.Key, PuntuacionTotal = puntuacionTotal }).ToList();
+                for (int pos = 0; pos < jugadores.Count; pos++) {
+                    bestScoresList.Add(new UserScore {
+                        Posicion = pos + 1,
+                        Usuario = jugadores[pos].Usuario,
+                        Puntuacion = jugadores[pos].PuntuacionTotal
+                    });
+                }
+            }
+            return bestScoresList;
+        }
+
+        public string GetRank(int idcuenta) {
+            string rank = "No clasificado";
+            using (DostDatabase db = new DostDatabase()) {
+                var usuario = db.Cuenta.ToList().Find(cuenta => cuenta.idcuenta == idcuenta).usuario;
+                if (usuario != null) {
+                    var player = GetBestScores().Find(userScore => userScore.Usuario == usuario);
+                    if (player != null) {
+                        rank = "#" + player.Posicion;
+                    }
+
+                }
+            }
+            return rank;
+        }
     }
 }

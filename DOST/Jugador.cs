@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DOST.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,7 @@ namespace DOST {
         private int id;
         private Cuenta cuenta;
         public Cuenta Cuenta {
-            get {
-                return cuenta;
-            }
+            get { return cuenta; }
         }
         private Partida partida;
         private int puntuacion;
@@ -30,5 +29,13 @@ namespace DOST {
             this.anfitrion = anfitrion;
         }
 
+        public string GetRank() {
+            var rank = "No clasificado";
+            EngineNetwork.EstablishChannel<ICuentaService>((service) => {
+                rank = service.GetRank(cuenta.Id);
+                return true;
+            });
+            return rank;
+        }
     }
 }

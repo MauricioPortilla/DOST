@@ -1,0 +1,47 @@
+﻿<Window x:Class="DOST.BestScoresWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DOST"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:p="clr-namespace:DOST.Properties"
+        Title="{x:Static p:Resources.BestScoresWindowTItle}" Height="686.975" Width="1073.529" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Image HorizontalAlignment="Left" Height="689" VerticalAlignment="Top" Width="1076" Source="Images/DOST_BestScores.png" Stretch="Fill" Margin="-2,-2,0,0"/>
+        <Rectangle HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="1074" MouseDown="WindowHeader_MouseDown" Fill="#00000000" />
+        <TextBlock HorizontalAlignment="Left" Margin="342,69,0,0" TextWrapping="Wrap" Text="{x:Static p:Resources.BestScoresText}" VerticalAlignment="Top" Foreground="White" Height="36" Width="388" FontSize="24" TextAlignment="Center"/>
+        <ListView x:Name="gamesListView" ItemsSource="{Binding BestScoresList}" Margin="120,121,120,60" Background="#4C000000" BorderBrush="Transparent" Focusable="False">
+            <ListView.Style>
+                <Style/>
+            </ListView.Style>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignGridViewItem}">
+                    <Style.Setters>
+                        <Setter Property="Foreground" Value="White" />
+                    </Style.Setters>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Background" Value="#19FFFFFF" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView x:Name="gamesListGridView">
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                            <Setter Property="Foreground" Value="White" />
+                        </Style>
+                    </GridView.ColumnHeaderContainerStyle>
+                    <GridViewColumn DisplayMemberBinding="{Binding Posicion}" Header="{x:Static p:Resources.RankText}" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Usuario}" Header="{x:Static p:Resources.UsernameText}" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Puntuacion}" Header="{x:Static p:Resources.ScoreText}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="returnButton" Content="Regresar" HorizontalAlignment="Left" Margin="457,645,0,0" VerticalAlignment="Top" Width="170" Click="ReturnButton_Click"/>
+    </Grid>
+</Window>
