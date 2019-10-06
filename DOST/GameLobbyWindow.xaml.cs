@@ -66,12 +66,14 @@ namespace DOST {
         public class ChatCallbackHandler : IChatServiceCallback {
             private Partida partida;
             private ListBox chatListBox;
+            public string LastMessageReceived;
             public ChatCallbackHandler(Partida partida, ListBox chatListBox) {
                 this.partida = partida;
                 this.chatListBox = chatListBox;
             }
             public void BroadcastMessage(int idpartida, string username, string message) {
-                if (idpartida == partida.Id) {    
+                if (idpartida == partida.Id) {
+                    LastMessageReceived = message;
                     chatListBox.Items.Add(new TextBlock() {
                         Text = username + ": " + message
                     });

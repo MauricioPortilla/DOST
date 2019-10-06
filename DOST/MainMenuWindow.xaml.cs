@@ -63,7 +63,6 @@ namespace DOST {
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e) {
-            Session.Cuenta.Logout();
             Session.Cuenta = null;
             Session.MainMenu = null;
             Session.Login.Show();

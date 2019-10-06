@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DOST.Server", "DOST.Server\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DOST.DataAccess", "DOST.DataAccess\DOST.DataAccess.csproj", "{322B7641-B6D0-401D-B07A-72DA3596F5DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DOST.UnitTests", "DOST.UnitTests\DOST.UnitTests.csproj", "{9AA7329E-028D-440C-B9F5-409F5253FC1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{322B7641-B6D0-401D-B07A-72DA3596F5DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{322B7641-B6D0-401D-B07A-72DA3596F5DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{322B7641-B6D0-401D-B07A-72DA3596F5DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA7329E-028D-440C-B9F5-409F5253FC1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA7329E-028D-440C-B9F5-409F5253FC1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA7329E-028D-440C-B9F5-409F5253FC1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA7329E-028D-440C-B9F5-409F5253FC1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

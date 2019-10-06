@@ -10,7 +10,7 @@
         Title="{x:Static p:Resources.ConfigureGameWindowTitle}" Height="687" Width="1073" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Image HorizontalAlignment="Left" Height="687" VerticalAlignment="Top" Width="1073" Source="Images/DOST_GameConfiguration.png" Stretch="Fill"/>
-        <Label Content="Categorías" HorizontalAlignment="Left" Margin="48,145,0,0" VerticalAlignment="Top" Foreground="#DDECECEC" FontSize="22"/>
+        <Label Content="{x:Static p:Resources.CategoriesText}" HorizontalAlignment="Left" Margin="48,145,0,0" VerticalAlignment="Top" Foreground="#DDECECEC" FontSize="22"/>
         <ItemsControl x:Name="categoriesItemsControl" ItemsSource="{Binding CategoriesList}" Grid.IsSharedSizeScope="True" Margin="48,189,43,86" Background="#33000000">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -37,5 +37,6 @@
         <Button x:Name="guardarButton" Content="{x:Static p:Resources.SaveButton}" HorizontalAlignment="Left" Margin="899,641,0,0" VerticalAlignment="Top" Width="145" Click="GuardarButton_Click"/>
         <Button x:Name="addButton" Content="{x:Static p:Resources.AddButton}" HorizontalAlignment="Left" Margin="885,145,0,0" VerticalAlignment="Top" Width="145" Click="AddButton_Click"/>
         <Button x:Name="cancelButton" Content="{x:Static p:Resources.CancelButton}" HorizontalAlignment="Left" Margin="734,641,0,0" VerticalAlignment="Top" Width="145" Click="CancelButton_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="39,70,0,0" TextWrapping="Wrap" Text="{x:Static p:Resources.GameConfigurationText}" VerticalAlignment="Top" Foreground="White" Height="36" Width="470" FontSize="24" TextAlignment="Left"/>
     </Grid>
 </Window>

@@ -183,10 +183,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\DOST_GameConfiguration.png" />
+    <Resource Include="Images\DOST_BestScores.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\DOST_BestScores.png" />
+    <Resource Include="Images\DOST_GameConfiguration.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

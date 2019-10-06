@@ -35,30 +35,6 @@ namespace DOST {
 
         public Cuenta(int id) {
             this.id = id;
-            /*EngineNetwork.Send(EngineNetwork.CreatePackage(new object[] {
-                (byte) NetworkClientRequests.GetAccountData, id
-            }));
-            var package = EngineNetwork.ReceiveMultipleData();
-            if (package.Count < 1) {
-                return;
-            }
-            if (!package[0].ContainsKey("code")) {
-                return;
-            } else if (byte.Parse(package[0]["code"]) != (byte) NetworkServerResponses.AccountData) {
-                return;
-            }
-            package.RemoveAll(x => x.ContainsKey("code"));
-            var accountData = package[0];
-            if (accountData.Count > 0) {
-                id = int.Parse(accountData["idcuenta"]);
-                usuario = accountData["usuario"];
-                password = accountData["password"];
-                correo = accountData["correo"];
-                monedas = int.Parse(accountData["monedas"]);
-                fechaCreacion = DateTime.Parse(accountData["fechaCreacion"]);
-                confirmada = (accountData["confirmado"] == "1") ? true : false;
-                codigoValidacion = accountData["codigoValidacion"];
-            }*/
         }
 
         public Cuenta(string usuario, string password) {
@@ -83,18 +59,18 @@ namespace DOST {
         public bool Login() {
             return EngineNetwork.EstablishChannel<ICuentaService>((loginService) => {
                 var cuenta = loginService.TryLogin(usuario, password);
+                id = cuenta.Id;
+                confirmada = cuenta.Confirmada;
                 if (cuenta.Id == 0) {
                     return false;
                 } else if (!cuenta.Confirmada) {
                     return false;
                 }
-                id = cuenta.Id;
                 usuario = cuenta.Usuario;
                 password = cuenta.Password;
                 correo = cuenta.Correo;
                 monedas = cuenta.Monedas;
                 fechaCreacion = cuenta.FechaCreacion;
-                confirmada = cuenta.Confirmada;
                 codigoValidacion = cuenta.CodigoValidacion;
                 return true;
             });
@@ -107,10 +83,6 @@ namespace DOST {
                 );
                 return registerService.SignUp(cuenta);
             });
-        }
-
-        public void Logout() {
-
         }
 
         public bool JoinGame(Partida game, bool asAnfitrion) {
