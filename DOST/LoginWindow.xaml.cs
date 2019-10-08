@@ -22,7 +22,7 @@ namespace DOST {
     public partial class LoginWindow : Window {
         public LoginWindow() {
             InitializeComponent();
-            var language = Session.LANGUAGES.FirstOrDefault(x => x.Value == App.GetAppConfiguration()["DOST"]["Language"]).Key;
+            var language = Session.LANGUAGES.FirstOrDefault(languageItem => languageItem.Value == App.GetAppConfiguration()["DOST"]["Language"]).Key;
             languageSelectorComboBox.SelectedValue = language;
         }
 

@@ -309,4 +309,7 @@
   <data name="StartGameErrorText" xml:space="preserve">
     <value>Error al iniciar la partida.</value>
   </data>
+  <data name="NotRankedText" xml:space="preserve">
+    <value>No clasificado</value>
+  </data>
 </root>

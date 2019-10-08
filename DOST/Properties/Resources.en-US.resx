@@ -306,4 +306,7 @@
   <data name="StartGameErrorText" xml:space="preserve">
     <value>Couldn't start the game.</value>
   </data>
+  <data name="NotRankedText" xml:space="preserve">
+    <value>Not ranked</value>
+  </data>
 </root>

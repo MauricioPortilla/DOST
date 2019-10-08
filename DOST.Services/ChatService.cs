@@ -12,7 +12,6 @@ namespace DOST.Services {
             new Dictionary<int, Dictionary<string, IChatServiceCallback>>();
 
         public void BroadcastMessage(int idpartida, string username, string message) {
-            //var playersInGame = gamesClients[idpartida];
             var playersInGame = gamesClients.First(game => game.Key == idpartida).Value;
             foreach (var client in playersInGame) {
                 client.Value.BroadcastMessage(idpartida, username, message);

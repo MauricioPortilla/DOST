@@ -457,6 +457,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a No clasificado.
+        /// </summary>
+        public static string NotRankedText {
+            get {
+                return ResourceManager.GetString("NotRankedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Nº de jugadores.
         /// </summary>
         public static string NumberOfPlayersText {
