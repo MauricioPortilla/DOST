@@ -29,7 +29,7 @@ namespace DOST {
                 jugadores = value;
                 var anfitrion = jugadores.Find(x => x.Anfitrion == true);
                 if (anfitrion != null) {
-                    Nombre = "Partida de " + anfitrion.Cuenta.Usuario;
+                    Nombre = "Partida de " + anfitrion.Cuenta.Username;
                 }
                 if (numeroJugadores != jugadores.Count) {
                     NumeroJugadores = jugadores.Count.ToString();
@@ -67,7 +67,7 @@ namespace DOST {
 
         public bool AddCategoria(CategoriaPartida categoria) {
             return EngineNetwork.EstablishChannel<IPartidaService>((service) => {
-                return service.AddCategoria(id, categoria.Nombre);
+                return service.AddCategoria(id, categoria.Name);
             });
         }
 

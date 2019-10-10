@@ -11,21 +11,21 @@ namespace DOST {
             get { return id; }
             set { id = value; }
         }
-        private Partida partida;
-        public Partida Partida {
-            get { return partida; }
-            set { partida = value; }
+        private Partida game;
+        public Partida Game {
+            get { return game; }
+            set { game = value; }
         }
-        private string nombre;
-        public string Nombre {
-            get { return nombre; }
-            set { nombre = value; }
+        private string name;
+        public string Name {
+            get { return name; }
+            set { name = value; }
         }
 
-        public CategoriaPartida(int id, Partida partida, string nombre) {
+        public CategoriaPartida(int id, Partida game, string name) {
             this.id = id;
-            this.partida = partida;
-            this.nombre = nombre;
+            this.game = game;
+            this.name = name;
         }
     }
 }

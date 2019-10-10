@@ -44,14 +44,14 @@ namespace DOST {
         public static ObservableCollection<Partida> GamesList {
             get { return gamesList; }
         }
-        private static readonly ObservableCollection<GameConfigurationWindow.GameCategory> categoriesList = new ObservableCollection<GameConfigurationWindow.GameCategory>() {
-            new GameConfigurationWindow.GameCategory() { Nombre = "Nombre", CategoriaPartida = new CategoriaPartida(0, null, "Nombre") },
-            new GameConfigurationWindow.GameCategory() { Nombre = "Apellido", CategoriaPartida = new CategoriaPartida(0, null, "Apellido") },
-            new GameConfigurationWindow.GameCategory() { Nombre = "Color", CategoriaPartida = new CategoriaPartida(0, null, "Color") },
-            new GameConfigurationWindow.GameCategory() { Nombre = "Animal", CategoriaPartida = new CategoriaPartida(0, null, "Animal") },
-            new GameConfigurationWindow.GameCategory() { Nombre = "Fruta", CategoriaPartida = new CategoriaPartida(0, null, "Fruta") }
+        private static readonly ObservableCollection<GameConfigurationWindow.GameCategoryItem> categoriesList = new ObservableCollection<GameConfigurationWindow.GameCategoryItem>() {
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Nombre", GameCategory = new CategoriaPartida(0, null, "Nombre") },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Apellido", GameCategory = new CategoriaPartida(0, null, "Apellido") },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Color", GameCategory = new CategoriaPartida(0, null, "Color") },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Animal", GameCategory = new CategoriaPartida(0, null, "Animal") },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Fruta", GameCategory = new CategoriaPartida(0, null, "Fruta") }
         };
-        public static ObservableCollection<GameConfigurationWindow.GameCategory> CategoriesList {
+        public static ObservableCollection<GameConfigurationWindow.GameCategoryItem> CategoriesList {
             get { return categoriesList; }
         }
 
@@ -71,13 +71,13 @@ namespace DOST {
                             jugador => jugadores.Add(new Jugador(
                                 jugador.Id,
                                 new Cuenta(jugador.Cuenta.Id) {
-                                    Usuario = jugador.Cuenta.Usuario,
+                                    Username = jugador.Cuenta.Usuario,
                                     Password = jugador.Cuenta.Password,
-                                    Correo = jugador.Cuenta.Correo,
-                                    Monedas = jugador.Cuenta.Monedas,
-                                    FechaCreacion = jugador.Cuenta.FechaCreacion,
-                                    Confirmada = jugador.Cuenta.Confirmada,
-                                    CodigoValidacion = jugador.Cuenta.CodigoValidacion
+                                    Email = jugador.Cuenta.Correo,
+                                    Coins = jugador.Cuenta.Monedas,
+                                    CreationDate = jugador.Cuenta.FechaCreacion,
+                                    Verified = jugador.Cuenta.Confirmada,
+                                    ValidationCode = jugador.Cuenta.CodigoValidacion
                                 },
                                 partida,
                                 jugador.Puntuacion,

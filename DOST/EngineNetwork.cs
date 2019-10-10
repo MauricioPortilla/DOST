@@ -26,7 +26,8 @@ namespace DOST {
         };
 
         public static bool EstablishChannel<IService>(Func<IService, bool> onOpen) {
-            var channel = new ChannelFactory<IService>(CHANNEL_SERVICES[typeof(IService)], new EndpointAddress(URIS_SERVICES[CHANNEL_SERVICES[typeof(IService)]][0]));
+            //var channel = new ChannelFactory<IService>(CHANNEL_SERVICES[typeof(IService)], new EndpointAddress(URIS_SERVICES[CHANNEL_SERVICES[typeof(IService)]][0]));
+            var channel = new ChannelFactory<IService>(CHANNEL_SERVICES[typeof(IService)]);
             var serviceChannel = channel.CreateChannel();
             var valueReturned = onOpen.Invoke(serviceChannel);
             channel.Close();

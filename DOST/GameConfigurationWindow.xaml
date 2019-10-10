@@ -22,7 +22,7 @@
                             </Grid.ColumnDefinitions>
                             <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsSelected}" />
                             <StackPanel Margin="8 0 0 0" Grid.Column="1">
-                                <TextBlock FontWeight="Bold" Text="{Binding Nombre}" />
+                                <TextBlock FontWeight="Bold" Text="{Binding Name}" />
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -34,7 +34,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Button x:Name="guardarButton" Content="{x:Static p:Resources.SaveButton}" HorizontalAlignment="Left" Margin="899,641,0,0" VerticalAlignment="Top" Width="145" Click="GuardarButton_Click"/>
+        <Button x:Name="guardarButton" Content="{x:Static p:Resources.SaveButton}" HorizontalAlignment="Left" Margin="899,641,0,0" VerticalAlignment="Top" Width="145" Click="SaveButton_Click"/>
         <Button x:Name="addButton" Content="{x:Static p:Resources.AddButton}" HorizontalAlignment="Left" Margin="885,145,0,0" VerticalAlignment="Top" Width="145" Click="AddButton_Click"/>
         <Button x:Name="cancelButton" Content="{x:Static p:Resources.CancelButton}" HorizontalAlignment="Left" Margin="734,641,0,0" VerticalAlignment="Top" Width="145" Click="CancelButton_Click"/>
         <TextBlock HorizontalAlignment="Left" Margin="39,70,0,0" TextWrapping="Wrap" Text="{x:Static p:Resources.GameConfigurationText}" VerticalAlignment="Top" Foreground="White" Height="36" Width="470" FontSize="24" TextAlignment="Left"/>

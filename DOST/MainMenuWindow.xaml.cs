@@ -34,8 +34,8 @@ namespace DOST {
         public MainMenuWindow() {
             DataContext = this;
             InitializeComponent();
-            usernameTextBlock.Text = Session.Cuenta.Usuario;
-            coinsTextBlock.Text = Session.Cuenta.Monedas.ToString();
+            usernameTextBlock.Text = Session.Cuenta.Username;
+            coinsTextBlock.Text = Session.Cuenta.Coins.ToString();
             // rankTextBlock.Text = Session.Cuenta.GetRank();
             GamesList.CollectionChanged += GamesList_CollectionChanged;
             new Thread(Session.GetGamesList).Start();

@@ -18,40 +18,40 @@ namespace DOST {
     /// Lógica de interacción para GameConfigurationWindow.xaml
     /// </summary>
     public partial class GameConfigurationWindow : Window {
-        private ObservableCollection<GameCategory> categoriesList = new ObservableCollection<GameCategory>();
-        public ObservableCollection<GameCategory> CategoriesList {
+        private ObservableCollection<GameCategoryItem> categoriesList = new ObservableCollection<GameCategoryItem>();
+        public ObservableCollection<GameCategoryItem> CategoriesList {
             get { return categoriesList; }
         }
-        private Partida partida;
+        private Partida game;
 
-        public GameConfigurationWindow(ref Partida partida) {
+        public GameConfigurationWindow(ref Partida game) {
             DataContext = this;
             InitializeComponent();
-            this.partida = partida;
-            partida.Categorias.ForEach(
-                category => categoriesList.Add(new GameCategory {
+            this.game = game;
+            game.Categorias.ForEach(
+                category => categoriesList.Add(new GameCategoryItem {
                     IsSelected = true,
-                    CategoriaPartida = category
+                    GameCategory = category
                 })
             );
             var defaultCategories = Session.CategoriesList.ToList();
             defaultCategories.ForEach((category) => {
-                if (!categoriesList.ToList().Exists(cat => cat.Nombre == category.Nombre)) {
+                if (!categoriesList.ToList().Exists(cat => cat.Name == category.Name)) {
                     categoriesList.Add(category);
                 }
             });
         }
 
-        private void GuardarButton_Click(object sender, RoutedEventArgs e) {
+        private void SaveButton_Click(object sender, RoutedEventArgs e) {
             if (!categoriesList.ToList().Exists(category => category.IsSelected == true)) {
                 MessageBox.Show(Properties.Resources.MustSelectAtLeastOneCategoryErrorText);
                 return;
             }
             categoriesList.ToList().ForEach((category) => {
                 if (category.IsSelected) {
-                    partida.AddCategoria(category.CategoriaPartida);
+                    game.AddCategoria(category.GameCategory);
                 } else {
-                    partida.RemoveCategoria(category.CategoriaPartida);
+                    game.RemoveCategoria(category.GameCategory);
                 }
             });
             MessageBox.Show(Properties.Resources.ChangesSavedText);
@@ -64,11 +64,11 @@ namespace DOST {
                 if (!addCategoryWindow.CategoryAdded) {
                     return;
                 }
-                var newCategory = new CategoriaPartida(0, partida, addCategoryWindow.CategoryName);
-                categoriesList.Add(new GameCategory {
-                    CategoriaPartida = newCategory,
+                var newCategory = new CategoriaPartida(0, game, addCategoryWindow.CategoryName);
+                categoriesList.Add(new GameCategoryItem {
+                    GameCategory = newCategory,
                     IsSelected = true,
-                    Nombre = addCategoryWindow.CategoryName
+                    Name = addCategoryWindow.CategoryName
                 });
                 categoriesItemsControl.Items.Refresh();
             };
@@ -79,19 +79,19 @@ namespace DOST {
             Close();
         }
 
-        public class GameCategory {
+        public class GameCategoryItem {
             public bool IsSelected { get; set; } = false;
-            private string nombre;
-            public string Nombre {
+            private string name;
+            public string Name {
                 get {
-                    if (CategoriaPartida != null) {
-                        return CategoriaPartida.Nombre;
+                    if (GameCategory != null) {
+                        return GameCategory.Name;
                     }
-                    return nombre;
+                    return name;
                 }
-                set { nombre = value; }
+                set { name = value; }
             }
-            public CategoriaPartida CategoriaPartida { get; set; }
+            public CategoriaPartida GameCategory { get; set; }
         }
     }
 }

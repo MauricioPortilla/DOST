@@ -35,9 +35,9 @@ namespace DOST {
                 var scoresList = service.GetBestScores();
                 scoresList.ForEach((userScore) => {
                     bestScoresList.Add(new UserScore {
-                        Posicion = userScore.Posicion,
-                        Usuario = userScore.Usuario,
-                        Puntuacion = userScore.Puntuacion
+                        Ranking = userScore.Posicion,
+                        Username = userScore.Usuario,
+                        Score = userScore.Puntuacion
                     });
                 });
                 return true;
@@ -51,20 +51,20 @@ namespace DOST {
         }
 
         public class UserScore {
-            private int posicion;
-            public int Posicion {
-                get { return posicion; }
-                set { posicion = value; }
+            private int ranking;
+            public int Ranking {
+                get { return ranking; }
+                set { ranking = value; }
             }
-            private string usuario;
-            public string Usuario {
-                get { return usuario; }
-                set { usuario = value; }
+            private string username;
+            public string Username {
+                get { return username; }
+                set { username = value; }
             }
-            private int puntuacion;
-            public int Puntuacion {
-                get { return puntuacion; }
-                set { puntuacion = value; }
+            private int score;
+            public int Score {
+                get { return score; }
+                set { score = value; }
             }
         }
 

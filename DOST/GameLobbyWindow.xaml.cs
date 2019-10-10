@@ -21,8 +21,8 @@ namespace DOST {
     /// </summary>
     public partial class GameLobbyWindow : Window {
         public bool IsClosed { get; private set; } = false;
-        private Partida partida;
-        private Jugador jugador;
+        private Partida game;
+        private Jugador player;
         private List<TextBlock> lobbyPlayersUsernameTextBlocks;
         private List<TextBlock> lobbyPlayersTypeTextBlocks;
         private List<TextBlock> lobbyPlayersRankTextBlocks;
@@ -31,9 +31,9 @@ namespace DOST {
         private ChatServiceClient chatService;
         private int actualNumberOfPlayers = 0;
 
-        public GameLobbyWindow(ref Partida partida) {
+        public GameLobbyWindow(ref Partida game) {
             InitializeComponent();
-            this.partida = partida;
+            this.game = game;
             lobbyPlayersUsernameTextBlocks = new List<TextBlock>() {
                 playerOneUsernameTextBlock, playerTwoUsernameTextBlock,
                 playerThreeUsernameTextBlock, playerFourUsernameTextBlock
@@ -52,12 +52,12 @@ namespace DOST {
             };
             Thread loadPlayersJoinedDataThread = new Thread(LoadPlayersJoinedData);
             loadPlayersJoinedDataThread.Start();
-            InstanceContext chatInstance = new InstanceContext(new ChatCallbackHandler(partida, chatListBox));
+            InstanceContext chatInstance = new InstanceContext(new ChatCallbackHandler(game, chatListBox));
             chatService = new ChatServiceClient(chatInstance);
             while (true) {
-                jugador = partida.Jugadores.Find(player => player.Cuenta.Id == Session.Cuenta.Id);
-                if (jugador != null) {
-                    chatService.EnterChat(partida.Id, jugador.Cuenta.Usuario);
+                player = game.Jugadores.Find(player => player.Cuenta.Id == Session.Cuenta.Id);
+                if (player != null) {
+                    chatService.EnterChat(game.Id, player.Cuenta.Username);
                     break;
                 }
             }
@@ -84,13 +84,13 @@ namespace DOST {
 
         public void LoadPlayersJoinedData() {
             while (!IsClosed) {
-                this.partida = Session.GamesList.First(game => game.Id == partida.Id);
-                if (actualNumberOfPlayers != partida.Jugadores.Count) {
+                this.game = Session.GamesList.First(game => game.Id == game.Id);
+                if (actualNumberOfPlayers != game.Jugadores.Count) {
                     Application.Current.Dispatcher.Invoke(delegate {
-                        if (partida.Jugadores.Count == 0) {
+                        if (game.Jugadores.Count == 0) {
                             return;
                         }
-                        var anfitrion = partida.Jugadores.Find(x => x.Cuenta.Id == Session.Cuenta.Id);
+                        var anfitrion = game.Jugadores.Find(x => x.Cuenta.Id == Session.Cuenta.Id);
                         if (anfitrion != null) {
                             if (!anfitrion.Anfitrion) {
                                 startGameButton.Content = Properties.Resources.ReadyButton;
@@ -105,23 +105,23 @@ namespace DOST {
                             lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Hidden;
                             lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Hidden;
                         }
-                        for (int index = 0; index < partida.Jugadores.Count; index++) {
-                            if (lobbyPlayersUsernameTextBlocks[index].Text == partida.Jugadores[index].Cuenta.Usuario) {
+                        for (int index = 0; index < game.Jugadores.Count; index++) {
+                            if (lobbyPlayersUsernameTextBlocks[index].Text == game.Jugadores[index].Cuenta.Username) {
                                 continue;
                             }
-                            lobbyPlayersUsernameTextBlocks[index].Text = partida.Jugadores[index].Cuenta.Usuario;
-                            lobbyPlayersTypeTextBlocks[index].Text = partida.Jugadores[index].Anfitrion ?
+                            lobbyPlayersUsernameTextBlocks[index].Text = game.Jugadores[index].Cuenta.Username;
+                            lobbyPlayersTypeTextBlocks[index].Text = game.Jugadores[index].Anfitrion ?
                                 Properties.Resources.HostPlayerText : Properties.Resources.PlayerText;
-                            lobbyPlayersRankTextBlocks[index].Text = partida.Jugadores[index].GetRank();
+                            lobbyPlayersRankTextBlocks[index].Text = game.Jugadores[index].GetRank();
                             lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Visible;
                             lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Visible;
                         }
-                        if (partida.Jugadores.Count == MAX_NUMBER_OF_PLAYERS) {
+                        if (game.Jugadores.Count == MAX_NUMBER_OF_PLAYERS) {
                             lobbyStatusTextBlock.Text = "";
                         } else {
                             lobbyStatusTextBlock.Text = Properties.Resources.WaitingForPlayersText;
                         }
-                        actualNumberOfPlayers = partida.Jugadores.Count;
+                        actualNumberOfPlayers = game.Jugadores.Count;
                     });
                 }
                 Thread.Sleep(400);
@@ -129,8 +129,8 @@ namespace DOST {
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e) {
-            if (Session.Cuenta.LeaveGame(partida)) {
-                chatService.LeaveChat(partida.Id, jugador.Cuenta.Usuario);
+            if (Session.Cuenta.LeaveGame(game)) {
+                chatService.LeaveChat(game.Id, player.Cuenta.Username);
                 Session.GameLobbyWindow = null;
                 Session.MainMenu.Show();
                 Close();
@@ -138,27 +138,27 @@ namespace DOST {
         }
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e) {
-            if (partida.Jugadores.Count < 2) {
+            if (game.Jugadores.Count < 2) {
                 MessageBox.Show(Properties.Resources.MustHaveAtLeastTwoPlayersErrorText);
                 return;
             }
-            if (!partida.Start()) {
+            if (!game.Start()) {
                 MessageBox.Show(Properties.Resources.StartGameErrorText);
                 return;
             }
-            Session.GameWindow = new GameWindow(ref partida);
+            Session.GameWindow = new GameWindow(ref game);
             Session.GameWindow.Show();
             Session.GameLobbyWindow = null;
             Close();
         }
 
         private void ConfigurationButton_Click(object sender, RoutedEventArgs e) {
-            new GameConfigurationWindow(ref partida).Show();
+            new GameConfigurationWindow(ref game).Show();
         }
 
         private void ChatMessageTextBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
-                chatService.BroadcastMessage(partida.Id, jugador.Cuenta.Usuario, chatMessageTextBox.Text);
+                chatService.BroadcastMessage(game.Id, player.Cuenta.Username, chatMessageTextBox.Text);
                 chatMessageTextBox.Clear();
             }
         }

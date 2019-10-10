@@ -8,80 +8,95 @@ using System.Threading.Tasks;
 namespace DOST {
     public class Cuenta {
         private int id;
-        public int Id { get { return id; } set { id = value; } }
-        private string usuario;
-        public string Usuario { get { return usuario; } set { usuario = value; } }
+        public int Id {
+            get { return id; }
+            set { id = value; }
+        }
+        private string username;
+        public string Username {
+            get { return username; }
+            set { username = value; }
+        }
         private string password; // cifrada con SHA1
-        public string Password { get { return password; } set { password = value; } }
-        private string correo;
-        public string Correo { get { return correo; } set { correo = value; } }
-        private int monedas;
-        public int Monedas { get { return monedas; } set { monedas = value; } }
-        private DateTime fechaCreacion;
-        public DateTime FechaCreacion {
-            get { return fechaCreacion; }
-            set { fechaCreacion = value; }
+        public string Password {
+            get { return password; }
+            set { password = value; }
         }
-        private bool confirmada;
-        public bool Confirmada {
-            get { return confirmada; }
-            set { confirmada = value; }
+        private string email;
+        public string Email {
+            get { return email; }
+            set { email = value; }
         }
-        private string codigoValidacion;
-        public string CodigoValidacion {
-            get { return codigoValidacion; }
-            set { codigoValidacion = value; }
+        private int coins;
+        public int Coins {
+            get { return coins; }
+            set { coins = value; }
+        }
+        private DateTime creationDate;
+        public DateTime CreationDate {
+            get { return creationDate; }
+            set { creationDate = value; }
+        }
+        private bool verified;
+        public bool Verified {
+            get { return verified; }
+            set { verified = value; }
+        }
+        private string validationCode;
+        public string ValidationCode {
+            get { return validationCode; }
+            set { validationCode = value; }
         }
 
         public Cuenta(int id) {
             this.id = id;
         }
 
-        public Cuenta(string usuario, string password) {
-            this.usuario = usuario;
+        public Cuenta(string username, string password) {
+            this.username = username;
             this.password = password;
         }
 
         public Cuenta(
-            int id, string usuario, string password, string correo, int monedas,
-            DateTime fechaCreacion, bool confirmada, string codigoValidacion
+            int id, string username, string password, string email, int coins,
+            DateTime creationDate, bool verified, string validationCode
         ) {
             this.id = id;
-            this.usuario = usuario;
+            this.username = username;
             this.password = password;
-            this.correo = correo;
-            this.monedas = monedas;
-            this.fechaCreacion = fechaCreacion;
-            this.confirmada = confirmada;
-            this.codigoValidacion = codigoValidacion;
+            this.email = email;
+            this.coins = coins;
+            this.creationDate = creationDate;
+            this.verified = verified;
+            this.validationCode = validationCode;
         }
 
         public bool Login() {
             return EngineNetwork.EstablishChannel<ICuentaService>((loginService) => {
-                var cuenta = loginService.TryLogin(usuario, password);
-                id = cuenta.Id;
-                confirmada = cuenta.Confirmada;
-                if (cuenta.Id == 0) {
+                var account = loginService.TryLogin(username, password);
+                id = account.Id;
+                verified = account.Confirmada;
+                if (account.Id == 0) {
                     return false;
-                } else if (!cuenta.Confirmada) {
+                } else if (!account.Confirmada) {
                     return false;
                 }
-                usuario = cuenta.Usuario;
-                password = cuenta.Password;
-                correo = cuenta.Correo;
-                monedas = cuenta.Monedas;
-                fechaCreacion = cuenta.FechaCreacion;
-                codigoValidacion = cuenta.CodigoValidacion;
+                username = account.Usuario;
+                password = account.Password;
+                email = account.Correo;
+                coins = account.Monedas;
+                creationDate = account.FechaCreacion;
+                validationCode = account.CodigoValidacion;
                 return true;
             });
         }
 
         public bool Register() {
             return EngineNetwork.EstablishChannel<ICuentaService>((registerService) => {
-                Services.Cuenta cuenta = new Services.Cuenta(
-                    0, usuario, password, correo, 0, DateTime.Now, false, null
+                Services.Cuenta account = new Services.Cuenta(
+                    0, username, password, email, 0, DateTime.Now, false, null
                 );
-                return registerService.SignUp(cuenta);
+                return registerService.SignUp(account);
             });
         }
 
@@ -97,12 +112,12 @@ namespace DOST {
             });
         }
 
-        public bool CreateGame(out int idpartida) {
-            int idgame = 0;
+        public bool CreateGame(out int idgame) {
+            int idNewGame = 0;
             bool returnedValue = EngineNetwork.EstablishChannel<IPartidaService>((service) => {
-                return service.CreatePartida(out idgame);
+                return service.CreatePartida(out idNewGame);
             });
-            idpartida = idgame;
+            idgame = idNewGame;
             return returnedValue;
         }
     }

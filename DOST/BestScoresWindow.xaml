@@ -12,7 +12,7 @@
         <Image HorizontalAlignment="Left" Height="689" VerticalAlignment="Top" Width="1076" Source="Images/DOST_BestScores.png" Stretch="Fill" Margin="-2,-2,0,0"/>
         <Rectangle HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="1074" MouseDown="WindowHeader_MouseDown" Fill="#00000000" />
         <TextBlock HorizontalAlignment="Left" Margin="342,69,0,0" TextWrapping="Wrap" Text="{x:Static p:Resources.BestScoresText}" VerticalAlignment="Top" Foreground="White" Height="36" Width="388" FontSize="24" TextAlignment="Center"/>
-        <ListView x:Name="gamesListView" ItemsSource="{Binding BestScoresList}" Margin="120,121,120,60" Background="#4C000000" BorderBrush="Transparent" Focusable="False">
+        <ListView x:Name="bestScoresListView" ItemsSource="{Binding BestScoresList}" Margin="120,121,120,60" Background="#4C000000" BorderBrush="Transparent" Focusable="False">
             <ListView.Style>
                 <Style/>
             </ListView.Style>
@@ -36,9 +36,9 @@
                             <Setter Property="Foreground" Value="White" />
                         </Style>
                     </GridView.ColumnHeaderContainerStyle>
-                    <GridViewColumn DisplayMemberBinding="{Binding Posicion}" Header="{x:Static p:Resources.RankText}" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Usuario}" Header="{x:Static p:Resources.UsernameText}" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Puntuacion}" Header="{x:Static p:Resources.ScoreText}" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Ranking}" Header="{x:Static p:Resources.RankText}" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Username}" Header="{x:Static p:Resources.UsernameText}" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Score}" Header="{x:Static p:Resources.ScoreText}" />
                 </GridView>
             </ListView.View>
         </ListView>

@@ -37,7 +37,7 @@ namespace DOST {
                     MessageBox.Show(Properties.Resources.LoginErrorText);
                     return;
                 }
-                if (!cuenta.Confirmada) {
+                if (!cuenta.Verified) {
                     MessageBox.Show(Properties.Resources.AccountNotConfirmedErrorText);
                     return;
                 }
