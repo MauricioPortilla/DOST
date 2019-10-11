@@ -15,20 +15,20 @@ namespace DOST {
         public static readonly Dictionary<string, string> LANGUAGES = new Dictionary<string, string>() {
             { "Español", "es-MX" }, { "English", "en-US" }
         };
-        private static Cuenta cuenta;
-        public static Cuenta Cuenta {
-            get { return cuenta; }
-            set { cuenta = value; }
+        private static Account account;
+        public static Account Account {
+            get { return account; }
+            set { account = value; }
         }
-        private static LoginWindow login;
-        public static LoginWindow Login {
-            get { return login; }
-            set { login = value; }
+        private static LoginWindow loginWindow;
+        public static LoginWindow LoginWindow {
+            get { return loginWindow; }
+            set { loginWindow = value; }
         }
-        private static MainMenuWindow mainMenu;
-        public static MainMenuWindow MainMenu {
-            get { return mainMenu; }
-            set { mainMenu = value; }
+        private static MainMenuWindow mainMenuWindow;
+        public static MainMenuWindow MainMenuWindow {
+            get { return mainMenuWindow; }
+            set { mainMenuWindow = value; }
         }
         private static GameLobbyWindow gameLobbyWindow;
         public static GameLobbyWindow GameLobbyWindow {
@@ -40,68 +40,68 @@ namespace DOST {
             get { return gameWindow; }
             set { gameWindow = value; }
         }
-        private static readonly ObservableCollection<Partida> gamesList = new ObservableCollection<Partida>();
-        public static ObservableCollection<Partida> GamesList {
+        private static readonly ObservableCollection<Game> gamesList = new ObservableCollection<Game>();
+        public static ObservableCollection<Game> GamesList {
             get { return gamesList; }
         }
         private static readonly ObservableCollection<GameConfigurationWindow.GameCategoryItem> categoriesList = new ObservableCollection<GameConfigurationWindow.GameCategoryItem>() {
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Nombre", GameCategory = new CategoriaPartida(0, null, "Nombre") },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Apellido", GameCategory = new CategoriaPartida(0, null, "Apellido") },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Color", GameCategory = new CategoriaPartida(0, null, "Color") },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Animal", GameCategory = new CategoriaPartida(0, null, "Animal") },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Fruta", GameCategory = new CategoriaPartida(0, null, "Fruta") }
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Nombre", GameCategory = new GameCategory(0, null, "Nombre") },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Apellido", GameCategory = new GameCategory(0, null, "Apellido") },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Color", GameCategory = new GameCategory(0, null, "Color") },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Animal", GameCategory = new GameCategory(0, null, "Animal") },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Fruta", GameCategory = new GameCategory(0, null, "Fruta") }
         };
         public static ObservableCollection<GameConfigurationWindow.GameCategoryItem> CategoriesList {
             get { return categoriesList; }
         }
 
         public static void GetGamesList() {
-            EngineNetwork.EstablishChannel<IPartidaService>((service) => {
-                while (mainMenu != null) {
-                    List<Services.Partida> serviceGamesList = service.GetPartidasList();
+            EngineNetwork.EstablishChannel<IGameService>((service) => {
+                while (mainMenuWindow != null) {
+                    List<Services.Game> serviceGamesList = service.GetGamesList();
                     foreach (var serviceGame in serviceGamesList) {
-                        List<Jugador> jugadores = new List<Jugador>();
-                        Partida partida = new Partida(
+                        List<Player> playersList = new List<Player>();
+                        Game game = new Game(
                             serviceGame.Id,
-                            serviceGame.Ronda,
-                            serviceGame.Fecha,
-                            jugadores
+                            serviceGame.Round,
+                            serviceGame.Date,
+                            playersList
                         );
-                        service.GetJugadoresList(serviceGame.Id).ForEach(
-                            jugador => jugadores.Add(new Jugador(
-                                jugador.Id,
-                                new Cuenta(jugador.Cuenta.Id) {
-                                    Username = jugador.Cuenta.Usuario,
-                                    Password = jugador.Cuenta.Password,
-                                    Email = jugador.Cuenta.Correo,
-                                    Coins = jugador.Cuenta.Monedas,
-                                    CreationDate = jugador.Cuenta.FechaCreacion,
-                                    Verified = jugador.Cuenta.Confirmada,
-                                    ValidationCode = jugador.Cuenta.CodigoValidacion
+                        service.GetPlayersList(serviceGame.Id).ForEach(
+                            playerService => playersList.Add(new Player(
+                                playerService.Id,
+                                new Account(playerService.Account.Id) {
+                                    Username = playerService.Account.Username,
+                                    Password = playerService.Account.Password,
+                                    Email = playerService.Account.Email,
+                                    Coins = playerService.Account.Coins,
+                                    CreationDate = playerService.Account.CreationDate,
+                                    IsVerified = playerService.Account.IsVerified,
+                                    ValidationCode = playerService.Account.ValidationCode
                                 },
-                                partida,
-                                jugador.Puntuacion,
-                                jugador.Anfitrion)
+                                game,
+                                playerService.Score,
+                                playerService.IsHost)
                             )
                         );
-                        var gameCategories = new List<CategoriaPartida>();
-                        service.GetCategoriasList(serviceGame.Id).ForEach(
-                            categoria => gameCategories.Add(new CategoriaPartida(categoria.Id, partida, categoria.Nombre))
+                        var gameCategories = new List<GameCategory>();
+                        service.GetCategoriesList(serviceGame.Id).ForEach(
+                            categoria => gameCategories.Add(new GameCategory(categoria.Id, game, categoria.Name))
                         );
-                        partida.Categorias = gameCategories;
-                        partida.Jugadores = jugadores;
-                        partida.PropertyChanged += Game_PropertyChanged;
-                        if (gamesList.ToList().Exists(game => game.Id == serviceGame.Id)) {
-                            var existentGame = gamesList.ToList().Find(game => game.Id == serviceGame.Id);
-                            existentGame.Jugadores = jugadores;
-                            existentGame.Categorias = gameCategories;
+                        game.Categories = gameCategories;
+                        game.Players = playersList;
+                        game.PropertyChanged += Game_PropertyChanged;
+                        if (gamesList.ToList().Exists(findGame => findGame.Id == serviceGame.Id)) {
+                            var existentGame = gamesList.ToList().Find(findGame => findGame.Id == serviceGame.Id);
+                            existentGame.Players = playersList;
+                            existentGame.Categories = gameCategories;
                             continue;
                         }
                         Application.Current.Dispatcher.Invoke(delegate {
-                            gamesList.Add(partida);
+                            gamesList.Add(game);
                         });
                     }
-                    List<Partida> gamesToRemove = new List<Partida>();
+                    List<Game> gamesToRemove = new List<Game>();
                     foreach (var game in gamesList) {
                         var getGame = serviceGamesList.Find(gameInServiceList => gameInServiceList.Id == game.Id);
                         if (getGame == null) {
@@ -121,7 +121,7 @@ namespace DOST {
 
         static void Game_PropertyChanged(object sender, PropertyChangedEventArgs e) {
             Application.Current.Dispatcher.Invoke(delegate {
-                mainMenu.gamesListView.Items.Refresh();
+                mainMenuWindow.gamesListView.Items.Refresh();
             });
         }
     }

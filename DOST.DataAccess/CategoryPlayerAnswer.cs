@@ -12,15 +12,15 @@ namespace DOST.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class RespuestaCategoriaJugador
+    public partial class CategoryPlayerAnswer
     {
-        public int idrespuesta { get; set; }
-        public int idjugador { get; set; }
-        public int idcategoria { get; set; }
-        public string respuesta { get; set; }
-        public int ronda { get; set; }
+        public int idanswer { get; set; }
+        public int idplayer { get; set; }
+        public int idcategory { get; set; }
+        public string answer { get; set; }
+        public int round { get; set; }
     
-        public virtual CategoriaPartida CategoriaPartida { get; set; }
-        public virtual Jugador Jugador { get; set; }
+        public virtual Player Player { get; set; }
+        public virtual GameCategory GameCategory { get; set; }
     }
 }

@@ -50,10 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CategoriaPartida.cs">
+    <Compile Include="Account.cs">
       <DependentUpon>DOSTModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Cuenta.cs">
+    <Compile Include="CategoryPlayerAnswer.cs">
       <DependentUpon>DOSTModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DOSTModel.Context.cs">
@@ -71,16 +71,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DOSTModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Jugador.cs">
+    <Compile Include="Game.cs">
       <DependentUpon>DOSTModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Partida.cs">
+    <Compile Include="GameCategory.cs">
+      <DependentUpon>DOSTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Player.cs">
       <DependentUpon>DOSTModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RespuestaCategoriaJugador.cs">
-      <DependentUpon>DOSTModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

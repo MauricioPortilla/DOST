@@ -21,8 +21,8 @@ namespace DOST {
     /// </summary>
     public partial class GameLobbyWindow : Window {
         public bool IsClosed { get; private set; } = false;
-        private Partida game;
-        private Jugador player;
+        private Game game;
+        private Player player;
         private List<TextBlock> lobbyPlayersUsernameTextBlocks;
         private List<TextBlock> lobbyPlayersTypeTextBlocks;
         private List<TextBlock> lobbyPlayersRankTextBlocks;
@@ -31,7 +31,7 @@ namespace DOST {
         private ChatServiceClient chatService;
         private int actualNumberOfPlayers = 0;
 
-        public GameLobbyWindow(ref Partida game) {
+        public GameLobbyWindow(ref Game game) {
             InitializeComponent();
             this.game = game;
             lobbyPlayersUsernameTextBlocks = new List<TextBlock>() {
@@ -55,24 +55,24 @@ namespace DOST {
             InstanceContext chatInstance = new InstanceContext(new ChatCallbackHandler(game, chatListBox));
             chatService = new ChatServiceClient(chatInstance);
             while (true) {
-                player = game.Jugadores.Find(player => player.Cuenta.Id == Session.Cuenta.Id);
+                player = game.Players.Find(player => player.Account.Id == Session.Account.Id);
                 if (player != null) {
-                    chatService.EnterChat(game.Id, player.Cuenta.Username);
+                    chatService.EnterChat(game.Id, player.Account.Username);
                     break;
                 }
             }
         }
 
         public class ChatCallbackHandler : IChatServiceCallback {
-            private Partida partida;
+            private Game game;
             private ListBox chatListBox;
             public string LastMessageReceived;
-            public ChatCallbackHandler(Partida partida, ListBox chatListBox) {
-                this.partida = partida;
+            public ChatCallbackHandler(Game game, ListBox chatListBox) {
+                this.game = game;
                 this.chatListBox = chatListBox;
             }
-            public void BroadcastMessage(int idpartida, string username, string message) {
-                if (idpartida == partida.Id) {
+            public void BroadcastMessage(int idgame, string username, string message) {
+                if (idgame == game.Id) {
                     LastMessageReceived = message;
                     chatListBox.Items.Add(new TextBlock() {
                         Text = username + ": " + message
@@ -84,15 +84,15 @@ namespace DOST {
 
         public void LoadPlayersJoinedData() {
             while (!IsClosed) {
-                this.game = Session.GamesList.First(game => game.Id == game.Id);
-                if (actualNumberOfPlayers != game.Jugadores.Count) {
+                this.game = Session.GamesList.First(gameList => gameList.Id == game.Id);
+                if (actualNumberOfPlayers != game.Players.Count) {
                     Application.Current.Dispatcher.Invoke(delegate {
-                        if (game.Jugadores.Count == 0) {
+                        if (game.Players.Count == 0) {
                             return;
                         }
-                        var anfitrion = game.Jugadores.Find(x => x.Cuenta.Id == Session.Cuenta.Id);
-                        if (anfitrion != null) {
-                            if (!anfitrion.Anfitrion) {
+                        var playerInGame = game.Players.Find(player => player.Account.Id == Session.Account.Id);
+                        if (playerInGame != null) {
+                            if (!playerInGame.IsHost) {
                                 startGameButton.Content = Properties.Resources.ReadyButton;
                                 configurationButton.Visibility = Visibility.Hidden;
                             }
@@ -105,23 +105,23 @@ namespace DOST {
                             lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Hidden;
                             lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Hidden;
                         }
-                        for (int index = 0; index < game.Jugadores.Count; index++) {
-                            if (lobbyPlayersUsernameTextBlocks[index].Text == game.Jugadores[index].Cuenta.Username) {
+                        for (int index = 0; index < game.Players.Count; index++) {
+                            if (lobbyPlayersUsernameTextBlocks[index].Text == game.Players[index].Account.Username) {
                                 continue;
                             }
-                            lobbyPlayersUsernameTextBlocks[index].Text = game.Jugadores[index].Cuenta.Username;
-                            lobbyPlayersTypeTextBlocks[index].Text = game.Jugadores[index].Anfitrion ?
+                            lobbyPlayersUsernameTextBlocks[index].Text = game.Players[index].Account.Username;
+                            lobbyPlayersTypeTextBlocks[index].Text = game.Players[index].IsHost ?
                                 Properties.Resources.HostPlayerText : Properties.Resources.PlayerText;
-                            lobbyPlayersRankTextBlocks[index].Text = game.Jugadores[index].GetRank();
+                            lobbyPlayersRankTextBlocks[index].Text = game.Players[index].GetRank();
                             lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Visible;
                             lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Visible;
                         }
-                        if (game.Jugadores.Count == MAX_NUMBER_OF_PLAYERS) {
+                        if (game.Players.Count == MAX_NUMBER_OF_PLAYERS) {
                             lobbyStatusTextBlock.Text = "";
                         } else {
                             lobbyStatusTextBlock.Text = Properties.Resources.WaitingForPlayersText;
                         }
-                        actualNumberOfPlayers = game.Jugadores.Count;
+                        actualNumberOfPlayers = game.Players.Count;
                     });
                 }
                 Thread.Sleep(400);
@@ -129,16 +129,16 @@ namespace DOST {
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e) {
-            if (Session.Cuenta.LeaveGame(game)) {
-                chatService.LeaveChat(game.Id, player.Cuenta.Username);
+            if (Session.Account.LeaveGame(game)) {
+                chatService.LeaveChat(game.Id, player.Account.Username);
                 Session.GameLobbyWindow = null;
-                Session.MainMenu.Show();
+                Session.MainMenuWindow.Show();
                 Close();
             }
         }
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e) {
-            if (game.Jugadores.Count < 2) {
+            if (game.Players.Count < 2) {
                 MessageBox.Show(Properties.Resources.MustHaveAtLeastTwoPlayersErrorText);
                 return;
             }
@@ -158,7 +158,10 @@ namespace DOST {
 
         private void ChatMessageTextBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
-                chatService.BroadcastMessage(game.Id, player.Cuenta.Username, chatMessageTextBox.Text);
+                if (string.IsNullOrWhiteSpace(chatMessageTextBox.Text)) {
+                    return;
+                }
+                chatService.BroadcastMessage(game.Id, player.Account.Username, chatMessageTextBox.Text);
                 chatMessageTextBox.Clear();
             }
         }

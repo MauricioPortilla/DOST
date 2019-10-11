@@ -47,8 +47,8 @@
                             <Setter Property="Foreground" Value="White" />
                         </Style>
                     </GridView.ColumnHeaderContainerStyle>
-                    <GridViewColumn DisplayMemberBinding="{Binding Nombre}" Header="{x:Static p:Resources.GameText}" />
-                    <GridViewColumn DisplayMemberBinding="{Binding NumeroJugadores}" Header="{x:Static p:Resources.NumberOfPlayersText}" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="{x:Static p:Resources.GameText}" />
+                    <GridViewColumn DisplayMemberBinding="{Binding NumberOfPlayers}" Header="{x:Static p:Resources.NumberOfPlayersText}" />
                 </GridView>
             </ListView.View>
         </ListView>

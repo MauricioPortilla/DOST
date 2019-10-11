@@ -22,11 +22,9 @@ namespace DOST {
     /// </summary>
     public partial class MainMenuWindow : Window {
         public bool IsClosed { get; private set; } = false;
-        private ObservableCollection<Partida> gamesList = Session.GamesList;
-        public ObservableCollection<Partida> GamesList {
-            get {
-                return gamesList;
-            }
+        private ObservableCollection<Game> gamesList = Session.GamesList;
+        public ObservableCollection<Game> GamesList {
+            get { return gamesList; }
         }
         private bool didCreateGame = false;
         private int lastIdGameCreated = 0;
@@ -34,8 +32,8 @@ namespace DOST {
         public MainMenuWindow() {
             DataContext = this;
             InitializeComponent();
-            usernameTextBlock.Text = Session.Cuenta.Username;
-            coinsTextBlock.Text = Session.Cuenta.Coins.ToString();
+            usernameTextBlock.Text = Session.Account.Username;
+            coinsTextBlock.Text = Session.Account.Coins.ToString();
             // rankTextBlock.Text = Session.Cuenta.GetRank();
             GamesList.CollectionChanged += GamesList_CollectionChanged;
             new Thread(Session.GetGamesList).Start();
@@ -50,8 +48,8 @@ namespace DOST {
             if (gamesListView.SelectedItem == null) {
                 return;
             }
-            var selectedGame = (Partida) gamesListView.SelectedItem;
-            if (Session.Cuenta.JoinGame(selectedGame, false)) {
+            var selectedGame = (Game) gamesListView.SelectedItem;
+            if (Session.Account.JoinGame(selectedGame, false)) {
                 Session.GameLobbyWindow = new GameLobbyWindow(ref selectedGame);
                 Session.GameLobbyWindow.Show();
                 Hide();
@@ -63,20 +61,20 @@ namespace DOST {
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e) {
-            Session.Cuenta = null;
-            Session.MainMenu = null;
-            Session.Login.Show();
+            Session.Account = null;
+            Session.MainMenuWindow = null;
+            Session.LoginWindow.Show();
             Close();
         }
 
         private void CreateGameButton_Click(object sender, RoutedEventArgs e) {
-            int idpartida = 0;
-            if (!Session.Cuenta.CreateGame(out idpartida)) {
+            int idgame = 0;
+            if (!Session.Account.CreateGame(out idgame)) {
                 MessageBox.Show(Properties.Resources.CouldntCreateGameErrorText);
                 return;
             }
             didCreateGame = true;
-            lastIdGameCreated = idpartida;
+            lastIdGameCreated = idgame;
         }
 
         private void JoinGameIfNeeded() {
@@ -87,13 +85,13 @@ namespace DOST {
                     } else if (lastIdGameCreated == 0) {
                         return;
                     }
-                    Partida gameCreated = Session.GamesList.ToList().Find(game => game.Id == lastIdGameCreated);
+                    Game gameCreated = Session.GamesList.ToList().Find(game => game.Id == lastIdGameCreated);
                     if (gameCreated == null) {
                         return;
                     }
                     didCreateGame = false;
                     lastIdGameCreated = 0;
-                    if (Session.Cuenta.JoinGame(gameCreated, true)) {
+                    if (Session.Account.JoinGame(gameCreated, true)) {
                         Session.GameLobbyWindow = new GameLobbyWindow(ref gameCreated);
                         Session.GameLobbyWindow.Show();
                         new GameConfigurationWindow(ref gameCreated).Show();

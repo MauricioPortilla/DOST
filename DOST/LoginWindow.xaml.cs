@@ -31,22 +31,22 @@ namespace DOST {
                 MessageBox.Show(Properties.Resources.EmptyFieldsErrorText);
                 return;
             }
-            Cuenta cuenta = new Cuenta(usernameTextBox.Text, passwordPasswordBox.Password);
-            if (!cuenta.Login()) {
-                if (cuenta.Id == 0) {
+            Account account = new Account(usernameTextBox.Text, passwordPasswordBox.Password);
+            if (!account.Login()) {
+                if (account.Id == 0) {
                     MessageBox.Show(Properties.Resources.LoginErrorText);
                     return;
                 }
-                if (!cuenta.Verified) {
+                if (!account.IsVerified) {
                     MessageBox.Show(Properties.Resources.AccountNotConfirmedErrorText);
                     return;
                 }
             }
             passwordPasswordBox.Password = "";
-            Session.Cuenta = cuenta;
-            Session.MainMenu = new MainMenuWindow();
-            Session.Login = this;
-            Session.MainMenu.Show();
+            Session.Account = account;
+            Session.MainMenuWindow = new MainMenuWindow();
+            Session.LoginWindow = this;
+            Session.MainMenuWindow.Show();
             Hide();
         }
 

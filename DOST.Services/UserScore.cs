@@ -7,17 +7,17 @@ using System.ServiceModel;
 
 namespace DOST.Services {
     public class UserScore {
-        public int Posicion;
-        public string Usuario;
-        public int Puntuacion;
+        public int Ranking;
+        public string Username;
+        public int Score;
 
         public UserScore() {
         }
 
-        public UserScore(int posicion, string usuario, int puntuacion) {
-            Posicion = posicion;
-            Usuario = usuario;
-            Puntuacion = puntuacion;
+        public UserScore(int ranking, string username, int score) {
+            Ranking = ranking;
+            Username = username;
+            Score = score;
         }
     }
 }

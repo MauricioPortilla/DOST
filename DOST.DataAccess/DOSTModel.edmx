@@ -6,138 +6,138 @@
     <edmx:StorageModels>
     <Schema Namespace="DostDB.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="DostDBStoreContainer">
-    <EntitySet Name="CategoriaPartida" EntityType="DostDB.Store.CategoriaPartida" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Cuenta" EntityType="DostDB.Store.Cuenta" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Jugador" EntityType="DostDB.Store.Jugador" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Partida" EntityType="DostDB.Store.Partida" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="RespuestaCategoriaJugador" EntityType="DostDB.Store.RespuestaCategoriaJugador" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="FK_respuestacategoria_jugador_categoria_partida" Association="DostDB.Store.FK_respuestacategoria_jugador_categoria_partida">
-      <End Role="CategoriaPartida" EntitySet="CategoriaPartida" />
-      <End Role="RespuestaCategoriaJugador" EntitySet="RespuestaCategoriaJugador" />
+    <EntitySet Name="GameCategory" EntityType="DostDB.Store.GameCategory" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Account" EntityType="DostDB.Store.Account" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Player" EntityType="DostDB.Store.Player" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Game" EntityType="DostDB.Store.Game" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CategoryPlayerAnswer" EntityType="DostDB.Store.CategoryPlayerAnswer" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="AccountPlayer" Association="DostDB.Store.AccountPlayer">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="Player" EntitySet="Player" />
     </AssociationSet>
-    <AssociationSet Name="FK__jugador__idcuent__3B75D760" Association="DostDB.Store.FK__jugador__idcuent__3B75D760">
-      <End Role="Cuenta" EntitySet="Cuenta" />
-      <End Role="Jugador" EntitySet="Jugador" />
+    <AssociationSet Name="GamePlayer" Association="DostDB.Store.GamePlayer">
+      <End Role="Game" EntitySet="Game" />
+      <End Role="Player" EntitySet="Player" />
     </AssociationSet>
-    <AssociationSet Name="FK__jugador__idparti__3C69FB99" Association="DostDB.Store.FK__jugador__idparti__3C69FB99">
-      <End Role="Partida" EntitySet="Partida" />
-      <End Role="Jugador" EntitySet="Jugador" />
+    <AssociationSet Name="PlayerCategoryPlayerAnswer" Association="DostDB.Store.PlayerCategoryPlayerAnswer">
+      <End Role="Player" EntitySet="Player" />
+      <End Role="CategoryPlayerAnswer" EntitySet="CategoryPlayerAnswer" />
     </AssociationSet>
-    <AssociationSet Name="FK__respuesta__idjug__412EB0B6" Association="DostDB.Store.FK__respuesta__idjug__412EB0B6">
-      <End Role="Jugador" EntitySet="Jugador" />
-      <End Role="RespuestaCategoriaJugador" EntitySet="RespuestaCategoriaJugador" />
+    <AssociationSet Name="GameCategoryCategoryPlayerAnswer" Association="DostDB.Store.GameCategoryCategoryPlayerAnswer">
+      <End Role="GameCategory" EntitySet="GameCategory" />
+      <End Role="CategoryPlayerAnswer" EntitySet="CategoryPlayerAnswer" />
     </AssociationSet>
-    <AssociationSet Name="PartidaCategoriaPartida" Association="DostDB.Store.PartidaCategoriaPartida">
-      <End Role="Partida" EntitySet="Partida" />
-      <End Role="CategoriaPartida" EntitySet="CategoriaPartida" />
+    <AssociationSet Name="GameGameCategory" Association="DostDB.Store.GameGameCategory">
+      <End Role="Game" EntitySet="Game" />
+      <End Role="GameCategory" EntitySet="GameCategory" />
     </AssociationSet>
   </EntityContainer>
-  <EntityType Name="CategoriaPartida">
+  <EntityType Name="GameCategory">
     <Key>
-      <PropertyRef Name="idcategoria" />
+      <PropertyRef Name="idcategory" />
     </Key>
-    <Property Name="idcategoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="idpartida" Type="int" Nullable="false" />
-    <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="45" />
+    <Property Name="idcategory" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idgame" Type="int" Nullable="false" />
+    <Property Name="name" Type="varchar" Nullable="false" MaxLength="45" />
   </EntityType>
-  <EntityType Name="Cuenta">
+  <EntityType Name="Account">
     <Key>
-      <PropertyRef Name="idcuenta" />
+      <PropertyRef Name="idaccount" />
     </Key>
-    <Property Name="idcuenta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="usuario" Type="varchar" Nullable="false" MaxLength="15" />
+    <Property Name="idaccount" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="varchar" Nullable="false" MaxLength="15" />
     <Property Name="password" Type="varchar" Nullable="false" MaxLength="64" />
-    <Property Name="correo" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="confirmada" Type="int" Nullable="false" />
-    <Property Name="monedas" Type="int" Nullable="false" />
-    <Property Name="fechaCreacion" Type="datetime" Nullable="false" />
-    <Property Name="codigoValidacion" Type="varchar" Nullable="false" MaxLength="64" />
+    <Property Name="email" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="isVerified" Type="int" Nullable="false" />
+    <Property Name="coins" Type="int" Nullable="false" />
+    <Property Name="creationDate" Type="datetime" Nullable="false" />
+    <Property Name="validationCode" Type="varchar" Nullable="false" MaxLength="64" />
   </EntityType>
-  <EntityType Name="Jugador">
+  <EntityType Name="Player">
     <Key>
-      <PropertyRef Name="idjugador" />
+      <PropertyRef Name="idplayer" />
     </Key>
-    <Property Name="idjugador" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="idcuenta" Type="int" Nullable="false" />
-    <Property Name="idpartida" Type="int" Nullable="false" />
-    <Property Name="puntuacion" Type="int" Nullable="false" />
-    <Property Name="anfitrion" Type="int" Nullable="false" />
+    <Property Name="idplayer" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idaccount" Type="int" Nullable="false" />
+    <Property Name="idgame" Type="int" Nullable="false" />
+    <Property Name="score" Type="int" Nullable="false" />
+    <Property Name="isHost" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="Partida">
+  <EntityType Name="Game">
     <Key>
-      <PropertyRef Name="idpartida" />
+      <PropertyRef Name="idgame" />
     </Key>
-    <Property Name="idpartida" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ronda" Type="int" Nullable="false" />
-    <Property Name="fecha" Type="datetime" Nullable="false" />
+    <Property Name="idgame" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="round" Type="int" Nullable="false" />
+    <Property Name="date" Type="datetime" Nullable="false" />
   </EntityType>
-  <EntityType Name="RespuestaCategoriaJugador">
+  <EntityType Name="CategoryPlayerAnswer">
     <Key>
-      <PropertyRef Name="idrespuesta" />
+      <PropertyRef Name="idanswer" />
     </Key>
-    <Property Name="idrespuesta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="idjugador" Type="int" Nullable="false" />
-    <Property Name="idcategoria" Type="int" Nullable="false" />
-    <Property Name="respuesta" Type="varchar" Nullable="false" MaxLength="25" />
-    <Property Name="ronda" Type="int" Nullable="false" />
+    <Property Name="idanswer" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idplayer" Type="int" Nullable="false" />
+    <Property Name="idcategory" Type="int" Nullable="false" />
+    <Property Name="answer" Type="varchar" Nullable="false" MaxLength="25" />
+    <Property Name="round" Type="int" Nullable="false" />
   </EntityType>
-  <Association Name="FK_respuestacategoria_jugador_categoria_partida">
-    <End Role="CategoriaPartida" Type="DostDB.Store.CategoriaPartida" Multiplicity="1" />
-    <End Role="RespuestaCategoriaJugador" Type="DostDB.Store.RespuestaCategoriaJugador" Multiplicity="*" />
+  <Association Name="AccountPlayer">
+    <End Role="Account" Type="DostDB.Store.Account" Multiplicity="1" />
+    <End Role="Player" Type="DostDB.Store.Player" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="CategoriaPartida">
-        <PropertyRef Name="idcategoria" />
+      <Principal Role="Account">
+        <PropertyRef Name="idaccount" />
       </Principal>
-      <Dependent Role="RespuestaCategoriaJugador">
-        <PropertyRef Name="idcategoria" />
+      <Dependent Role="Player">
+        <PropertyRef Name="idaccount" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__jugador__idcuent__3B75D760">
-    <End Role="Cuenta" Type="DostDB.Store.Cuenta" Multiplicity="1" />
-    <End Role="Jugador" Type="DostDB.Store.Jugador" Multiplicity="*" />
+  <Association Name="GamePlayer">
+    <End Role="Game" Type="DostDB.Store.Game" Multiplicity="1" />
+    <End Role="Player" Type="DostDB.Store.Player" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Cuenta">
-        <PropertyRef Name="idcuenta" />
+      <Principal Role="Game">
+        <PropertyRef Name="idgame" />
       </Principal>
-      <Dependent Role="Jugador">
-        <PropertyRef Name="idcuenta" />
+      <Dependent Role="Player">
+        <PropertyRef Name="idgame" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__jugador__idparti__3C69FB99">
-    <End Role="Partida" Type="DostDB.Store.Partida" Multiplicity="1" />
-    <End Role="Jugador" Type="DostDB.Store.Jugador" Multiplicity="*" />
+  <Association Name="PlayerCategoryPlayerAnswer">
+    <End Role="Player" Type="DostDB.Store.Player" Multiplicity="1" />
+    <End Role="CategoryPlayerAnswer" Type="DostDB.Store.CategoryPlayerAnswer" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Partida">
-        <PropertyRef Name="idpartida" />
+      <Principal Role="Player">
+        <PropertyRef Name="idplayer" />
       </Principal>
-      <Dependent Role="Jugador">
-        <PropertyRef Name="idpartida" />
+      <Dependent Role="CategoryPlayerAnswer">
+        <PropertyRef Name="idplayer" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__respuesta__idjug__412EB0B6">
-    <End Role="Jugador" Type="DostDB.Store.Jugador" Multiplicity="1" />
-    <End Role="RespuestaCategoriaJugador" Type="DostDB.Store.RespuestaCategoriaJugador" Multiplicity="*" />
+  <Association Name="GameCategoryCategoryPlayerAnswer">
+    <End Role="GameCategory" Type="DostDB.Store.GameCategory" Multiplicity="1" />
+    <End Role="CategoryPlayerAnswer" Type="DostDB.Store.CategoryPlayerAnswer" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Jugador">
-        <PropertyRef Name="idjugador" />
+      <Principal Role="GameCategory">
+        <PropertyRef Name="idcategory" />
       </Principal>
-      <Dependent Role="RespuestaCategoriaJugador">
-        <PropertyRef Name="idjugador" />
+      <Dependent Role="CategoryPlayerAnswer">
+        <PropertyRef Name="idcategory" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="PartidaCategoriaPartida">
-    <End Role="Partida" Type="DostDB.Store.Partida" Multiplicity="1" />
-    <End Role="CategoriaPartida" Type="DostDB.Store.CategoriaPartida" Multiplicity="*" />
+  <Association Name="GameGameCategory">
+    <End Role="Game" Type="DostDB.Store.Game" Multiplicity="1" />
+    <End Role="GameCategory" Type="DostDB.Store.GameCategory" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Partida">
-        <PropertyRef Name="idpartida" />
+      <Principal Role="Game">
+        <PropertyRef Name="idgame" />
       </Principal>
-      <Dependent Role="CategoriaPartida">
-        <PropertyRef Name="idpartida" />
+      <Dependent Role="GameCategory">
+        <PropertyRef Name="idgame" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -145,149 +145,149 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DostDB" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="CategoriaPartida">
+        <EntityType Name="GameCategory">
           <Key>
-            <PropertyRef Name="idcategoria" />
+            <PropertyRef Name="idcategory" />
           </Key>
-          <Property Name="idcategoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="idpartida" Type="Int32" Nullable="false" />
-          <Property Name="nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="RespuestaCategoriaJugador" Relationship="Self.FK_respuestacategoria_jugador_categoria_partida" FromRole="CategoriaPartida" ToRole="RespuestaCategoriaJugador" />
-          <NavigationProperty Name="Partida" Relationship="DostDB.PartidaCategoriaPartida" FromRole="CategoriaPartida" ToRole="Partida" />
+          <Property Name="idcategory" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idgame" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CategoryPlayerAnswer" Relationship="DostDB.GameCategoryCategoryPlayerAnswer" FromRole="GameCategory" ToRole="CategoryPlayerAnswer" />
+          <NavigationProperty Name="Game" Relationship="DostDB.GameGameCategory" FromRole="GameCategory" ToRole="Game" />
         </EntityType>
-        <EntityType Name="Cuenta">
+        <EntityType Name="Account">
           <Key>
-            <PropertyRef Name="idcuenta" />
+            <PropertyRef Name="idaccount" />
           </Key>
-          <Property Name="idcuenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="usuario" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idaccount" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="password" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="confirmada" Type="Int32" Nullable="false" />
-          <Property Name="monedas" Type="Int32" Nullable="false" />
-          <Property Name="fechaCreacion" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="codigoValidacion" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Jugador" Relationship="Self.FK__jugador__idcuent__3B75D760" FromRole="Cuenta" ToRole="Jugador" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isVerified" Type="Int32" Nullable="false" />
+          <Property Name="coins" Type="Int32" Nullable="false" />
+          <Property Name="creationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="validationCode" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Player" Relationship="DostDB.AccountPlayer" FromRole="Account" ToRole="Player" />
         </EntityType>
-        <EntityType Name="Jugador">
+        <EntityType Name="Player">
           <Key>
-            <PropertyRef Name="idjugador" />
+            <PropertyRef Name="idplayer" />
           </Key>
-          <Property Name="idjugador" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="idcuenta" Type="Int32" Nullable="false" />
-          <Property Name="idpartida" Type="Int32" Nullable="false" />
-          <Property Name="puntuacion" Type="Int32" Nullable="false" />
-          <Property Name="anfitrion" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Cuenta" Relationship="Self.FK__jugador__idcuent__3B75D760" FromRole="Jugador" ToRole="Cuenta" />
-          <NavigationProperty Name="Partida" Relationship="Self.FK__jugador__idparti__3C69FB99" FromRole="Jugador" ToRole="Partida" />
-          <NavigationProperty Name="RespuestaCategoriaJugador" Relationship="Self.FK__respuesta__idjug__412EB0B6" FromRole="Jugador" ToRole="RespuestaCategoriaJugador" />
+          <Property Name="idplayer" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idaccount" Type="Int32" Nullable="false" />
+          <Property Name="idgame" Type="Int32" Nullable="false" />
+          <Property Name="score" Type="Int32" Nullable="false" />
+          <Property Name="isHost" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="DostDB.AccountPlayer" FromRole="Player" ToRole="Account" />
+          <NavigationProperty Name="Game" Relationship="DostDB.GamePlayer" FromRole="Player" ToRole="Game" />
+          <NavigationProperty Name="CategoryPlayerAnswer" Relationship="DostDB.PlayerCategoryPlayerAnswer" FromRole="Player" ToRole="CategoryPlayerAnswer" />
         </EntityType>
-        <EntityType Name="Partida">
+        <EntityType Name="Game">
           <Key>
-            <PropertyRef Name="idpartida" />
+            <PropertyRef Name="idgame" />
           </Key>
-          <Property Name="idpartida" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ronda" Type="Int32" Nullable="false" />
-          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Jugador" Relationship="Self.FK__jugador__idparti__3C69FB99" FromRole="Partida" ToRole="Jugador" />
-          <NavigationProperty Name="CategoriaPartida" Relationship="DostDB.PartidaCategoriaPartida" FromRole="Partida" ToRole="CategoriaPartida" />
+          <Property Name="idgame" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="round" Type="Int32" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Player" Relationship="DostDB.GamePlayer" FromRole="Game" ToRole="Player" />
+          <NavigationProperty Name="GameCategory" Relationship="DostDB.GameGameCategory" FromRole="Game" ToRole="GameCategory" />
         </EntityType>
-        <EntityType Name="RespuestaCategoriaJugador">
+        <EntityType Name="CategoryPlayerAnswer">
           <Key>
-            <PropertyRef Name="idrespuesta" />
+            <PropertyRef Name="idanswer" />
           </Key>
-          <Property Name="idrespuesta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="idjugador" Type="Int32" Nullable="false" />
-          <Property Name="idcategoria" Type="Int32" Nullable="false" />
-          <Property Name="respuesta" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ronda" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CategoriaPartida" Relationship="Self.FK_respuestacategoria_jugador_categoria_partida" FromRole="RespuestaCategoriaJugador" ToRole="CategoriaPartida" />
-          <NavigationProperty Name="Jugador" Relationship="Self.FK__respuesta__idjug__412EB0B6" FromRole="RespuestaCategoriaJugador" ToRole="Jugador" />
+          <Property Name="idanswer" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idplayer" Type="Int32" Nullable="false" />
+          <Property Name="idcategory" Type="Int32" Nullable="false" />
+          <Property Name="answer" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="round" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Player" Relationship="DostDB.PlayerCategoryPlayerAnswer" FromRole="CategoryPlayerAnswer" ToRole="Player" />
+          <NavigationProperty Name="GameCategory" Relationship="DostDB.GameCategoryCategoryPlayerAnswer" FromRole="CategoryPlayerAnswer" ToRole="GameCategory" />
         </EntityType>
-        <Association Name="FK_respuestacategoria_jugador_categoria_partida">
-          <End Role="CategoriaPartida" Type="Self.CategoriaPartida" Multiplicity="1" />
-          <End Role="RespuestaCategoriaJugador" Type="Self.RespuestaCategoriaJugador" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CategoriaPartida">
-              <PropertyRef Name="idcategoria" />
-            </Principal>
-            <Dependent Role="RespuestaCategoriaJugador">
-              <PropertyRef Name="idcategoria" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__jugador__idcuent__3B75D760">
-          <End Role="Cuenta" Type="Self.Cuenta" Multiplicity="1" />
-          <End Role="Jugador" Type="Self.Jugador" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cuenta">
-              <PropertyRef Name="idcuenta" />
-            </Principal>
-            <Dependent Role="Jugador">
-              <PropertyRef Name="idcuenta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__jugador__idparti__3C69FB99">
-          <End Role="Partida" Type="Self.Partida" Multiplicity="1" />
-          <End Role="Jugador" Type="Self.Jugador" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Partida">
-              <PropertyRef Name="idpartida" />
-            </Principal>
-            <Dependent Role="Jugador">
-              <PropertyRef Name="idpartida" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__respuesta__idjug__412EB0B6">
-          <End Role="Jugador" Type="Self.Jugador" Multiplicity="1" />
-          <End Role="RespuestaCategoriaJugador" Type="Self.RespuestaCategoriaJugador" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Jugador">
-              <PropertyRef Name="idjugador" />
-            </Principal>
-            <Dependent Role="RespuestaCategoriaJugador">
-              <PropertyRef Name="idjugador" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="DostDatabase" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="CategoriaPartida" EntityType="Self.CategoriaPartida" />
-          <EntitySet Name="Cuenta" EntityType="Self.Cuenta" />
-          <EntitySet Name="Jugador" EntityType="Self.Jugador" />
-          <EntitySet Name="Partida" EntityType="Self.Partida" />
-          <EntitySet Name="RespuestaCategoriaJugador" EntityType="Self.RespuestaCategoriaJugador" />
-          <AssociationSet Name="FK_respuestacategoria_jugador_categoria_partida" Association="Self.FK_respuestacategoria_jugador_categoria_partida">
-            <End Role="CategoriaPartida" EntitySet="CategoriaPartida" />
-            <End Role="RespuestaCategoriaJugador" EntitySet="RespuestaCategoriaJugador" />
+          <EntitySet Name="GameCategory" EntityType="DostDB.GameCategory" />
+          <EntitySet Name="Account" EntityType="DostDB.Account" />
+          <EntitySet Name="Player" EntityType="DostDB.Player" />
+          <EntitySet Name="Game" EntityType="DostDB.Game" />
+          <EntitySet Name="CategoryPlayerAnswer" EntityType="DostDB.CategoryPlayerAnswer" />
+          <AssociationSet Name="AccountPlayer" Association="DostDB.AccountPlayer">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Player" EntitySet="Player" />
           </AssociationSet>
-          <AssociationSet Name="FK__jugador__idcuent__3B75D760" Association="Self.FK__jugador__idcuent__3B75D760">
-            <End Role="Cuenta" EntitySet="Cuenta" />
-            <End Role="Jugador" EntitySet="Jugador" />
+          <AssociationSet Name="GamePlayer" Association="DostDB.GamePlayer">
+            <End Role="Game" EntitySet="Game" />
+            <End Role="Player" EntitySet="Player" />
           </AssociationSet>
-          <AssociationSet Name="FK__jugador__idparti__3C69FB99" Association="Self.FK__jugador__idparti__3C69FB99">
-            <End Role="Partida" EntitySet="Partida" />
-            <End Role="Jugador" EntitySet="Jugador" />
+          <AssociationSet Name="PlayerCategoryPlayerAnswer" Association="DostDB.PlayerCategoryPlayerAnswer">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="CategoryPlayerAnswer" EntitySet="CategoryPlayerAnswer" />
           </AssociationSet>
-          <AssociationSet Name="FK__respuesta__idjug__412EB0B6" Association="Self.FK__respuesta__idjug__412EB0B6">
-            <End Role="Jugador" EntitySet="Jugador" />
-            <End Role="RespuestaCategoriaJugador" EntitySet="RespuestaCategoriaJugador" />
+          <AssociationSet Name="GameCategoryCategoryPlayerAnswer" Association="DostDB.GameCategoryCategoryPlayerAnswer">
+            <End Role="GameCategory" EntitySet="GameCategory" />
+            <End Role="CategoryPlayerAnswer" EntitySet="CategoryPlayerAnswer" />
           </AssociationSet>
-          <AssociationSet Name="PartidaCategoriaPartida" Association="DostDB.PartidaCategoriaPartida">
-            <End Role="Partida" EntitySet="Partida" />
-            <End Role="CategoriaPartida" EntitySet="CategoriaPartida" />
+          <AssociationSet Name="GameGameCategory" Association="DostDB.GameGameCategory">
+            <End Role="Game" EntitySet="Game" />
+            <End Role="GameCategory" EntitySet="GameCategory" />
           </AssociationSet>
         </EntityContainer>
-        <Association Name="PartidaCategoriaPartida">
-          <End Type="DostDB.Partida" Role="Partida" Multiplicity="1" />
-          <End Type="DostDB.CategoriaPartida" Role="CategoriaPartida" Multiplicity="*" />
+        <Association Name="AccountPlayer">
+          <End Type="DostDB.Account" Role="Account" Multiplicity="1" />
+          <End Type="DostDB.Player" Role="Player" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Partida">
-              <PropertyRef Name="idpartida" />
+            <Principal Role="Account">
+              <PropertyRef Name="idaccount" />
             </Principal>
-            <Dependent Role="CategoriaPartida">
-              <PropertyRef Name="idpartida" />
+            <Dependent Role="Player">
+              <PropertyRef Name="idaccount" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GamePlayer">
+          <End Type="DostDB.Game" Role="Game" Multiplicity="1" />
+          <End Type="DostDB.Player" Role="Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="idgame" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="idgame" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlayerCategoryPlayerAnswer">
+          <End Type="DostDB.Player" Role="Player" Multiplicity="1" />
+          <End Type="DostDB.CategoryPlayerAnswer" Role="CategoryPlayerAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="idplayer" />
+            </Principal>
+            <Dependent Role="CategoryPlayerAnswer">
+              <PropertyRef Name="idplayer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GameCategoryCategoryPlayerAnswer">
+          <End Type="DostDB.GameCategory" Role="GameCategory" Multiplicity="1" />
+          <End Type="DostDB.CategoryPlayerAnswer" Role="CategoryPlayerAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameCategory">
+              <PropertyRef Name="idcategory" />
+            </Principal>
+            <Dependent Role="CategoryPlayerAnswer">
+              <PropertyRef Name="idcategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GameGameCategory">
+          <End Type="DostDB.Game" Role="Game" Multiplicity="1" />
+          <End Type="DostDB.GameCategory" Role="GameCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="idgame" />
+            </Principal>
+            <Dependent Role="GameCategory">
+              <PropertyRef Name="idgame" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -297,57 +297,57 @@
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="DostDBStoreContainer" CdmEntityContainer="DostDatabase">
-    <EntitySetMapping Name="CategoriaPartida">
-      <EntityTypeMapping TypeName="IsTypeOf(DostDB.CategoriaPartida)">
-        <MappingFragment StoreEntitySet="CategoriaPartida">
-          <ScalarProperty Name="idcategoria" ColumnName="idcategoria" />
-          <ScalarProperty Name="idpartida" ColumnName="idpartida" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
+    <EntitySetMapping Name="GameCategory">
+      <EntityTypeMapping TypeName="IsTypeOf(DostDB.GameCategory)">
+        <MappingFragment StoreEntitySet="GameCategory">
+          <ScalarProperty Name="idcategory" ColumnName="idcategory" />
+          <ScalarProperty Name="idgame" ColumnName="idgame" />
+          <ScalarProperty Name="name" ColumnName="name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Cuenta">
-      <EntityTypeMapping TypeName="IsTypeOf(DostDB.Cuenta)">
-        <MappingFragment StoreEntitySet="Cuenta">
-          <ScalarProperty Name="idcuenta" ColumnName="idcuenta" />
-          <ScalarProperty Name="usuario" ColumnName="usuario" />
+    <EntitySetMapping Name="Account">
+      <EntityTypeMapping TypeName="IsTypeOf(DostDB.Account)">
+        <MappingFragment StoreEntitySet="Account">
+          <ScalarProperty Name="idaccount" ColumnName="idaccount" />
+          <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="password" ColumnName="password" />
-          <ScalarProperty Name="correo" ColumnName="correo" />
-          <ScalarProperty Name="confirmada" ColumnName="confirmada" />
-          <ScalarProperty Name="monedas" ColumnName="monedas" />
-          <ScalarProperty Name="fechaCreacion" ColumnName="fechaCreacion" />
-          <ScalarProperty Name="codigoValidacion" ColumnName="codigoValidacion" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="isVerified" ColumnName="isVerified" />
+          <ScalarProperty Name="coins" ColumnName="coins" />
+          <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+          <ScalarProperty Name="validationCode" ColumnName="validationCode" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Jugador">
-      <EntityTypeMapping TypeName="IsTypeOf(DostDB.Jugador)">
-        <MappingFragment StoreEntitySet="Jugador">
-          <ScalarProperty Name="idjugador" ColumnName="idjugador" />
-          <ScalarProperty Name="idcuenta" ColumnName="idcuenta" />
-          <ScalarProperty Name="idpartida" ColumnName="idpartida" />
-          <ScalarProperty Name="puntuacion" ColumnName="puntuacion" />
-          <ScalarProperty Name="anfitrion" ColumnName="anfitrion" />
+    <EntitySetMapping Name="Player">
+      <EntityTypeMapping TypeName="IsTypeOf(DostDB.Player)">
+        <MappingFragment StoreEntitySet="Player">
+          <ScalarProperty Name="idplayer" ColumnName="idplayer" />
+          <ScalarProperty Name="idaccount" ColumnName="idaccount" />
+          <ScalarProperty Name="idgame" ColumnName="idgame" />
+          <ScalarProperty Name="score" ColumnName="score" />
+          <ScalarProperty Name="isHost" ColumnName="isHost" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Partida">
-      <EntityTypeMapping TypeName="IsTypeOf(DostDB.Partida)">
-        <MappingFragment StoreEntitySet="Partida">
-          <ScalarProperty Name="idpartida" ColumnName="idpartida" />
-          <ScalarProperty Name="ronda" ColumnName="ronda" />
-          <ScalarProperty Name="fecha" ColumnName="fecha" />
+    <EntitySetMapping Name="Game">
+      <EntityTypeMapping TypeName="IsTypeOf(DostDB.Game)">
+        <MappingFragment StoreEntitySet="Game">
+          <ScalarProperty Name="idgame" ColumnName="idgame" />
+          <ScalarProperty Name="round" ColumnName="round" />
+          <ScalarProperty Name="date" ColumnName="date" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="RespuestaCategoriaJugador">
-      <EntityTypeMapping TypeName="IsTypeOf(DostDB.RespuestaCategoriaJugador)">
-        <MappingFragment StoreEntitySet="RespuestaCategoriaJugador">
-          <ScalarProperty Name="idrespuesta" ColumnName="idrespuesta" />
-          <ScalarProperty Name="idjugador" ColumnName="idjugador" />
-          <ScalarProperty Name="idcategoria" ColumnName="idcategoria" />
-          <ScalarProperty Name="respuesta" ColumnName="respuesta" />
-          <ScalarProperty Name="ronda" ColumnName="ronda" />
+    <EntitySetMapping Name="CategoryPlayerAnswer">
+      <EntityTypeMapping TypeName="IsTypeOf(DostDB.CategoryPlayerAnswer)">
+        <MappingFragment StoreEntitySet="CategoryPlayerAnswer">
+          <ScalarProperty Name="idanswer" ColumnName="idanswer" />
+          <ScalarProperty Name="idplayer" ColumnName="idplayer" />
+          <ScalarProperty Name="idcategory" ColumnName="idcategory" />
+          <ScalarProperty Name="answer" ColumnName="answer" />
+          <ScalarProperty Name="round" ColumnName="round" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

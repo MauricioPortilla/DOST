@@ -67,8 +67,8 @@
     <Compile Include="BestScoresWindow.xaml.cs">
       <DependentUpon>BestScoresWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CategoriaPartida.cs" />
-    <Compile Include="Cuenta.cs" />
+    <Compile Include="GameCategory.cs" />
+    <Compile Include="Account.cs" />
     <Compile Include="GameConfigurationWindow.xaml.cs">
       <DependentUpon>GameConfigurationWindow.xaml</DependentUpon>
     </Compile>
@@ -81,11 +81,11 @@
     <Compile Include="GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Jugador.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="MainMenuWindow.xaml.cs">
       <DependentUpon>MainMenuWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Partida.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

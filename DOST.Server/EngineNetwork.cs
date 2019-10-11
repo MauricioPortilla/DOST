@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace DOST.Server {
     static class EngineNetwork {
         public static readonly Dictionary<string, Uri[]> URIS_SERVICES = new Dictionary<string, Uri[]>() {
-            { "CuentaService", new Uri[] {
-                new Uri("net.tcp://localhost:25618/CuentaService")
+            { "AccountService", new Uri[] {
+                new Uri("net.tcp://localhost:25618/AccountService")
             } },
-            { "PartidaService", new Uri[] {
-                new Uri("net.tcp://localhost:25618/PartidaService")
+            { "GameService", new Uri[] {
+                new Uri("net.tcp://localhost:25618/GameService")
             } },
             { "ChatService", new Uri[] {
                 new Uri("net.tcp://localhost:25618/ChatService")
@@ -22,19 +22,19 @@ namespace DOST.Server {
 
         public static void CreateHosts() {
             try {
-                ServiceHost loginHost = new ServiceHost(typeof(CuentaService));
-                loginHost.AddServiceEndpoint(typeof(ICuentaService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["CuentaService"][0]);
+                ServiceHost loginHost = new ServiceHost(typeof(AccountService));
+                loginHost.AddServiceEndpoint(typeof(IAccountService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["AccountService"][0]);
                 loginHost.Opened += (sender, e) => {
-                    Console.WriteLine("Cuenta service opened.");
+                    Console.WriteLine("Account service opened.");
                 };
                 loginHost.Open();
 
-                ServiceHost partidaHost = new ServiceHost(typeof(PartidaService));
-                partidaHost.AddServiceEndpoint(typeof(IPartidaService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["PartidaService"][0]);
-                partidaHost.Opened += (sender, e) => {
-                    Console.WriteLine("Partida service opened.");
+                ServiceHost gameHost = new ServiceHost(typeof(GameService));
+                gameHost.AddServiceEndpoint(typeof(IGameService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["GameService"][0]);
+                gameHost.Opened += (sender, e) => {
+                    Console.WriteLine("Game service opened.");
                 };
-                partidaHost.Open();
+                gameHost.Open();
 
                 ServiceHost chatHost = new ServiceHost(typeof(ChatService));
                 chatHost.AddServiceEndpoint(typeof(IChatService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["ChatService"][0]);

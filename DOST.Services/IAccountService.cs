@@ -7,17 +7,17 @@ using System.Text;
 
 namespace DOST.Services {
     [ServiceContract]
-    public interface ICuentaService {
+    public interface IAccountService {
         [OperationContract]
-        Cuenta TryLogin(string usuario, string password);
+        Account TryLogin(string username, string password);
 
         [OperationContract]
-        bool SignUp(Cuenta cuenta);
+        bool SignUp(Account account);
 
         [OperationContract]
         List<UserScore> GetBestScores();
 
         [OperationContract]
-        string GetRank(int idcuenta);
+        string GetRank(int idaccount);
     }
 }

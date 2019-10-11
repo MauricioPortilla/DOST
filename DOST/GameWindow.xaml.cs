@@ -17,11 +17,11 @@ namespace DOST {
     /// Lógica de interacción para GameWindow.xaml
     /// </summary>
     public partial class GameWindow : Window {
-        private Partida partida;
-        public GameWindow(ref Partida partida) {
-            Title = Properties.Resources.RoundWindowTitle + partida.Ronda + " - DOST";
+        private Game game;
+        public GameWindow(ref Game game) {
+            Title = Properties.Resources.RoundWindowTitle + game.Round + " - DOST";
             InitializeComponent();
-            this.partida = partida;
+            this.game = game;
         }
     }
 }

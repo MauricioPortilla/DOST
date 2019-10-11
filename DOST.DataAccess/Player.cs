@@ -12,24 +12,23 @@ namespace DOST.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Cuenta
+    public partial class Player
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Cuenta()
+        public Player()
         {
-            this.Jugador = new HashSet<Jugador>();
+            this.CategoryPlayerAnswer = new HashSet<CategoryPlayerAnswer>();
         }
     
-        public int idcuenta { get; set; }
-        public string usuario { get; set; }
-        public string password { get; set; }
-        public string correo { get; set; }
-        public int confirmada { get; set; }
-        public int monedas { get; set; }
-        public System.DateTime fechaCreacion { get; set; }
-        public string codigoValidacion { get; set; }
+        public int idplayer { get; set; }
+        public int idaccount { get; set; }
+        public int idgame { get; set; }
+        public int score { get; set; }
+        public int isHost { get; set; }
     
+        public virtual Account Account { get; set; }
+        public virtual Game Game { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Jugador> Jugador { get; set; }
+        public virtual ICollection<CategoryPlayerAnswer> CategoryPlayerAnswer { get; set; }
     }
 }

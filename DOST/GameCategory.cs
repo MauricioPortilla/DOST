@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DOST {
-    public class CategoriaPartida {
+    public class GameCategory {
         private int id;
         public int Id {
             get { return id; }
             set { id = value; }
         }
-        private Partida game;
-        public Partida Game {
+        private Game game;
+        public Game Game {
             get { return game; }
             set { game = value; }
         }
@@ -22,7 +22,7 @@ namespace DOST {
             set { name = value; }
         }
 
-        public CategoriaPartida(int id, Partida game, string name) {
+        public GameCategory(int id, Game game, string name) {
             this.id = id;
             this.game = game;
             this.name = name;

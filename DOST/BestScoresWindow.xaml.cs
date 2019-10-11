@@ -31,13 +31,13 @@ namespace DOST {
         }
 
         private void LoadScoresList() {
-            EngineNetwork.EstablishChannel<ICuentaService>((service) => {
+            EngineNetwork.EstablishChannel<IAccountService>((service) => {
                 var scoresList = service.GetBestScores();
                 scoresList.ForEach((userScore) => {
                     bestScoresList.Add(new UserScore {
-                        Ranking = userScore.Posicion,
-                        Username = userScore.Usuario,
-                        Score = userScore.Puntuacion
+                        Ranking = userScore.Ranking,
+                        Username = userScore.Username,
+                        Score = userScore.Score
                     });
                 });
                 return true;

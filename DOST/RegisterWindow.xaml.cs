@@ -41,11 +41,11 @@ namespace DOST {
                 MessageBox.Show(Properties.Resources.UnmatchedRegisterFieldsErrorText);
                 return;
             }
-            Cuenta nuevaCuenta = new Cuenta(
+            Account newAccount = new Account(
                 0, usernameTextBox.Text, passwordPasswordBox.Password,
                 emailTextBox.Text, 0, DateTime.Now, false, null
             );
-            if (nuevaCuenta.Register()) {
+            if (newAccount.Register()) {
                 MessageBox.Show(Properties.Resources.AccountRegisteredText);
                 Close();
             } else {

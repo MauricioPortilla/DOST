@@ -5,16 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="331cb663342143dfab4bef4f97b8edea" Name="Diagram1">
-        <EntityTypeShape EntityType="DostDB.CategoriaPartida" Width="1.5" PointX="7.125" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DostDB.Cuenta" Width="1.5" PointX="4.875" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DostDB.Jugador" Width="1.5" PointX="7.125" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DostDB.Partida" Width="1.5" PointX="4.875" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DostDB.RespuestaCategoriaJugador" Width="1.5" PointX="9.375" PointY="0.875" IsExpanded="true" />
-        <AssociationConnector Association="DostDB.FK_respuestacategoria_jugador_categoria_partida" ManuallyRouted="false" />
-        <AssociationConnector Association="DostDB.FK__jugador__idcuent__3B75D760" ManuallyRouted="false" />
-        <AssociationConnector Association="DostDB.FK__jugador__idparti__3C69FB99" ManuallyRouted="false" />
-        <AssociationConnector Association="DostDB.FK__respuesta__idjug__412EB0B6" ManuallyRouted="false" />
-        <AssociationConnector Association="DostDB.PartidaCategoriaPartida" />
+        <EntityTypeShape EntityType="DostDB.GameCategory" Width="1.5" PointX="7.125" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DostDB.Account" Width="1.5" PointX="4.875" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DostDB.Player" Width="1.5" PointX="7.125" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DostDB.Game" Width="1.5" PointX="4.875" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DostDB.CategoryPlayerAnswer" Width="1.5" PointX="9.375" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="DostDB.AccountPlayer" />
+        <AssociationConnector Association="DostDB.GamePlayer" />
+        <AssociationConnector Association="DostDB.PlayerCategoryPlayerAnswer" />
+        <AssociationConnector Association="DostDB.GameCategoryCategoryPlayerAnswer" />
+        <AssociationConnector Association="DostDB.GameGameCategory" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

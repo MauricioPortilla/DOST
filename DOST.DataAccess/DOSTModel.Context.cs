@@ -25,10 +25,10 @@ namespace DOST.DataAccess
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<CategoriaPartida> CategoriaPartida { get; set; }
-        public virtual DbSet<Cuenta> Cuenta { get; set; }
-        public virtual DbSet<Jugador> Jugador { get; set; }
-        public virtual DbSet<Partida> Partida { get; set; }
-        public virtual DbSet<RespuestaCategoriaJugador> RespuestaCategoriaJugador { get; set; }
+        public virtual DbSet<GameCategory> GameCategory { get; set; }
+        public virtual DbSet<Account> Account { get; set; }
+        public virtual DbSet<Player> Player { get; set; }
+        public virtual DbSet<Game> Game { get; set; }
+        public virtual DbSet<CategoryPlayerAnswer> CategoryPlayerAnswer { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DOST {
-    public class Cuenta {
+    public class Account {
         private int id;
         public int Id {
             get { return id; }
@@ -37,10 +37,10 @@ namespace DOST {
             get { return creationDate; }
             set { creationDate = value; }
         }
-        private bool verified;
-        public bool Verified {
-            get { return verified; }
-            set { verified = value; }
+        private bool isVerified;
+        public bool IsVerified {
+            get { return isVerified; }
+            set { isVerified = value; }
         }
         private string validationCode;
         public string ValidationCode {
@@ -48,16 +48,16 @@ namespace DOST {
             set { validationCode = value; }
         }
 
-        public Cuenta(int id) {
+        public Account(int id) {
             this.id = id;
         }
 
-        public Cuenta(string username, string password) {
+        public Account(string username, string password) {
             this.username = username;
             this.password = password;
         }
 
-        public Cuenta(
+        public Account(
             int id, string username, string password, string email, int coins,
             DateTime creationDate, bool verified, string validationCode
         ) {
@@ -67,55 +67,55 @@ namespace DOST {
             this.email = email;
             this.coins = coins;
             this.creationDate = creationDate;
-            this.verified = verified;
+            this.isVerified = verified;
             this.validationCode = validationCode;
         }
 
         public bool Login() {
-            return EngineNetwork.EstablishChannel<ICuentaService>((loginService) => {
+            return EngineNetwork.EstablishChannel<IAccountService>((loginService) => {
                 var account = loginService.TryLogin(username, password);
                 id = account.Id;
-                verified = account.Confirmada;
+                isVerified = account.IsVerified;
                 if (account.Id == 0) {
                     return false;
-                } else if (!account.Confirmada) {
+                } else if (!account.IsVerified) {
                     return false;
                 }
-                username = account.Usuario;
+                username = account.Username;
                 password = account.Password;
-                email = account.Correo;
-                coins = account.Monedas;
-                creationDate = account.FechaCreacion;
-                validationCode = account.CodigoValidacion;
+                email = account.Email;
+                coins = account.Coins;
+                creationDate = account.CreationDate;
+                validationCode = account.ValidationCode;
                 return true;
             });
         }
 
         public bool Register() {
-            return EngineNetwork.EstablishChannel<ICuentaService>((registerService) => {
-                Services.Cuenta account = new Services.Cuenta(
+            return EngineNetwork.EstablishChannel<IAccountService>((registerService) => {
+                Services.Account account = new Services.Account(
                     0, username, password, email, 0, DateTime.Now, false, null
                 );
                 return registerService.SignUp(account);
             });
         }
 
-        public bool JoinGame(Partida game, bool asAnfitrion) {
-            return EngineNetwork.EstablishChannel<IPartidaService>((service) => {
-                return service.AddJugador(id, game.Id, asAnfitrion);
+        public bool JoinGame(Game game, bool asAnfitrion) {
+            return EngineNetwork.EstablishChannel<IGameService>((service) => {
+                return service.AddPlayer(id, game.Id, asAnfitrion);
             });
         }
 
-        public bool LeaveGame(Partida game) {
-            return EngineNetwork.EstablishChannel<IPartidaService>((service) => {
-                return service.RemoveJugador(id, game.Id);
+        public bool LeaveGame(Game game) {
+            return EngineNetwork.EstablishChannel<IGameService>((service) => {
+                return service.RemovePlayer(id, game.Id);
             });
         }
 
         public bool CreateGame(out int idgame) {
             int idNewGame = 0;
-            bool returnedValue = EngineNetwork.EstablishChannel<IPartidaService>((service) => {
-                return service.CreatePartida(out idNewGame);
+            bool returnedValue = EngineNetwork.EstablishChannel<IGameService>((service) => {
+                return service.CreateGame(out idNewGame);
             });
             idgame = idNewGame;
             return returnedValue;

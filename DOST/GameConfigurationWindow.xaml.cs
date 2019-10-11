@@ -22,13 +22,13 @@ namespace DOST {
         public ObservableCollection<GameCategoryItem> CategoriesList {
             get { return categoriesList; }
         }
-        private Partida game;
+        private Game game;
 
-        public GameConfigurationWindow(ref Partida game) {
+        public GameConfigurationWindow(ref Game game) {
             DataContext = this;
             InitializeComponent();
             this.game = game;
-            game.Categorias.ForEach(
+            game.Categories.ForEach(
                 category => categoriesList.Add(new GameCategoryItem {
                     IsSelected = true,
                     GameCategory = category
@@ -49,9 +49,9 @@ namespace DOST {
             }
             categoriesList.ToList().ForEach((category) => {
                 if (category.IsSelected) {
-                    game.AddCategoria(category.GameCategory);
+                    game.AddCategory(category.GameCategory);
                 } else {
-                    game.RemoveCategoria(category.GameCategory);
+                    game.RemoveCategory(category.GameCategory);
                 }
             });
             MessageBox.Show(Properties.Resources.ChangesSavedText);
@@ -64,7 +64,7 @@ namespace DOST {
                 if (!addCategoryWindow.CategoryAdded) {
                     return;
                 }
-                var newCategory = new CategoriaPartida(0, game, addCategoryWindow.CategoryName);
+                var newCategory = new GameCategory(0, game, addCategoryWindow.CategoryName);
                 categoriesList.Add(new GameCategoryItem {
                     GameCategory = newCategory,
                     IsSelected = true,
@@ -91,7 +91,7 @@ namespace DOST {
                 }
                 set { name = value; }
             }
-            public CategoriaPartida GameCategory { get; set; }
+            public GameCategory GameCategory { get; set; }
         }
     }
 }

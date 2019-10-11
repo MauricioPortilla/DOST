@@ -11,32 +11,32 @@ namespace DOST.Services {
         private static readonly Dictionary<int, Dictionary<string, IChatServiceCallback>> gamesClients = 
             new Dictionary<int, Dictionary<string, IChatServiceCallback>>();
 
-        public void BroadcastMessage(int idpartida, string username, string message) {
-            var playersInGame = gamesClients.First(game => game.Key == idpartida).Value;
+        public void BroadcastMessage(int idgame, string username, string message) {
+            var playersInGame = gamesClients.First(game => game.Key == idgame).Value;
             foreach (var client in playersInGame) {
-                client.Value.BroadcastMessage(idpartida, username, message);
+                client.Value.BroadcastMessage(idgame, username, message);
             }
         }
 
-        public void EnterChat(int idpartida, string username) {
-            if (!gamesClients.ContainsKey(idpartida)) {
-                gamesClients.Add(idpartida, new Dictionary<string, IChatServiceCallback>());
+        public void EnterChat(int idgame, string username) {
+            if (!gamesClients.ContainsKey(idgame)) {
+                gamesClients.Add(idgame, new Dictionary<string, IChatServiceCallback>());
             }
-            var playersInGame = gamesClients[idpartida];
+            var playersInGame = gamesClients[idgame];
             if (!playersInGame.ToList().Exists(client => client.Key == username)) {
-                gamesClients[idpartida].Add(username, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
+                gamesClients[idgame].Add(username, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
             } else {
-                gamesClients[idpartida][username] = OperationContext.Current.GetCallbackChannel<IChatServiceCallback>();
+                gamesClients[idgame][username] = OperationContext.Current.GetCallbackChannel<IChatServiceCallback>();
             }
         }
 
-        public void LeaveChat(int idpartida, string username) {
-            if (!gamesClients.ContainsKey(idpartida)) {
+        public void LeaveChat(int idgame, string username) {
+            if (!gamesClients.ContainsKey(idgame)) {
                 return;
-            } else if (!gamesClients[idpartida].ContainsKey(username)) {
+            } else if (!gamesClients[idgame].ContainsKey(username)) {
                 return;
             }
-            gamesClients[idpartida].Remove(username);
+            gamesClients[idgame].Remove(username);
         }
     }
 
@@ -45,16 +45,16 @@ namespace DOST.Services {
         public ChatServiceClient(InstanceContext callbackContext) : base(callbackContext) {
         }
 
-        public void BroadcastMessage(int idpartida, string username, string message) {
-            base.Channel.BroadcastMessage(idpartida, username, message);
+        public void BroadcastMessage(int idgame, string username, string message) {
+            base.Channel.BroadcastMessage(idgame, username, message);
         }
 
-        public void EnterChat(int idpartida, string username) {
-            base.Channel.EnterChat(idpartida, username);
+        public void EnterChat(int idgame, string username) {
+            base.Channel.EnterChat(idgame, username);
         }
 
-        public void LeaveChat(int idpartida, string username) {
-            base.Channel.LeaveChat(idpartida, username);
+        public void LeaveChat(int idgame, string username) {
+            base.Channel.LeaveChat(idgame, username);
         }
     }
 }
