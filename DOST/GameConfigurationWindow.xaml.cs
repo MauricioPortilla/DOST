@@ -36,7 +36,7 @@ namespace DOST {
             );
             var defaultCategories = Session.CategoriesList.ToList();
             defaultCategories.ForEach((category) => {
-                if (!categoriesList.ToList().Exists(cat => cat.Name == category.Name)) {
+                if (!categoriesList.ToList().Exists(categoryInList => categoryInList.Name == category.Name)) {
                     categoriesList.Add(category);
                 }
             });

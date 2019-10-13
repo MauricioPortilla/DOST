@@ -9,20 +9,13 @@ using DOST.DataAccess;
 namespace DOST.Services {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Single)]
     public class GameService : IGameService {
+        /// <summary>
+        /// Stores active games ID with players lists.
+        /// </summary>
+        private static readonly List<Game> activeGames = new List<Game>();
+
         public List<Game> GetGamesList() {
-            List<Game> gamesList = new List<Game>();
-            using (DostDatabase db = new DostDatabase()) {
-                var gamesListDb = (from game in db.Game
-                                   where game.round == 0 &&
-                                   (from player in db.Player
-                                    where player.idgame == game.idgame
-                                    select player.idplayer).Count() < 4
-                                   select game).ToList();
-                gamesListDb.ForEach(
-                    game => gamesList.Add(new Game(game.idgame, game.round, game.date))
-                );
-            }
-            return gamesList;
+            return activeGames;
         }
 
         public List<Player> GetPlayersList(int idgame) {
@@ -71,75 +64,67 @@ namespace DOST.Services {
             return player;
         }
 
-        public bool AddPlayer(int idaccount, int idgame, bool asHost) {
-            using (DostDatabase db = new DostDatabase()) {
-                db.Player.Add(new DataAccess.Player() {
-                    idaccount = idaccount,
-                    idgame = idgame,
-                    score = 0,
-                    isHost = asHost ? 1 : 0
-                });
-                return db.SaveChanges() != 0;
-            }
-        }
-
-        public bool RemovePlayer(int idaccount, int idgame) {
-            var player = GetPlayer(idaccount, idgame);
-            if (player.Id == 0) {
+        public bool AddPlayer(int idaccount, string guidGame, bool asHost) {
+            var foundGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
+            if (foundGame == null) {
                 return false;
             }
             using (DostDatabase db = new DostDatabase()) {
-                var playerHost = db.Player.ToList().Find(
-                    playerDb => playerDb.idplayer == player.Id && 
-                                playerDb.idgame == idgame && 
-                                playerDb.isHost == 1
-                );
-                if (playerHost != null) {
-                    db.Player.Remove(playerHost);
-                    if ((db.Player.Where(playerDb => playerDb.idgame == idgame).Count() - 1) <= 0) {
-                        db.GameCategory.ToList().ForEach(category => db.GameCategory.Remove(category));
-                        db.Game.Remove(db.Game.ToList().Find(game => game.idgame == idgame));
-                    } else {
-                        db.Player.First(playerDatabase => playerDatabase.idgame == idgame).isHost = 1;
-                    }
-                } else {
-                    var playerNotHost = db.Player.ToList().Find(
-                        playerDb => playerDb.idplayer == player.Id &&
-                                    playerDb.idgame == idgame
-                    );
-                    if (playerNotHost != null) {
-                        db.Player.Remove(playerNotHost);
-                        if (db.Player.Where(playerDb => playerDb.idgame == idgame).Count() == 0) {
-                            db.GameCategory.ToList().ForEach(category => db.GameCategory.Remove(category));
-                            db.Game.Remove(db.Game.ToList().Find(game => game.idgame == idgame));
-                        }
-                    }
+                var newPlayerAccount = db.Account.Find(idaccount);
+                if (newPlayerAccount == null) {
+                    return false;
                 }
-                return db.SaveChanges() != 0;
+                foundGame.Players.Add(new Player {
+                    Account = new Account(
+                        newPlayerAccount.idaccount, newPlayerAccount.username,
+                        newPlayerAccount.password, newPlayerAccount.email,
+                        newPlayerAccount.coins, newPlayerAccount.creationDate,
+                        newPlayerAccount.isVerified == 1, newPlayerAccount.validationCode
+                    ),
+                    Game = null,
+                    IsHost = asHost,
+                    Score = 0,
+                    ActivePlayerGuid = Guid.NewGuid().ToString()
+                });
+                return true;
             }
         }
 
-        public bool CreateGame(out int idgame) {
-            using (DostDatabase db = new DostDatabase()) {
-                var newGame = new DataAccess.Game() {
-                    round = 0,
-                    date = DateTime.Now
-                };
-                db.Game.Add(newGame);
-                if (db.SaveChanges() != 0) {
-                    idgame = newGame.idgame;
-                    Engine.CategoriesList.ForEach((category) => {
-                        db.GameCategory.Add(new DataAccess.GameCategory() {
-                            idgame = newGame.idgame,
-                            name = category
-                        });
-                    });
-                    db.SaveChanges();
-                    return true;
-                }
+        public bool RemovePlayer(string guidPlayer, string guidGame) {
+            var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
+            if (findGame == null) {
+                return false;
             }
-            idgame = 0;
-            return false;
+            var findPlayer = findGame.Players.Find(player => player.ActivePlayerGuid == guidPlayer);
+            if (findPlayer == null) {
+                return false;
+            }
+            if (findPlayer.IsHost && findGame.Players.Count > 1) {
+                findGame.Players.Find(player => player.Account.Id != findPlayer.Account.Id).IsHost = true;
+            }
+            findGame.Players.Remove(findPlayer);
+            if (findGame.Players.Count == 0) {
+                activeGames.Remove(findGame);
+            }
+            return true;
+        }
+
+        public bool CreateGame(out string guidGame) {
+            Game newGame = new Game {
+                ActiveGameGuid = Guid.NewGuid().ToString(),
+                Date = DateTime.Now,
+                Players = new List<Player>(),
+                GameCategories = new List<GameCategory>(),
+                Round = 0
+            };
+            Engine.CategoriesList.ForEach((category) => {
+                newGame.GameCategories.Add(new GameCategory {
+                    Name = category
+                });
+            });
+            activeGames.Add(newGame);
+            guidGame = newGame.ActiveGameGuid;
+            return true;
         }
 
         public List<GameCategory> GetCategoriesList(int idgame) {
@@ -155,38 +140,45 @@ namespace DOST.Services {
             return categoriesList;
         }
 
-        public bool AddCategory(int idgame, string name) {
-            using (DostDatabase db = new DostDatabase()) {
-                var game = db.Game.Find(idgame);
-                if (game == null) {
-                    return false;
-                }
-                if (game.GameCategory.ToList().Find(
-                    category => category.name == name && category.idgame == idgame
-                ) != null) {
-                    return false;
-                }
-                game.GameCategory.Add(new DataAccess.GameCategory {
-                    idgame = game.idgame,
-                    name = name
-                });
-                return db.SaveChanges() != 0;
+        public bool AddCategory(string guidGame, string name) {
+            var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
+            if (findGame == null) {
+                return false;
             }
+            var findCategory = findGame.GameCategories.Find(category => category.Name == name);
+            if (findCategory != null) {
+                return false;
+            }
+            findGame.GameCategories.Add(new GameCategory {
+                Name = name
+            });
+            return true;
         }
 
-        public bool RemoveCategory(int idgame, int idcategory) {
-            using (DostDatabase db = new DostDatabase()) {
-                var game = db.Game.Find(idgame);
-                if (game == null) {
-                    return false;
-                }
-                var categoria = game.GameCategory.ToList().Find(category => category.idcategory == idcategory);
-                if (categoria == null) {
-                    return false;
-                }
-                db.GameCategory.Remove(categoria);
-                return db.SaveChanges() != 0;
+        public bool RemoveCategory(string guidGame, string name) {
+            var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
+            if (findGame == null) {
+                return false;
             }
+            var findCategory = findGame.GameCategories.Find(category => category.Name == name);
+            if (findCategory == null) {
+                return false;
+            }
+            findGame.GameCategories.Remove(findCategory);
+            return true;
+        }
+
+        public bool SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
+            var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
+            if (findGame == null) {
+                return false;
+            }
+            var findPlayer = findGame.Players.Find(player => player.ActivePlayerGuid == guidPlayer);
+            if (findPlayer == null) {
+                return false;
+            }
+            findPlayer.IsReady = isPlayerReady;
+            return true;
         }
 
         public bool StartGame(int idgame) {

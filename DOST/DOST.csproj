@@ -37,6 +37,9 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=4.63.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompareNETObjects.4.63.0\lib\net46\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.2.0.325, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.2.0\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -187,6 +190,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\DOST_GameConfiguration.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DOST_GameWindow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

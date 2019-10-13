@@ -38,6 +38,18 @@ namespace DOST.Services {
             get { return isHost; }
             set { isHost = value; }
         }
+        private string activePlayerGuid;
+        [DataMember]
+        public string ActivePlayerGuid {
+            get { return activePlayerGuid; }
+            set { activePlayerGuid = value; }
+        }
+        private bool isReady = false;
+        [DataMember]
+        public bool IsReady {
+            get { return isReady; }
+            set { isReady = value; }
+        }
 
         public Player(int id, Account account, Game game, int score, bool isHost) {
             this.id = id;

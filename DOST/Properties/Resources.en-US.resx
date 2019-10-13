@@ -225,8 +225,8 @@
   <data name="RoundResultsWindowTitle" xml:space="preserve">
     <value>Round results - DOST</value>
   </data>
-  <data name="RoundWindowTitle" xml:space="preserve">
-    <value>Round</value>
+  <data name="RoundText" xml:space="preserve">
+    <value>Round </value>
   </data>
   <data name="ScoreText" xml:space="preserve">
     <value>Score</value>
@@ -308,5 +308,14 @@
   </data>
   <data name="NotRankedText" xml:space="preserve">
     <value>Not ranked</value>
+  </data>
+  <data name="TimeRemainingText" xml:space="preserve">
+    <value>Time remaining: </value>
+  </data>
+  <data name="NotReadyText" xml:space="preserve">
+    <value>Not ready</value>
+  </data>
+  <data name="ReadyText" xml:space="preserve">
+    <value>Ready</value>
   </data>
 </root>

@@ -295,7 +295,7 @@ namespace DOST.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Partida de.
+        ///   Busca una cadena traducida similar a Partida de .
         /// </summary>
         public static string GameNameText {
             get {
@@ -466,6 +466,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a No listo.
+        /// </summary>
+        public static string NotReadyText {
+            get {
+                return ResourceManager.GetString("NotReadyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Nº de jugadores.
         /// </summary>
         public static string NumberOfPlayersText {
@@ -507,6 +516,15 @@ namespace DOST.Properties {
         public static string ReadyButton {
             get {
                 return ResourceManager.GetString("ReadyButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Listo.
+        /// </summary>
+        public static string ReadyText {
+            get {
+                return ResourceManager.GetString("ReadyText", resourceCulture);
             }
         }
         
@@ -556,11 +574,11 @@ namespace DOST.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Ronda.
+        ///   Busca una cadena traducida similar a Ronda .
         /// </summary>
-        public static string RoundWindowTitle {
+        public static string RoundText {
             get {
-                return ResourceManager.GetString("RoundWindowTitle", resourceCulture);
+                return ResourceManager.GetString("RoundText", resourceCulture);
             }
         }
         
@@ -597,6 +615,15 @@ namespace DOST.Properties {
         public static string StartGameErrorText {
             get {
                 return ResourceManager.GetString("StartGameErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Tiempo restante: .
+        /// </summary>
+        public static string TimeRemainingText {
+            get {
+                return ResourceManager.GetString("TimeRemainingText", resourceCulture);
             }
         }
         

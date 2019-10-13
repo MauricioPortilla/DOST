@@ -29,7 +29,11 @@ namespace DOST {
                 players = value;
                 var host = players.Find(player => player.IsHost == true);
                 if (host != null) {
-                    Name = "Partida de " + host.Account.Username;
+                    if (App.Language == "en-US") {
+                        Name = host.Account.Username + Properties.Resources.GameNameText;
+                    } else {
+                        Name = Properties.Resources.GameNameText + host.Account.Username;
+                    }
                 }
                 if (numberOfPlayers != players.Count) {
                     NumberOfPlayers = players.Count.ToString();
@@ -50,6 +54,7 @@ namespace DOST {
             get { return categories; }
             set { categories = value; }
         }
+        public string ActiveGuidGame;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Game(int id, int round, DateTime date, List<Player> players) {
@@ -67,13 +72,13 @@ namespace DOST {
 
         public bool AddCategory(GameCategory category) {
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
-                return service.AddCategory(id, category.Name);
+                return service.AddCategory(ActiveGuidGame, category.Name);
             });
         }
 
         public bool RemoveCategory(GameCategory category) {
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
-                return service.RemoveCategory(id, category.Id);
+                return service.RemoveCategory(ActiveGuidGame, category.Name);
             });
         }
 

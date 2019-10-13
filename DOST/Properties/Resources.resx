@@ -160,7 +160,7 @@
     <value>Configuración de la partida</value>
   </data>
   <data name="GameNameText" xml:space="preserve">
-    <value>Partida de</value>
+    <value>Partida de </value>
   </data>
   <data name="GameResultsWindowTitle" xml:space="preserve">
     <value>Resultados de la partida - DOST</value>
@@ -225,8 +225,8 @@
   <data name="RoundResultsWindowTitle" xml:space="preserve">
     <value>Resultados de la ronda - DOST</value>
   </data>
-  <data name="RoundWindowTitle" xml:space="preserve">
-    <value>Ronda</value>
+  <data name="RoundText" xml:space="preserve">
+    <value>Ronda </value>
   </data>
   <data name="ScoreText" xml:space="preserve">
     <value>Puntuación</value>
@@ -311,5 +311,14 @@
   </data>
   <data name="NotRankedText" xml:space="preserve">
     <value>No clasificado</value>
+  </data>
+  <data name="TimeRemainingText" xml:space="preserve">
+    <value>Tiempo restante: </value>
+  </data>
+  <data name="NotReadyText" xml:space="preserve">
+    <value>No listo</value>
+  </data>
+  <data name="ReadyText" xml:space="preserve">
+    <value>Listo</value>
   </data>
 </root>

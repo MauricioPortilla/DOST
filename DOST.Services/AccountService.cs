@@ -136,11 +136,11 @@ namespace DOST.Services {
         }
 
         public string GetRank(int idaccount) {
-            string rank = "No clasificado";
+            string rank = "";
             using (DostDatabase db = new DostDatabase()) {
-                var username = db.Account.ToList().Find(cuenta => cuenta.idaccount == idaccount).username;
-                if (username != null) {
-                    var player = GetBestScores().Find(userScore => userScore.Username == username);
+                var account = db.Account.ToList().Find(accountList => accountList.idaccount == idaccount);
+                if (account != null) {
+                    var player = GetBestScores().Find(userScore => userScore.Username == account.username);
                     if (player != null) {
                         rank = "#" + player.Ranking;
                     }

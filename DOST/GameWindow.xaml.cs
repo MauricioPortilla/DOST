@@ -19,9 +19,15 @@ namespace DOST {
     public partial class GameWindow : Window {
         private Game game;
         public GameWindow(ref Game game) {
-            Title = Properties.Resources.RoundWindowTitle + game.Round + " - DOST";
+            Title = Properties.Resources.RoundText + game.Round + " - DOST";
             InitializeComponent();
             this.game = game;
+        }
+
+        private void WindowHeader_MouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.ChangedButton == MouseButton.Left) {
+                DragMove();
+            }
         }
     }
 }

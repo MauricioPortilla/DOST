@@ -18,6 +18,16 @@ namespace DOST {
         public bool IsHost {
             get { return isHost; }
         }
+        private string activePlayerGuid;
+        public string ActivePlayerGuid {
+            get { return activePlayerGuid; }
+            set { activePlayerGuid = value; }
+        }
+        private bool isReady = false;
+        public bool IsReady {
+            get { return isReady; }
+            set { isReady = value; }
+        }
 
         public Player(int id, Account account, Game game, int score, bool isHost) {
             this.id = id;
@@ -27,13 +37,26 @@ namespace DOST {
             this.isHost = isHost;
         }
 
+        public bool LeaveGame(Game game) {
+            return EngineNetwork.EstablishChannel<IGameService>((service) => {
+                return service.RemovePlayer(activePlayerGuid, game.ActiveGuidGame);
+            });
+        }
+
         public string GetRank() {
-            var rank = "No clasificado";
+            var rank = Properties.Resources.NotRankedText;
             EngineNetwork.EstablishChannel<IAccountService>((service) => {
-                rank = service.GetRank(account.Id);
+                var accountRank = service.GetRank(account.Id);
+                rank = string.IsNullOrEmpty(accountRank) ? rank : accountRank;
                 return true;
             });
             return rank;
+        }
+
+        public bool SetPlayerReady(bool isReady) {
+            return EngineNetwork.EstablishChannel<IGameService>((service) => {
+                return service.SetPlayerReady(game.ActiveGuidGame, activePlayerGuid, isReady);
+            });
         }
     }
 }

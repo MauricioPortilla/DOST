@@ -32,6 +32,14 @@ namespace DOST.Services {
             get { return players; }
             set { players = value; }
         }
+        private List<GameCategory> gameCategories;
+        [DataMember]
+        public List<GameCategory> GameCategories {
+            get { return gameCategories; }
+            set { gameCategories = value; }
+        }
+        [DataMember]
+        public string ActiveGameGuid;
 
         public Game() {
         }

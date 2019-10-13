@@ -16,22 +16,25 @@ namespace DOST.Services {
         Player GetPlayer(int idaccount, int idgame);
 
         [OperationContract]
-        bool AddPlayer(int idaccount, int idgame, bool asHost);
+        bool AddPlayer(int idaccount, string guidGame, bool asHost);
 
         [OperationContract]
-        bool RemovePlayer(int idaccount, int idgame);
+        bool RemovePlayer(string guidPlayer, string guidGame);
 
         [OperationContract]
-        bool CreateGame(out int idgame);
+        bool CreateGame(out string guidGame);
 
         [OperationContract]
         List<GameCategory> GetCategoriesList(int idgame);
 
         [OperationContract]
-        bool AddCategory(int idgame, string name);
+        bool AddCategory(string guidGame, string name);
 
         [OperationContract]
-        bool RemoveCategory(int idgame, int idcategory);
+        bool RemoveCategory(string guidGame, string name);
+
+        [OperationContract]
+        bool SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady);
 
         [OperationContract]
         bool StartGame(int idgame);

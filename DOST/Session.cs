@@ -45,11 +45,11 @@ namespace DOST {
             get { return gamesList; }
         }
         private static readonly ObservableCollection<GameConfigurationWindow.GameCategoryItem> categoriesList = new ObservableCollection<GameConfigurationWindow.GameCategoryItem>() {
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Nombre", GameCategory = new GameCategory(0, null, "Nombre") },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Apellido", GameCategory = new GameCategory(0, null, "Apellido") },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Color", GameCategory = new GameCategory(0, null, "Color") },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Animal", GameCategory = new GameCategory(0, null, "Animal") },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Fruta", GameCategory = new GameCategory(0, null, "Fruta") }
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Nombre", GameCategory = new GameCategory(0, null, "Nombre"), IsSelected = false },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Apellido", GameCategory = new GameCategory(0, null, "Apellido"), IsSelected = false },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Color", GameCategory = new GameCategory(0, null, "Color"), IsSelected = false },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Animal", GameCategory = new GameCategory(0, null, "Animal"), IsSelected = false },
+            new GameConfigurationWindow.GameCategoryItem() { Name = "Fruta", GameCategory = new GameCategory(0, null, "Fruta"), IsSelected = false }
         };
         public static ObservableCollection<GameConfigurationWindow.GameCategoryItem> CategoriesList {
             get { return categoriesList; }
@@ -67,27 +67,31 @@ namespace DOST {
                             serviceGame.Date,
                             playersList
                         );
-                        service.GetPlayersList(serviceGame.Id).ForEach(
-                            playerService => playersList.Add(new Player(
-                                playerService.Id,
-                                new Account(playerService.Account.Id) {
-                                    Username = playerService.Account.Username,
-                                    Password = playerService.Account.Password,
-                                    Email = playerService.Account.Email,
-                                    Coins = playerService.Account.Coins,
-                                    CreationDate = playerService.Account.CreationDate,
-                                    IsVerified = playerService.Account.IsVerified,
-                                    ValidationCode = playerService.Account.ValidationCode
+                        game.ActiveGuidGame = serviceGame.ActiveGameGuid;
+                        serviceGame.Players.ForEach((player) => {
+                            playersList.Add(new Player(
+                                id: 0,
+                                new Account(player.Account.Id) {
+                                    Username = player.Account.Username,
+                                    Password = player.Account.Password,
+                                    Email = player.Account.Email,
+                                    Coins = player.Account.Coins,
+                                    CreationDate = player.Account.CreationDate,
+                                    IsVerified = player.Account.IsVerified,
+                                    ValidationCode = player.Account.ValidationCode
                                 },
                                 game,
-                                playerService.Score,
-                                playerService.IsHost)
-                            )
-                        );
+                                player.Score,
+                                player.IsHost
+                            ) {
+                                ActivePlayerGuid = player.ActivePlayerGuid,
+                                IsReady = player.IsReady
+                            });
+                        });
                         var gameCategories = new List<GameCategory>();
-                        service.GetCategoriesList(serviceGame.Id).ForEach(
-                            categoria => gameCategories.Add(new GameCategory(categoria.Id, game, categoria.Name))
-                        );
+                        serviceGame.GameCategories.ForEach((category) => {
+                            gameCategories.Add(new GameCategory(0, game, category.Name));
+                        });
                         game.Categories = gameCategories;
                         game.Players = playersList;
                         game.PropertyChanged += Game_PropertyChanged;
@@ -103,7 +107,7 @@ namespace DOST {
                     }
                     List<Game> gamesToRemove = new List<Game>();
                     foreach (var game in gamesList) {
-                        var getGame = serviceGamesList.Find(gameInServiceList => gameInServiceList.Id == game.Id);
+                        var getGame = serviceGamesList.Find(gameInServiceList => gameInServiceList.ActiveGameGuid == game.ActiveGuidGame);
                         if (getGame == null) {
                             gamesToRemove.Add(game);
                         }
@@ -113,7 +117,7 @@ namespace DOST {
                             gamesList.Remove(game);
                         });
                     });
-                    Thread.Sleep(400);
+                    //Thread.Sleep(100);
                 }
                 return true;
             });

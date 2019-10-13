@@ -27,7 +27,7 @@ namespace DOST {
             get { return gamesList; }
         }
         private bool didCreateGame = false;
-        private int lastIdGameCreated = 0;
+        private string lastGuidGameCreated = "";
 
         public MainMenuWindow() {
             DataContext = this;
@@ -68,13 +68,14 @@ namespace DOST {
         }
 
         private void CreateGameButton_Click(object sender, RoutedEventArgs e) {
-            int idgame = 0;
-            if (!Session.Account.CreateGame(out idgame)) {
+            //int idgame = 0;
+            string guidGame = "";
+            if (!Session.Account.CreateGame(out guidGame)) {
                 MessageBox.Show(Properties.Resources.CouldntCreateGameErrorText);
                 return;
             }
             didCreateGame = true;
-            lastIdGameCreated = idgame;
+            lastGuidGameCreated = guidGame;
         }
 
         private void JoinGameIfNeeded() {
@@ -82,15 +83,16 @@ namespace DOST {
                 Application.Current.Dispatcher.Invoke(delegate {
                     if (!didCreateGame) {
                         return;
-                    } else if (lastIdGameCreated == 0) {
+                    } else if (lastGuidGameCreated == "") {
                         return;
                     }
-                    Game gameCreated = Session.GamesList.ToList().Find(game => game.Id == lastIdGameCreated);
+                    //Game gameCreated = Session.GamesList.ToList().Find(game => game.Id == lastIdGameCreated);
+                    Game gameCreated = Session.GamesList.ToList().Find(game => game.ActiveGuidGame == lastGuidGameCreated);
                     if (gameCreated == null) {
                         return;
                     }
                     didCreateGame = false;
-                    lastIdGameCreated = 0;
+                    lastGuidGameCreated = "";
                     if (Session.Account.JoinGame(gameCreated, true)) {
                         Session.GameLobbyWindow = new GameLobbyWindow(ref gameCreated);
                         Session.GameLobbyWindow.Show();

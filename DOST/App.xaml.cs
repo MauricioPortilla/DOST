@@ -17,14 +17,15 @@ namespace DOST {
     public partial class App : Application {
         public static string ConnectionIP = "localhost";
         public static int ConnectionPort = 25618;
+        public static string Language = "es-MX";
 
         public App() {
             var appConfig = GetAppConfiguration();
             ConnectionIP = appConfig["Connection"]["IP"];
             ConnectionPort = int.Parse(appConfig["Connection"]["Port"]);
-            var language = appConfig["DOST"]["Language"];
-            if (language == "en-US") {
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
+            Language = appConfig["DOST"]["Language"];
+            if (Language == "en-US") {
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(Language);
             }
         }
 

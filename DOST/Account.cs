@@ -102,22 +102,18 @@ namespace DOST {
 
         public bool JoinGame(Game game, bool asAnfitrion) {
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
-                return service.AddPlayer(id, game.Id, asAnfitrion);
+                return service.AddPlayer(id, game.ActiveGuidGame, asAnfitrion);
             });
         }
 
-        public bool LeaveGame(Game game) {
-            return EngineNetwork.EstablishChannel<IGameService>((service) => {
-                return service.RemovePlayer(id, game.Id);
-            });
-        }
-
-        public bool CreateGame(out int idgame) {
-            int idNewGame = 0;
+        public bool CreateGame(out string guidGame) {
+            //int idNewGame = 0;
+            string guidNewGame = "";
             bool returnedValue = EngineNetwork.EstablishChannel<IGameService>((service) => {
-                return service.CreateGame(out idNewGame);
+                return service.CreateGame(out guidNewGame);
             });
-            idgame = idNewGame;
+            //idgame = idNewGame;
+            guidGame = guidNewGame;
             return returnedValue;
         }
     }
