@@ -107,12 +107,10 @@ namespace DOST {
         }
 
         public bool CreateGame(out string guidGame) {
-            //int idNewGame = 0;
             string guidNewGame = "";
             bool returnedValue = EngineNetwork.EstablishChannel<IGameService>((service) => {
                 return service.CreateGame(out guidNewGame);
             });
-            //idgame = idNewGame;
             guidGame = guidNewGame;
             return returnedValue;
         }

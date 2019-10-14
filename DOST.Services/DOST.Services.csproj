@@ -58,6 +58,8 @@
     <Compile Include="IChatService.cs" />
     <Compile Include="IAccountService.cs" />
     <Compile Include="IGameService.cs" />
+    <Compile Include="IInGameService.cs" />
+    <Compile Include="InGameService.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameService.cs" />

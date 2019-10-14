@@ -318,4 +318,7 @@
   <data name="ReadyText" xml:space="preserve">
     <value>Ready</value>
   </data>
+  <data name="PlayersNotReadyErrorText" xml:space="preserve">
+    <value>Not all the players are ready.</value>
+  </data>
 </root>

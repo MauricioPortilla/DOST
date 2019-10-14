@@ -493,6 +493,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a No todos los jugadores están listos..
+        /// </summary>
+        public static string PlayersNotReadyErrorText {
+            get {
+                return ResourceManager.GetString("PlayersNotReadyErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Jugador.
         /// </summary>
         public static string PlayerText {

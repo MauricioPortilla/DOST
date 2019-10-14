@@ -85,7 +85,7 @@ namespace DOST {
         public bool Start() {
             round = 1;
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
-                return service.StartGame(id);
+                return service.StartGame(ActiveGuidGame);
             });
         }
     }

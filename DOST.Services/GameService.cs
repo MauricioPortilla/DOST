@@ -181,15 +181,17 @@ namespace DOST.Services {
             return true;
         }
 
-        public bool StartGame(int idgame) {
-            using (DostDatabase db = new DostDatabase()) {
-                var game = db.Game.Find(idgame);
-                if (game == null) {
-                    return false;
-                }
-                game.round = 1;
-                return db.SaveChanges() != 0;
+        public bool StartGame(string guidGame) {
+            var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
+            if (findGame == null) {
+                return false;
+            } else if (findGame.Round != 0) {
+                return false;
+            } else if (findGame.Players.Find(player => player.IsReady == false) != null) {
+                return false;
             }
+            findGame.Round = 1;
+            return true;
         }
     }
 }

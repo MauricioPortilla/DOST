@@ -17,6 +17,9 @@ namespace DOST.Server {
             } },
             { "ChatService", new Uri[] {
                 new Uri("net.tcp://localhost:25618/ChatService")
+            } },
+            { "InGameService", new Uri[] {
+                new Uri("net.tcp://localhost:25618/InGameService")
             } }
         };
 
@@ -42,6 +45,13 @@ namespace DOST.Server {
                     Console.WriteLine("Chat service opened.");
                 };
                 chatHost.Open();
+
+                ServiceHost inGameHost = new ServiceHost(typeof(InGameService));
+                inGameHost.AddServiceEndpoint(typeof(IInGameService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["InGameService"][0]);
+                inGameHost.Opened += (sender, e) => {
+                    Console.WriteLine("In Game service opened.");
+                };
+                inGameHost.Open();
             } catch (Exception e) {
                 Console.WriteLine("Exception -> " + e.Message);
             }

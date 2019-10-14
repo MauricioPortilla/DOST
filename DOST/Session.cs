@@ -95,8 +95,8 @@ namespace DOST {
                         game.Categories = gameCategories;
                         game.Players = playersList;
                         game.PropertyChanged += Game_PropertyChanged;
-                        if (gamesList.ToList().Exists(findGame => findGame.Id == serviceGame.Id)) {
-                            var existentGame = gamesList.ToList().Find(findGame => findGame.Id == serviceGame.Id);
+                        if (gamesList.ToList().Exists(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid)) {
+                            var existentGame = gamesList.ToList().Find(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid);
                             existentGame.Players = playersList;
                             existentGame.Categories = gameCategories;
                             continue;

@@ -37,6 +37,6 @@ namespace DOST.Services {
         bool SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady);
 
         [OperationContract]
-        bool StartGame(int idgame);
+        bool StartGame(string guidGame);
     }
 }

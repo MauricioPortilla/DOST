@@ -30,6 +30,7 @@ namespace DOST {
         private List<TextBlock> lobbyPlayersReadyStatusTextBlocks;
         private static readonly int MAX_NUMBER_OF_PLAYERS = 4;
         private ChatServiceClient chatService;
+        private InGameServiceClient inGameService;
         private int actualNumberOfPlayers = 0;
 
         public GameLobbyWindow(ref Game game) {
@@ -66,16 +67,21 @@ namespace DOST {
                     break;
                 }
             }
+            InstanceContext gameInstance = new InstanceContext(new InGameCallbackHandler(game, ref lobbyPlayersReadyStatusTextBlocks));
+            inGameService = new InGameServiceClient(gameInstance);
+            inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
         }
 
         public class ChatCallbackHandler : IChatServiceCallback {
             private Game game;
             private ListBox chatListBox;
             public string LastMessageReceived;
+
             public ChatCallbackHandler(Game game, ListBox chatListBox) {
                 this.game = game;
                 this.chatListBox = chatListBox;
             }
+
             public void BroadcastMessage(string guidGame, string username, string message) {
                 if (guidGame == game.ActiveGuidGame) {
                     LastMessageReceived = message;
@@ -87,9 +93,44 @@ namespace DOST {
             }
         }
 
+        public class InGameCallbackHandler : IInGameServiceCallback {
+            private Game game;
+            public Game Game {
+                get { return game; }
+                set { game = value; }
+            }
+            private List<TextBlock> lobbyPlayersReadyStatusTextBlocks;
+
+            public InGameCallbackHandler(Game game, ref List<TextBlock> lobbyPlayersReadyStatusTextBlocks) {
+                this.game = game;
+                this.lobbyPlayersReadyStatusTextBlocks = lobbyPlayersReadyStatusTextBlocks;
+            }
+
+            public void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
+                if (guidGame == game.ActiveGuidGame) {
+                    var playerToInteract = game.Players.Find(playerInGame => playerInGame.ActivePlayerGuid == guidPlayer);
+                    if (playerToInteract == null) {
+                        return;
+                    }
+                    int index = game.Players.IndexOf(playerToInteract);
+                    lobbyPlayersReadyStatusTextBlocks[index].Text = isPlayerReady ? Properties.Resources.ReadyText : Properties.Resources.NotReadyText;
+                }
+            }
+
+            public void StartGame(string guidGame) {
+                if (guidGame == game.ActiveGuidGame) {
+                    Session.GameWindow = new GameWindow(ref game);
+                    Session.GameWindow.Show();
+                    Session.GameLobbyWindow.Close();
+                    Session.GameLobbyWindow = null;
+                }
+            }
+        }
+
         public void LoadPlayersJoinedData() {
             while (!IsClosed) {
-                this.game = Session.GamesList.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+                List<Game> games = Session.GamesList.ToList();
+                this.game = games.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
                 if (actualNumberOfPlayers != game.Players.Count) {
                     Application.Current.Dispatcher.Invoke(delegate {
                         PerformUIChanges();
@@ -122,7 +163,6 @@ namespace DOST {
                 lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Hidden;
                 lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Hidden;
                 lobbyPlayersReadyStatusTextBlocks[index].Visibility = Visibility.Hidden;
-                lobbyPlayersReadyStatusTextBlocks[index].Text = Properties.Resources.NotReadyText;
             }
             for (int index = 0; index < game.Players.Count; index++) {
                 if (lobbyPlayersUsernameTextBlocks[index].Text == game.Players[index].Account.Username) {
@@ -148,6 +188,7 @@ namespace DOST {
         private void ExitButton_Click(object sender, RoutedEventArgs e) {
             if (player.LeaveGame(game)) {
                 chatService.LeaveChat(game.ActiveGuidGame, player.Account.Username);
+                inGameService.LeavePlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
                 Session.GameLobbyWindow = null;
                 Session.MainMenuWindow.Show();
                 Close();
@@ -159,20 +200,24 @@ namespace DOST {
                 MessageBox.Show(Properties.Resources.MustHaveAtLeastTwoPlayersErrorText);
                 return;
             }
-            if (!game.Start()) {
-                MessageBox.Show(Properties.Resources.StartGameErrorText);
+            if (game.Players.Find(playerInGame => playerInGame.IsReady == false && playerInGame.ActivePlayerGuid != player.ActivePlayerGuid) != null) {
+                MessageBox.Show(Properties.Resources.PlayersNotReadyErrorText);
                 return;
+            } else if (player.SetPlayerReady(true)) {
+                if (!game.Start()) {
+                    MessageBox.Show(Properties.Resources.StartGameErrorText);
+                    return;
+                }
             }
-            Session.GameWindow = new GameWindow(ref game);
-            Session.GameWindow.Show();
-            Session.GameLobbyWindow = null;
-            Close();
+            inGameService.StartGame(game.ActiveGuidGame);
         }
 
         private void ReadyButton_Click(object sender, RoutedEventArgs e) {
-            if (player.SetPlayerReady(true)) {
+            if (player.IsHost) {
+                return;
+            } else if (player.SetPlayerReady(true)) {
                 readyButton.IsEnabled = false;
-                PerformUIChanges();
+                inGameService.SetPlayerReady(game.ActiveGuidGame, player.ActivePlayerGuid, true);
             }
         }
 

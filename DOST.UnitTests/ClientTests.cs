@@ -27,8 +27,8 @@ namespace DOST.UnitTests {
             ChatServiceClient chatService = new ChatServiceClient(chatInstance);
             chatService.Open();
             if (chatService.State == CommunicationState.Opened) {
-                chatService.EnterChat(1, "Frey");
-                chatService.BroadcastMessage(1, "Frey", "Mensaje de prueba");
+                chatService.EnterChat("", "Frey");
+                chatService.BroadcastMessage("", "Frey", "Mensaje de prueba");
             }
             System.Threading.Thread.Sleep(1000);
             Assert.AreEqual("Mensaje de prueba", callbackHandler.LastMessageReceived);
