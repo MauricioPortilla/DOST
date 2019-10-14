@@ -52,8 +52,16 @@ namespace DOST.Server {
                     Console.WriteLine("In Game service opened.");
                 };
                 inGameHost.Open();
-            } catch (Exception e) {
-                Console.WriteLine("Exception -> " + e.Message);
+            } catch (ObjectDisposedException objectDisposedException) {
+                Console.WriteLine("Object disposed exception -> " + objectDisposedException.Message);
+            } catch (InvalidOperationException invalidOperationException) {
+                Console.WriteLine("Invalid operation exception -> " + invalidOperationException.Message);
+            } catch (CommunicationObjectFaultedException communicationOFException) {
+                Console.WriteLine("Communication object faulted exception -> " + communicationOFException.Message);
+            } catch (TimeoutException timeoutException) {
+                Console.WriteLine("Timeout exception -> " + timeoutException.Message);
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
             }
         }
     }

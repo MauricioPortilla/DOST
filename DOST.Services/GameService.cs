@@ -20,74 +20,87 @@ namespace DOST.Services {
 
         public List<Player> GetPlayersList(int idgame) {
             List<Player> playersList = new List<Player>();
-            using (DostDatabase db = new DostDatabase()) {
-                var playersListDb = (from player in db.Player
-                                     where player.idgame == idgame
-                                     select player).ToList();
-                playersListDb.ForEach(
-                    player => playersList.Add(new Player(
-                        player.idplayer,
-                        new Account(
-                            player.Account.idaccount, player.Account.username, 
-                            player.Account.password, player.Account.email, 
-                            player.Account.coins, player.Account.creationDate, 
-                            player.Account.isVerified == 1, player.Account.validationCode
-                        ),
-                        null,
-                        player.score,
-                        player.isHost == 1
-                    ))
-                );
+            try {
+                using (DostDatabase db = new DostDatabase()) {
+                    var playersListDb = (from player in db.Player
+                                         where player.idgame == idgame
+                                         select player).ToList();
+                    playersListDb.ForEach(
+                        player => playersList.Add(new Player(
+                            player.idplayer,
+                            new Account(
+                                player.Account.idaccount, player.Account.username,
+                                player.Account.password, player.Account.email,
+                                player.Account.coins, player.Account.creationDate,
+                                player.Account.isVerified == 1, player.Account.validationCode
+                            ),
+                            null,
+                            player.score,
+                            player.isHost == 1
+                        ))
+                    );
+                }
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
             }
             return playersList;
         }
 
         public Player GetPlayer(int idaccount, int idgame) {
             Player player = new Player();
-            using (DostDatabase db = new DostDatabase()) {
-                var playerDb = db.Player.ToList().Find(
-                    playerList => playerList.idgame == idgame && playerList.idaccount == idaccount
-                );
-                if (playerDb != null) {
-                    player.Id = playerDb.idplayer;
-                    player.Account = new Account(
-                        playerDb.Account.idaccount, playerDb.Account.username,
-                        playerDb.Account.password, playerDb.Account.email,
-                        playerDb.Account.coins, playerDb.Account.creationDate,
-                        playerDb.Account.isVerified == 1, playerDb.Account.validationCode
+            try {
+                using (DostDatabase db = new DostDatabase()) {
+                    var playerDb = db.Player.ToList().Find(
+                        playerList => playerList.idgame == idgame && playerList.idaccount == idaccount
                     );
-                    player.Score = playerDb.score;
-                    player.IsHost = playerDb.isHost == 1;
-                    player.Game = null;
+                    if (playerDb != null) {
+                        player.Id = playerDb.idplayer;
+                        player.Account = new Account(
+                            playerDb.Account.idaccount, playerDb.Account.username,
+                            playerDb.Account.password, playerDb.Account.email,
+                            playerDb.Account.coins, playerDb.Account.creationDate,
+                            playerDb.Account.isVerified == 1, playerDb.Account.validationCode
+                        );
+                        player.Score = playerDb.score;
+                        player.IsHost = playerDb.isHost == 1;
+                        player.Game = null;
+                    }
                 }
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
             }
             return player;
         }
 
         public bool AddPlayer(int idaccount, string guidGame, bool asHost) {
-            var foundGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
-            if (foundGame == null) {
-                return false;
-            }
-            using (DostDatabase db = new DostDatabase()) {
-                var newPlayerAccount = db.Account.Find(idaccount);
-                if (newPlayerAccount == null) {
+            try {
+                var foundGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
+                if (foundGame == null) {
                     return false;
                 }
-                foundGame.Players.Add(new Player {
-                    Account = new Account(
-                        newPlayerAccount.idaccount, newPlayerAccount.username,
-                        newPlayerAccount.password, newPlayerAccount.email,
-                        newPlayerAccount.coins, newPlayerAccount.creationDate,
-                        newPlayerAccount.isVerified == 1, newPlayerAccount.validationCode
-                    ),
-                    Game = null,
-                    IsHost = asHost,
-                    Score = 0,
-                    ActivePlayerGuid = Guid.NewGuid().ToString()
-                });
-                return true;
+                using (DostDatabase db = new DostDatabase()) {
+                    var newPlayerAccount = db.Account.Find(idaccount);
+                    if (newPlayerAccount == null) {
+                        return false;
+                    }
+                    foundGame.Players.Add(new Player {
+                        Account = new Account(
+                            newPlayerAccount.idaccount, newPlayerAccount.username,
+                            newPlayerAccount.password, newPlayerAccount.email,
+                            newPlayerAccount.coins, newPlayerAccount.creationDate,
+                            newPlayerAccount.isVerified == 1, newPlayerAccount.validationCode
+                        ),
+                        Game = null,
+                        IsHost = asHost,
+                        Score = 0,
+                        ActivePlayerGuid = Guid.NewGuid().ToString()
+                    });
+                    return true;
+                }
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
             }
+            return false;
         }
 
         public bool RemovePlayer(string guidPlayer, string guidGame) {
@@ -129,13 +142,17 @@ namespace DOST.Services {
 
         public List<GameCategory> GetCategoriesList(int idgame) {
             List<GameCategory> categoriesList = new List<GameCategory>();
-            using (DostDatabase db = new DostDatabase()) {
-                var categories = (from category in db.GameCategory
-                                  where category.idgame == idgame
-                                  select category).ToList();
-                categories.ForEach(category => categoriesList.Add(
-                    new GameCategory(category.idcategory, null, category.name)
-                ));
+            try {
+                using (DostDatabase db = new DostDatabase()) {
+                    var categories = (from category in db.GameCategory
+                                      where category.idgame == idgame
+                                      select category).ToList();
+                    categories.ForEach(category => categoriesList.Add(
+                        new GameCategory(category.idcategory, null, category.name)
+                    ));
+                }
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
             }
             return categoriesList;
         }

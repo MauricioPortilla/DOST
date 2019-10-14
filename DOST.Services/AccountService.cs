@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,50 +17,62 @@ namespace DOST.Services {
         public Account TryLogin(string username, string password) {
             string hashedPassword = Engine.HashWithSHA256(password);
             Account account = new Account();
-            using (DostDatabase db = new DostDatabase()) {
-                var accountDb = db.Account.ToList().Find(
-                    accountInList => accountInList.username == username && accountInList.password == hashedPassword
-                );
-                if (accountDb != null) {
-                    account.Id = accountDb.idaccount;
-                    account.Username = accountDb.username;
-                    account.Password = accountDb.password;
-                    account.Email = accountDb.email;
-                    account.Coins = accountDb.coins;
-                    account.CreationDate = accountDb.creationDate;
-                    account.IsVerified = accountDb.isVerified == 1;
-                    account.ValidationCode = accountDb.validationCode;
-                    if (account.IsVerified == false) {
-                        if (TryValidateAccount(account.ValidationCode)) {
-                            accountDb.isVerified = 1;
-                            if (db.SaveChanges() != 0) {
-                                account.IsVerified = true;
+            try {
+                using (DostDatabase db = new DostDatabase()) {
+                    var accountDb = db.Account.ToList().Find(
+                        accountInList => accountInList.username == username && accountInList.password == hashedPassword
+                    );
+                    if (accountDb != null) {
+                        account.Id = accountDb.idaccount;
+                        account.Username = accountDb.username;
+                        account.Password = accountDb.password;
+                        account.Email = accountDb.email;
+                        account.Coins = accountDb.coins;
+                        account.CreationDate = accountDb.creationDate;
+                        account.IsVerified = accountDb.isVerified == 1;
+                        account.ValidationCode = accountDb.validationCode;
+                        if (account.IsVerified == false) {
+                            if (TryValidateAccount(account.ValidationCode)) {
+                                accountDb.isVerified = 1;
+                                if (db.SaveChanges() != 0) {
+                                    account.IsVerified = true;
+                                }
                             }
                         }
                     }
                 }
+            } catch (DbUpdateException dbUpdateException) {
+                Console.WriteLine("DbUpdateException -> " + dbUpdateException.Message);
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
             }
             return account;
         }
 
         public bool SignUp(Account account) {
-            using (DostDatabase db = new DostDatabase()) {
-                var validationCode = Engine.HashWithSHA256(account.Username + DateTime.Now);
-                db.Account.Add(new DataAccess.Account {
-                    username = account.Username,
-                    password = Engine.HashWithSHA256(account.Password),
-                    email = account.Email,
-                    coins = 0,
-                    creationDate = DateTime.Now,
-                    isVerified = 0,
-                    validationCode = validationCode
-                });
-                if (db.SaveChanges() != 0) {
-                    SendSignUpEmail(account.Email, validationCode);
-                    return true;
+            try {
+                using (DostDatabase db = new DostDatabase()) {
+                    var validationCode = Engine.HashWithSHA256(account.Username + DateTime.Now);
+                    db.Account.Add(new DataAccess.Account {
+                        username = account.Username,
+                        password = Engine.HashWithSHA256(account.Password),
+                        email = account.Email,
+                        coins = 0,
+                        creationDate = DateTime.Now,
+                        isVerified = 0,
+                        validationCode = validationCode
+                    });
+                    if (db.SaveChanges() != 0) {
+                        SendSignUpEmail(account.Email, validationCode);
+                        return true;
+                    }
                 }
-                return false;
+            } catch (DbUpdateException dbUpdateException) {
+                Console.WriteLine("DbUpdateException -> " + dbUpdateException.Message);
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
             }
+            return false;
         }
 
         private static bool TryValidateAccount(string validationCode) {
@@ -78,6 +91,10 @@ namespace DOST.Services {
                 }
             } catch (WebException webException) {
                 Console.WriteLine("Error web request: " + webException.Message);
+            } catch (IOException ioException) {
+                Console.WriteLine("IOException -> " + ioException.Message);
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
             } finally {
                 if (response != null) {
                     response.Close();
@@ -109,43 +126,57 @@ namespace DOST.Services {
                 client.EnableSsl = true;
                 client.Send(mail);
                 return true;
-            } catch (Exception e) {
-                Console.WriteLine("SMTP Exception -> " + e.Message);
-                return false;
+            } catch (InvalidOperationException invalidOperationException) {
+                Console.WriteLine("Invalid operation exception -> " + invalidOperationException.Message);
+            } catch (SmtpFailedRecipientsException smtpFRException) {
+                Console.WriteLine("SMTP failed recipients exception -> " + smtpFRException.Message);
+            } catch (SmtpException smtpException) {
+                Console.WriteLine("SMTP Exception -> " + smtpException.Message);
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
             }
+            return false;
         }
 
         public List<UserScore> GetBestScores() {
             List<UserScore> bestScoresList = new List<UserScore>();
-            using (DostDatabase db = new DostDatabase()) {
-                var players = (from player in db.Player
-                               where player.Game.round == 5
-                               group player by player.Account.username into playerGroup
-                               let totalScore = playerGroup.Sum(playerInGroup => playerInGroup.score)
-                               orderby totalScore descending
-                               select new { User = playerGroup.Key, TotalScore = totalScore }).ToList();
-                for (int pos = 0; pos < players.Count; pos++) {
-                    bestScoresList.Add(new UserScore {
-                        Ranking = pos + 1,
-                        Username = players[pos].User,
-                        Score = players[pos].TotalScore
-                    });
+            try {
+                using (DostDatabase db = new DostDatabase()) {
+                    var players = (from player in db.Player
+                                   where player.Game.round == 5
+                                   group player by player.Account.username into playerGroup
+                                   let totalScore = playerGroup.Sum(playerInGroup => playerInGroup.score)
+                                   orderby totalScore descending
+                                   select new { User = playerGroup.Key, TotalScore = totalScore }).ToList();
+                    for (int pos = 0; pos < players.Count; pos++) {
+                        bestScoresList.Add(new UserScore {
+                            Ranking = pos + 1,
+                            Username = players[pos].User,
+                            Score = players[pos].TotalScore
+                        });
+                    }
                 }
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
             }
             return bestScoresList;
         }
 
         public string GetRank(int idaccount) {
             string rank = "";
-            using (DostDatabase db = new DostDatabase()) {
-                var account = db.Account.ToList().Find(accountList => accountList.idaccount == idaccount);
-                if (account != null) {
-                    var player = GetBestScores().Find(userScore => userScore.Username == account.username);
-                    if (player != null) {
-                        rank = "#" + player.Ranking;
-                    }
+            try {
+                using (DostDatabase db = new DostDatabase()) {
+                    var account = db.Account.ToList().Find(accountList => accountList.idaccount == idaccount);
+                    if (account != null) {
+                        var player = GetBestScores().Find(userScore => userScore.Username == account.username);
+                        if (player != null) {
+                            rank = "#" + player.Ranking;
+                        }
 
+                    }
                 }
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
             }
             return rank;
         }

@@ -27,9 +27,16 @@ namespace DOST {
 
         public static bool EstablishChannel<IService>(Func<IService, bool> onOpen) {
             var channel = new ChannelFactory<IService>(CHANNEL_SERVICES[typeof(IService)]);
-            var serviceChannel = channel.CreateChannel();
-            var valueReturned = onOpen.Invoke(serviceChannel);
-            channel.Close();
+            var valueReturned = false;
+            try {
+                var serviceChannel = channel.CreateChannel();
+                valueReturned = onOpen.Invoke(serviceChannel);
+                channel.Close();
+            } catch (CommunicationException communicationException) {
+                Console.WriteLine("Communication exception -> " + communicationException.Message);
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
+            }
             return valueReturned;
         }
     }
