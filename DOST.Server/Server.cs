@@ -16,8 +16,8 @@ namespace DOST.Server {
         }
 
         public static Dictionary<string, Dictionary<XName, string>> GetConfigFileElements() {
-            string dir = AppDomain.CurrentDomain.BaseDirectory;
-            if (!File.Exists(dir + "config.xml")) {
+            string dir = AppDomain.CurrentDomain.BaseDirectory + "config.xml";
+            if (!File.Exists(dir)) {
                 new XDocument(
                     new XElement("Configuration",
                         new XElement(
@@ -33,9 +33,9 @@ namespace DOST.Server {
                             new XElement("Port", "587")
                         )
                     )
-                ).Save(dir + "config.xml");
+                ).Save(dir);
             }
-            XDocument configXml = XDocument.Load(dir + "config.xml");
+            XDocument configXml = XDocument.Load(dir);
             Dictionary<string, Dictionary<XName, string>> xmlElements = new Dictionary<string, Dictionary<XName, string>>();
             foreach (var xmlElement in configXml.Root.Elements()) {
                 var insideElement = xmlElement.Elements().ToDictionary(element => element.Name, element => element.Value);
@@ -47,7 +47,7 @@ namespace DOST.Server {
                         continue;
                     }
                     if (string.IsNullOrWhiteSpace(insideElement.Value)) {
-                        Process.Start("notepad.exe", dir + "config.xml");
+                        Process.Start("notepad.exe", dir);
                         Environment.Exit(0);
                     }
                 }

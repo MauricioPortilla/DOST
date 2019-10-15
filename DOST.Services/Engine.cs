@@ -14,21 +14,14 @@ namespace DOST.Services {
         };
 
         public static Dictionary<string, Dictionary<XName, string>> GetConfigFileElements() {
-            string dir = AppDomain.CurrentDomain.BaseDirectory;
-            if (!File.Exists(dir + "config.xml")) {
+            string dir = AppDomain.CurrentDomain.BaseDirectory + "\\config.xml";
+            if (!File.Exists(dir)) {
                 new XDocument(
                     new XElement("Configuration",
                         new XElement(
                             "Connection",
                             new XElement("IP", "localhost"),
                             new XElement("Port", "25618")
-                        ),
-                        new XElement(
-                            "Database",
-                            new XElement("Server", ""),
-                            new XElement("DatabaseName", ""),
-                            new XElement("DatabaseUser", ""),
-                            new XElement("DatabasePassword", "")
                         ),
                         new XElement(
                             "Smtp",
@@ -38,9 +31,9 @@ namespace DOST.Services {
                             new XElement("Port", "587")
                         )
                     )
-                ).Save(dir + "config.xml");
+                ).Save(dir);
             }
-            XDocument configXml = XDocument.Load(dir + "config.xml");
+            XDocument configXml = XDocument.Load(dir);
             Dictionary<string, Dictionary<XName, string>> xmlElements = new Dictionary<string, Dictionary<XName, string>>();
             foreach (var xmlElement in configXml.Root.Elements()) {
                 var insideElement = xmlElement.Elements().ToDictionary(element => element.Name, element => element.Value);
@@ -52,7 +45,7 @@ namespace DOST.Services {
                         continue;
                     }
                     if (string.IsNullOrWhiteSpace(insideElement.Value)) {
-                        Process.Start("notepad.exe", dir + "config.xml");
+                        Process.Start("notepad.exe", dir);
                         Environment.Exit(0);
                     }
                 }

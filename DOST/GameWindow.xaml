@@ -25,5 +25,6 @@
             <TextBlock Margin="8,10,0,0" TextWrapping="Wrap" Text="{x:Static p:Resources.ScoreText}" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
             <TextBlock x:Name="scoreTextBlock" HorizontalAlignment="Left" Margin="7,10,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
         </StackPanel>
+        <StackPanel x:Name="playerAnswerCategoriesStackPanel" Margin="0,152,274,0" Orientation="Vertical"/>
     </Grid>
 </Window>

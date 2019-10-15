@@ -113,6 +113,9 @@ namespace DOST {
                         return;
                     }
                     int index = game.Players.IndexOf(playerToInteract);
+                    if (index < 0) {
+                        return;
+                    }
                     lobbyPlayersReadyStatusTextBlocks[index].Text = isPlayerReady ? Properties.Resources.ReadyText : Properties.Resources.NotReadyText;
                 }
             }
