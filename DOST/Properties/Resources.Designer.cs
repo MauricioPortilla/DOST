@@ -223,6 +223,24 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Costo: 20 monedas.
+        /// </summary>
+        public static string Cost20CoinsSelectionText {
+            get {
+                return ResourceManager.GetString("Cost20CoinsSelectionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Costo: Gratis.
+        /// </summary>
+        public static string CostFreeLetterSelectionText {
+            get {
+                return ResourceManager.GetString("CostFreeLetterSelectionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Error al crear la partida..
         /// </summary>
         public static string CouldntCreateGameErrorText {
@@ -318,6 +336,15 @@ namespace DOST.Properties {
         public static string GameText {
             get {
                 return ResourceManager.GetString("GameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Obtener palabra.
+        /// </summary>
+        public static string GetWordButton {
+            get {
+                return ResourceManager.GetString("GetWordButton", resourceCulture);
             }
         }
         
@@ -610,6 +637,24 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Seleccionar letra a decisión.
+        /// </summary>
+        public static string SelectASpecificLetterButton {
+            get {
+                return ResourceManager.GetString("SelectASpecificLetterButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Seleccionar letra al azar.
+        /// </summary>
+        public static string SelectRandomLetterButton {
+            get {
+                return ResourceManager.GetString("SelectRandomLetterButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Iniciar partida.
         /// </summary>
         public static string StartGameButton {
@@ -664,6 +709,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Esperando a que se seleccione una letra....
+        /// </summary>
+        public static string WaitingForLetterSelectionText {
+            get {
+                return ResourceManager.GetString("WaitingForLetterSelectionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Esperando a más jugadores.
         /// </summary>
         public static string WaitingForPlayersText {
@@ -678,6 +732,15 @@ namespace DOST.Properties {
         public static string WaitingForPlayerText {
             get {
                 return ResourceManager.GetString("WaitingForPlayerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Ya estás dentro de una partida..
+        /// </summary>
+        public static string YouAreAlreadyInAGame {
+            get {
+                return ResourceManager.GetString("YouAreAlreadyInAGame", resourceCulture);
             }
         }
     }

@@ -13,6 +13,7 @@ namespace DOST.Services {
         /// Stores active games ID with players lists.
         /// </summary>
         private static readonly List<Game> activeGames = new List<Game>();
+        private static readonly int MAX_PLAYERS_IN_GAME = 4;
 
         public List<Game> GetGamesList() {
             return activeGames;
@@ -76,6 +77,9 @@ namespace DOST.Services {
             try {
                 var foundGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
                 if (foundGame == null) {
+                    return false;
+                }
+                if (foundGame.Players.Count >= MAX_PLAYERS_IN_GAME) {
                     return false;
                 }
                 using (DostDatabase db = new DostDatabase()) {

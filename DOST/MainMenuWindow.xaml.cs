@@ -34,7 +34,7 @@ namespace DOST {
             InitializeComponent();
             usernameTextBlock.Text = Session.Account.Username;
             coinsTextBlock.Text = Session.Account.Coins.ToString();
-            // rankTextBlock.Text = Session.Cuenta.GetRank();
+            rankTextBlock.Text = Session.Account.GetRank();
             GamesList.CollectionChanged += GamesList_CollectionChanged;
             new Thread(Session.GetGamesList).Start();
             new Thread(JoinGameIfNeeded).Start();
@@ -68,8 +68,11 @@ namespace DOST {
         }
 
         private void CreateGameButton_Click(object sender, RoutedEventArgs e) {
-            //int idgame = 0;
             string guidGame = "";
+            if (Session.AllGamesAvailable.Find(game => game.Players.Find(player => player.Account.Id == Session.Account.Id) != null) != null) {
+                MessageBox.Show(Properties.Resources.YouAreAlreadyInAGame);
+                return;
+            }
             if (!Session.Account.CreateGame(out guidGame)) {
                 MessageBox.Show(Properties.Resources.CouldntCreateGameErrorText);
                 return;
@@ -86,7 +89,6 @@ namespace DOST {
                     } else if (lastGuidGameCreated == "") {
                         return;
                     }
-                    //Game gameCreated = Session.GamesList.ToList().Find(game => game.Id == lastIdGameCreated);
                     Game gameCreated = Session.GamesList.ToList().Find(game => game.ActiveGuidGame == lastGuidGameCreated);
                     if (gameCreated == null) {
                         return;

@@ -28,7 +28,6 @@ namespace DOST {
         private List<TextBlock> lobbyPlayersRankTextBlocks;
         private List<TextBlock> lobbyPlayersRankTitleTextBlocks;
         private List<TextBlock> lobbyPlayersReadyStatusTextBlocks;
-        private static readonly int MAX_NUMBER_OF_PLAYERS = 4;
         private ChatServiceClient chatService;
         private InGameServiceClient inGameService;
         private int actualNumberOfPlayers = 0;
@@ -58,18 +57,24 @@ namespace DOST {
             };
             Thread loadPlayersJoinedDataThread = new Thread(LoadPlayersJoinedData);
             loadPlayersJoinedDataThread.Start();
-            InstanceContext chatInstance = new InstanceContext(new ChatCallbackHandler(game, chatListBox));
-            chatService = new ChatServiceClient(chatInstance);
-            while (true) {
-                player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
-                if (player != null) {
-                    chatService.EnterChat(game.ActiveGuidGame, player.Account.Username);
-                    break;
+            try {
+                InstanceContext chatInstance = new InstanceContext(new ChatCallbackHandler(game, chatListBox));
+                chatService = new ChatServiceClient(chatInstance);
+                while (true) {
+                    player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
+                    if (player != null) {
+                        chatService.EnterChat(game.ActiveGuidGame, player.Account.Username);
+                        break;
+                    }
                 }
+                InstanceContext gameInstance = new InstanceContext(new InGameCallbackHandler(game, ref lobbyPlayersReadyStatusTextBlocks));
+                inGameService = new InGameServiceClient(gameInstance);
+                inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
+            } catch (CommunicationException communicationException) {
+                Console.WriteLine("CommunicationException -> " + communicationException.Message);
+                MessageBox.Show("Error al unirse a la partida.");
+                Close();
             }
-            InstanceContext gameInstance = new InstanceContext(new InGameCallbackHandler(game, ref lobbyPlayersReadyStatusTextBlocks));
-            inGameService = new InGameServiceClient(gameInstance);
-            inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
         }
 
         public class ChatCallbackHandler : IChatServiceCallback {
@@ -122,8 +127,13 @@ namespace DOST {
 
             public void StartGame(string guidGame) {
                 if (guidGame == game.ActiveGuidGame) {
-                    Session.GameWindow = new GameWindow(ref game);
-                    Session.GameWindow.Show();
+                    var findHost = game.Players.Find(player => player.IsHost);
+                    if (findHost != null) {
+                        var findPlayer = game.Players.Find(player => player.Account.Id == Session.Account.Id);
+                        new GameWindow_LetterSelection(ref game, ref findPlayer, findHost.Account.Id == Session.Account.Id).Show();
+                    } else {
+                        MessageBox.Show("Error al iniciar la partida. No se encontró un anfitrión.");
+                    }
                     Session.GameLobbyWindow.Close();
                     Session.GameLobbyWindow = null;
                 }
@@ -132,17 +142,21 @@ namespace DOST {
 
         public void LoadPlayersJoinedData() {
             while (!IsClosed) {
-                List<Game> games = Session.GamesList.ToList();
-                this.game = games.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
-                if (actualNumberOfPlayers != game.Players.Count) {
-                    Application.Current.Dispatcher.Invoke(delegate {
-                        PerformUIChanges();
-                    });
+                try {
+                    List<Game> games = Session.AllGamesAvailable;
+                    this.game = games.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+                    if (actualNumberOfPlayers != game.Players.Count) {
+                        Application.Current.Dispatcher.Invoke(delegate {
+                            PerformLobbyUIChanges();
+                        });
+                    }
+                } catch (InvalidOperationException invalidOperationException) {
+                    Console.WriteLine("Invalid operation exception (LoadPlayersJoinedData) -> " + invalidOperationException.Message);
                 }
             }
         }
 
-        private void PerformUIChanges() {
+        private void PerformLobbyUIChanges() {
             if (game.Players.Count == 0) {
                 return;
             }
@@ -159,7 +173,7 @@ namespace DOST {
                 }
             }
             // Can be improved
-            for (int index = 0; index < MAX_NUMBER_OF_PLAYERS; index++) {
+            for (int index = 0; index < Session.MAX_PLAYERS_IN_GAME; index++) {
                 lobbyPlayersUsernameTextBlocks[index].Text = "...";
                 lobbyPlayersTypeTextBlocks[index].Text = Properties.Resources.WaitingForPlayerText;
                 lobbyPlayersRankTextBlocks[index].Text = "#0";
@@ -180,7 +194,7 @@ namespace DOST {
                 lobbyPlayersReadyStatusTextBlocks[index].Text = game.Players[index].IsReady ? Properties.Resources.ReadyText : Properties.Resources.NotReadyText;
                 lobbyPlayersReadyStatusTextBlocks[index].Visibility = Visibility.Visible;
             }
-            if (game.Players.Count == MAX_NUMBER_OF_PLAYERS) {
+            if (game.Players.Count == Session.MAX_PLAYERS_IN_GAME) {
                 lobbyStatusTextBlock.Text = "";
             } else {
                 lobbyStatusTextBlock.Text = Properties.Resources.WaitingForPlayersText;

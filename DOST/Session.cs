@@ -15,6 +15,7 @@ namespace DOST {
         public static readonly Dictionary<string, string> LANGUAGES = new Dictionary<string, string>() {
             { "Español", "es-MX" }, { "English", "en-US" }
         };
+        public static readonly int MAX_PLAYERS_IN_GAME = 4;
         private static Account account;
         public static Account Account {
             get { return account; }
@@ -44,14 +45,19 @@ namespace DOST {
         public static ObservableCollection<Game> GamesList {
             get { return gamesList; }
         }
-        private static readonly ObservableCollection<GameConfigurationWindow.GameCategoryItem> categoriesList = new ObservableCollection<GameConfigurationWindow.GameCategoryItem>() {
+        private static List<Game> allGamesAvailable = new List<Game>();
+        public static List<Game> AllGamesAvailable {
+            get { return allGamesAvailable; }
+            set { allGamesAvailable = value; }
+        }
+        private static readonly List<GameConfigurationWindow.GameCategoryItem> categoriesList = new List<GameConfigurationWindow.GameCategoryItem>() {
             new GameConfigurationWindow.GameCategoryItem() { Name = "Nombre", GameCategory = new GameCategory(0, null, "Nombre"), IsSelected = false },
             new GameConfigurationWindow.GameCategoryItem() { Name = "Apellido", GameCategory = new GameCategory(0, null, "Apellido"), IsSelected = false },
             new GameConfigurationWindow.GameCategoryItem() { Name = "Color", GameCategory = new GameCategory(0, null, "Color"), IsSelected = false },
             new GameConfigurationWindow.GameCategoryItem() { Name = "Animal", GameCategory = new GameCategory(0, null, "Animal"), IsSelected = false },
             new GameConfigurationWindow.GameCategoryItem() { Name = "Fruta", GameCategory = new GameCategory(0, null, "Fruta"), IsSelected = false }
         };
-        public static ObservableCollection<GameConfigurationWindow.GameCategoryItem> CategoriesList {
+        public static List<GameConfigurationWindow.GameCategoryItem> CategoriesList {
             get { return categoriesList; }
         }
 
@@ -101,6 +107,7 @@ namespace DOST {
                             existentGame.Categories = gameCategories;
                             continue;
                         }
+                        allGamesAvailable.Add(game);
                         Application.Current.Dispatcher.Invoke(delegate {
                             gamesList.Add(game);
                         });
@@ -110,6 +117,9 @@ namespace DOST {
                         var getGame = serviceGamesList.Find(gameInServiceList => gameInServiceList.ActiveGameGuid == game.ActiveGuidGame);
                         if (getGame == null) {
                             gamesToRemove.Add(game);
+                            allGamesAvailable.Remove(allGamesAvailable.Find(gameAvailable => gameAvailable.ActiveGuidGame == game.ActiveGuidGame));
+                        } else if (getGame.Round != 0 || getGame.Players.Count >= MAX_PLAYERS_IN_GAME) {
+                            gamesToRemove.Add(game);
                         }
                     }
                     gamesToRemove.ForEach((game) => {
@@ -117,7 +127,6 @@ namespace DOST {
                             gamesList.Remove(game);
                         });
                     });
-                    //Thread.Sleep(100);
                 }
                 return true;
             });

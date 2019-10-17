@@ -44,13 +44,7 @@ namespace DOST {
         }
 
         public string GetRank() {
-            var rank = Properties.Resources.NotRankedText;
-            EngineNetwork.EstablishChannel<IAccountService>((service) => {
-                var accountRank = service.GetRank(account.Id);
-                rank = string.IsNullOrEmpty(accountRank) ? rank : accountRank;
-                return true;
-            });
-            return rank;
+            return account.GetRank();
         }
 
         public bool SetPlayerReady(bool isReady) {

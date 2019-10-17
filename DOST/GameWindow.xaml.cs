@@ -27,60 +27,58 @@ namespace DOST {
             Title = Properties.Resources.RoundText + game.Round + " - DOST";
             InitializeComponent();
             this.game = game;
-            InstanceContext gameInstance = new InstanceContext(new InGameCallbackHandler(game));
+            InstanceContext gameInstance = new InstanceContext(new InGameCallback(game));
             inGameService = new InGameServiceClient(gameInstance);
             LoadCategories();
         }
 
         public void LoadCategories() {
-            List<StackPanel> stackPanels = new List<StackPanel>();
+            List<StackPanel> categoriesStackPanels = new List<StackPanel>();
             List<TextBox> categoriesTextBox = new List<TextBox>();
             List<Button> categoriesButton = new List<Button>();
             Thickness textBlocksMargin = new Thickness(30, 0, 0, 0);
-            int categoryTextBoxWidth = 297;
-            int categoryTextBoxHeight = 38;
+
             for (int index = 0; index < game.Categories.Count; index++) {
                 playerAnswerCategoriesStackPanel.Children.Add(new TextBlock() {
                     Text = game.Categories[index].Name,
-                    Margin = textBlocksMargin
+                    Margin = textBlocksMargin,
+                    Foreground = Brushes.White
                 });
-                stackPanels.Add(new StackPanel {
+                categoriesStackPanels.Add(new StackPanel {
                     Margin = textBlocksMargin,
                     Orientation = Orientation.Horizontal
                 });
                 categoriesTextBox.Add(new TextBox() {
                     VerticalAlignment = VerticalAlignment.Top,
-                    Width = categoryTextBoxWidth,
-                    Height = categoryTextBoxHeight,
-                    Margin = new Thickness(0, 0, 10, 10)
+                    Width = 297,
+                    Height = 38,
+                    Margin = new Thickness(0, 0, 10, 10),
+                    Foreground = Brushes.White
                 });
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(categoriesTextBox[index], game.Categories[index].Name);
-                stackPanels[index].Children.Add(categoriesTextBox[index]);
-                categoriesButton.Add(new Button() {
-                    Content = "Button",
-                    Margin = new Thickness(0, 0, 146, 0)
-                });
-                stackPanels[index].Children.Add(categoriesButton[index]);
-                playerAnswerCategoriesStackPanel.Children.Add(stackPanels[index]);
+                categoriesStackPanels[index].Children.Add(categoriesTextBox[index]);
+                if (Session.CategoriesList.Exists(category => category.Name == game.Categories[index].Name)) {
+                    categoriesButton.Add(new Button() {
+                        Content = Properties.Resources.GetWordButton,
+                        Margin = new Thickness(0, 0, 146, 0),
+                        Tag = index
+                    });
+                    categoriesStackPanels[index].Children.Add(categoriesButton[index]);
+                }
+                playerAnswerCategoriesStackPanel.Children.Add(categoriesStackPanels[index]);
             }
         }
 
-        public class InGameCallbackHandler : IInGameServiceCallback {
-            private Game game;
-            public Game Game {
-                get { return game; }
-                set { game = value; }
-            }
-
-            public InGameCallbackHandler(Game game) {
+        public class InGameCallback : InGameCallbackHandler {
+            public InGameCallback(Game game) {
                 this.game = game;
             }
 
-            public void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
+            public override void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
                 throw new NotImplementedException();
             }
 
-            public void StartGame(string guidGame) {
+            public override void StartGame(string guidGame) {
                 throw new NotImplementedException();
             }
         }
@@ -91,5 +89,16 @@ namespace DOST {
                 DragMove();
             }
         }
+    }
+
+    public abstract class InGameCallbackHandler : IInGameServiceCallback {
+        protected Game game;
+        public Game Game {
+            get { return game; }
+            set { game = value; }
+        }
+
+        public abstract void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady);
+        public abstract void StartGame(string guidGame);
     }
 }

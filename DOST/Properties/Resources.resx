@@ -324,4 +324,25 @@
   <data name="PlayersNotReadyErrorText" xml:space="preserve">
     <value>No todos los jugadores están listos.</value>
   </data>
+  <data name="Cost20CoinsSelectionText" xml:space="preserve">
+    <value>Costo: 20 monedas</value>
+  </data>
+  <data name="CostFreeLetterSelectionText" xml:space="preserve">
+    <value>Costo: Gratis</value>
+  </data>
+  <data name="SelectASpecificLetterButton" xml:space="preserve">
+    <value>Seleccionar letra a decisión</value>
+  </data>
+  <data name="SelectRandomLetterButton" xml:space="preserve">
+    <value>Seleccionar letra al azar</value>
+  </data>
+  <data name="WaitingForLetterSelectionText" xml:space="preserve">
+    <value>Esperando a que se seleccione una letra...</value>
+  </data>
+  <data name="GetWordButton" xml:space="preserve">
+    <value>Obtener palabra</value>
+  </data>
+  <data name="YouAreAlreadyInAGame" xml:space="preserve">
+    <value>Ya estás dentro de una partida.</value>
+  </data>
 </root>

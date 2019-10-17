@@ -114,5 +114,15 @@ namespace DOST {
             guidGame = guidNewGame;
             return returnedValue;
         }
+
+        public string GetRank() {
+            var rank = Properties.Resources.NotRankedText;
+            EngineNetwork.EstablishChannel<IAccountService>((service) => {
+                var accountRank = service.GetRank(id);
+                rank = string.IsNullOrEmpty(accountRank) ? rank : accountRank;
+                return true;
+            });
+            return rank;
+        }
     }
 }
