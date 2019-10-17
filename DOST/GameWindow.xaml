@@ -9,7 +9,7 @@
         xmlns:p="clr-namespace:DOST.Properties"
         Title="" Height="687" Width="1073" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Image HorizontalAlignment="Left" Height="687" VerticalAlignment="Top" Width="1073" Source="Images/DOST_GameWindow.png" Stretch="Fill"/>
+        <Image HorizontalAlignment="Left" Height="687" VerticalAlignment="Top" Width="1073" Source="Images/DOST_GameWindow.png" Stretch="Fill" Margin="0,26,0,-26"/>
         <Rectangle HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="1074" MouseDown="WindowHeader_MouseDown" Fill="#00000000" />
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
@@ -25,6 +25,14 @@
             <TextBlock Margin="8,10,0,0" TextWrapping="Wrap" Text="{x:Static p:Resources.ScoreText}" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
             <TextBlock x:Name="scoreTextBlock" HorizontalAlignment="Left" Margin="7,10,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
         </StackPanel>
-        <StackPanel x:Name="playerAnswerCategoriesStackPanel" Margin="0,152,274,0" Orientation="Vertical"/>
+        <StackPanel x:Name="playerAnswerCategoriesStackPanel" Margin="0,152,370,0" Orientation="Vertical"/>
+
+        <StackPanel x:Name="playerStatusStackPanel" Margin="680,150,0,280" Orientation="Horizontal">
+            <TextBlock Margin="10,10,160,0" TextWrapping="Wrap" Text="{x:Static p:Resources.ScoreText}" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
+            <TextBlock Margin="10,10,150,0" TextWrapping="Wrap" Text="Dost" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
+        </StackPanel>
+        
+
+
     </Grid>
 </Window>

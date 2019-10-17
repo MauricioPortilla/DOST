@@ -69,6 +69,40 @@ namespace DOST {
             }
         }
 
+        public void LoadPlayersStatus() {
+            List<StackPanel> statusStackPanels = new List<StackPanel>();
+            List<TextBox> usernamesTextBox = new List<TextBox>();
+            List<TextBox> statusTextBox = new List<TextBox>();
+            Thickness textBlocksMargin = new Thickness(10, 0, 0, 0);
+            for (int index = 0; index < game.Players.Count(); index++) {
+                playerStatusStackPanel.Children.Add(new TextBlock() {
+                    Text = game.Players[index].Account.Username,
+                    Margin = textBlocksMargin,
+                    Foreground = Brushes.White
+                });
+                statusStackPanels.Add(new StackPanel {
+                    Margin = textBlocksMargin,
+                    Orientation = Orientation.Horizontal
+                });
+                usernamesTextBox.Add(new TextBox(){
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Width = 150,
+                    Height = 30,
+                    Margin = new Thickness(10, 10, 160, 0),
+                    Foreground = Brushes.White
+                });
+                statusTextBox.Add(new TextBox() {
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Width = 45,
+                    Height = 30,
+                    Margin = new Thickness(10, 10, 160, 0),
+                    Foreground = Brushes.White
+                });
+
+            }
+
+        }
+
         public class InGameCallback : InGameCallbackHandler {
             public InGameCallback(Game game) {
                 this.game = game;
