@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using static DOST.GameLobbyWindow;
 
 namespace DOST {
@@ -24,16 +25,40 @@ namespace DOST {
         private Game game;
         private InGameServiceClient inGameService;
         public static readonly int SECONDS_FOR_ROUND = 40;
-        
+        private int timeRemaing = 0;
+        public DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
+
         public GameWindow(ref Game game) {
             Title = Properties.Resources.RoundText + game.Round + " - DOST";
+            DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += timer_Tick;
             InitializeComponent();
             this.game = game;
             InstanceContext gameInstance = new InstanceContext(new InGameCallback(game));
             inGameService = new InGameServiceClient(gameInstance);
             LoadCategories();
             LoadPlayersStatus();
+            timer.Start();
+        }
 
+        void timer_Tick(object sender, EventArgs e){
+            if (timeRemaing <= SECONDS_FOR_ROUND) {
+                int showTime = (SECONDS_FOR_ROUND - timeRemaing);
+                if (showTime > 10)
+                {
+                    timeRemainingTextBlock.Text = showTime.ToString();
+                }
+                else {
+                    timeRemainingTextBlock.Text = "0"+showTime.ToString();
+                }
+                if (showTime > 0){
+                    timeRemaing++;
+                }
+                else {
+                    timer.Stop();
+                }
+            }         
         }
 
         public void LoadCategories() {
