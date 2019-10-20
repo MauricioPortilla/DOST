@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,7 +23,8 @@ namespace DOST {
     public partial class GameWindow : Window {
         private Game game;
         private InGameServiceClient inGameService;
-
+        public static readonly int SECONDS_FOR_ROUND = 40;
+        
         public GameWindow(ref Game game) {
             Title = Properties.Resources.RoundText + game.Round + " - DOST";
             InitializeComponent();
@@ -30,6 +32,8 @@ namespace DOST {
             InstanceContext gameInstance = new InstanceContext(new InGameCallback(game));
             inGameService = new InGameServiceClient(gameInstance);
             LoadCategories();
+            LoadPlayersStatus();
+
         }
 
         public void LoadCategories() {
@@ -98,12 +102,12 @@ namespace DOST {
                     Margin = new Thickness(10, 10, 160, 0),
                     Foreground = Brushes.White
                 });
-
+                
             }
 
         }
 
-        public class InGameCallback : InGameCallbackHandler {
+             public class InGameCallback : InGameCallbackHandler {
             public InGameCallback(Game game) {
                 this.game = game;
             }

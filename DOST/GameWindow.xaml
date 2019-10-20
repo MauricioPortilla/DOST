@@ -27,12 +27,16 @@
         </StackPanel>
         <StackPanel x:Name="playerAnswerCategoriesStackPanel" Margin="0,152,370,0" Orientation="Vertical"/>
 
-        <StackPanel x:Name="playerStatusStackPanel" Margin="680,150,0,280" Orientation="Horizontal">
+        <StackPanel x:Name="playerStatusStackPanel" Margin="680,150,0,320" Orientation="Horizontal">
             <TextBlock Margin="10,10,160,0" TextWrapping="Wrap" Text="{x:Static p:Resources.ScoreText}" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
             <TextBlock Margin="10,10,150,0" TextWrapping="Wrap" Text="Dost" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
         </StackPanel>
-        
 
+        <StackPanel x:Name="dostButtonStackPanel" Margin="680,450,0,0" Orientation="Horizontal">
+            <Ellipse x:Name="dostButton" Width="208" Margin="60,0,0,40" Cursor="Hand"/>
+
+
+        </StackPanel>
 
     </Grid>
 </Window>
