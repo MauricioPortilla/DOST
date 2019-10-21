@@ -250,6 +250,24 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Error al unirse a la partida..
+        /// </summary>
+        public static string CouldntJoinToGameErrorText {
+            get {
+                return ResourceManager.GetString("CouldntJoinToGameErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error al seleccionar la letra..
+        /// </summary>
+        public static string CouldntSelectLetterErrorText {
+            get {
+                return ResourceManager.GetString("CouldntSelectLetterErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Creado por.
         /// </summary>
         public static string CreatedByText {
@@ -457,6 +475,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Debes seleccionar una letra..
+        /// </summary>
+        public static string MustSelectALetterErrorText {
+            get {
+                return ResourceManager.GetString("MustSelectALetterErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Debes tener al menos 1 categoría seleccionada en la lista..
         /// </summary>
         public static string MustSelectAtLeastOneCategoryErrorText {
@@ -480,6 +507,15 @@ namespace DOST.Properties {
         public static string NewCategoryNameEmptyErrorText {
             get {
                 return ResourceManager.GetString("NewCategoryNameEmptyErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error al iniciar la ronda. No se encontró un anfitrión..
+        /// </summary>
+        public static string NoHostFoundErrorText {
+            get {
+                return ResourceManager.GetString("NoHostFoundErrorText", resourceCulture);
             }
         }
         
@@ -642,6 +678,24 @@ namespace DOST.Properties {
         public static string SelectASpecificLetterButton {
             get {
                 return ResourceManager.GetString("SelectASpecificLetterButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Seleccionar.
+        /// </summary>
+        public static string SelectButton {
+            get {
+                return ResourceManager.GetString("SelectButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Seleccionar letra.
+        /// </summary>
+        public static string SelectLetterText {
+            get {
+                return ResourceManager.GetString("SelectLetterText", resourceCulture);
             }
         }
         

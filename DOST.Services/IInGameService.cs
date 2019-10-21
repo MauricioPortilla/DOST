@@ -18,6 +18,9 @@ namespace DOST.Services {
         void LeavePlayer(string guidGame, string guidPlayer);
 
         [OperationContract(IsOneWay = true)]
+        void StartRound(string guidGame);
+
+        [OperationContract(IsOneWay = true)]
         void StartGame(string guidGame);
     }
 
@@ -25,6 +28,9 @@ namespace DOST.Services {
     public interface IInGameServiceCallback {
         [OperationContract(IsOneWay = true)]
         void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady);
+
+        [OperationContract(IsOneWay = true)]
+        void StartRound(string guidGame);
 
         [OperationContract(IsOneWay = true)]
         void StartGame(string guidGame);

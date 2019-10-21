@@ -38,5 +38,11 @@ namespace DOST.Services {
 
         [OperationContract]
         bool StartGame(string guidGame);
+
+        [OperationContract]
+        bool SetGameLetter(string guidGame, bool selectRandomLetter, string letter = null);
+
+        [OperationContract]
+        Game GetActiveGame(string guidGame);
     }
 }

@@ -24,41 +24,30 @@ namespace DOST {
     public partial class GameWindow : Window {
         private Game game;
         private InGameServiceClient inGameService;
-        public static readonly int SECONDS_FOR_ROUND = 40;
-        private int timeRemaing = 0;
-        public DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
+        public static readonly int SECONDS_PER_ROUND = 40;
+        private int timeRemaining = SECONDS_PER_ROUND;
+        public DispatcherTimer gameCountdownTimer = new DispatcherTimer();
 
-        public GameWindow(ref Game game) {
-            Title = Properties.Resources.RoundText + game.Round + " - DOST";
-            DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += timer_Tick;
+        public GameWindow(Game game) {
             InitializeComponent();
-            this.game = game;
+            this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+            Title = Properties.Resources.RoundText + game.Round + " - DOST";
+            gameCountdownTimer.Interval = TimeSpan.FromSeconds(1);
+            gameCountdownTimer.Tick += gameCountdownTimer_Tick;
             InstanceContext gameInstance = new InstanceContext(new InGameCallback(game));
             inGameService = new InGameServiceClient(gameInstance);
             LoadCategories();
             LoadPlayersStatus();
-            timer.Start();
+            gameCountdownTimer.Start();
         }
 
-        void timer_Tick(object sender, EventArgs e){
-            if (timeRemaing <= SECONDS_FOR_ROUND) {
-                int showTime = (SECONDS_FOR_ROUND - timeRemaing);
-                if (showTime > 10)
-                {
-                    timeRemainingTextBlock.Text = showTime.ToString();
-                }
-                else {
-                    timeRemainingTextBlock.Text = "0"+showTime.ToString();
-                }
-                if (showTime > 0){
-                    timeRemaing++;
-                }
-                else {
-                    timer.Stop();
-                }
-            }         
+        void gameCountdownTimer_Tick(object sender, EventArgs e){
+            if (timeRemaining >= 0) {
+                timeRemainingTextBlock.Text = timeRemaining.ToString();
+                timeRemaining--;
+            } else {
+                gameCountdownTimer.Stop();
+            }
         }
 
         public void LoadCategories() {
@@ -84,7 +73,7 @@ namespace DOST {
                     Margin = new Thickness(0, 0, 10, 10),
                     Foreground = Brushes.White
                 });
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(categoriesTextBox[index], game.Categories[index].Name);
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(categoriesTextBox[index], game.LetterSelected + "...");
                 categoriesStackPanels[index].Children.Add(categoriesTextBox[index]);
                 if (Session.CategoriesList.Exists(category => category.Name == game.Categories[index].Name)) {
                     categoriesButton.Add(new Button() {
@@ -103,7 +92,7 @@ namespace DOST {
             List<TextBox> usernamesTextBox = new List<TextBox>();
             List<TextBox> statusTextBox = new List<TextBox>();
             Thickness textBlocksMargin = new Thickness(10, 0, 0, 0);
-            for (int index = 0; index < game.Players.Count(); index++) {
+            for (int index = 0; index < game.Players.Count; index++) {
                 playerStatusStackPanel.Children.Add(new TextBlock() {
                     Text = game.Players[index].Account.Username,
                     Margin = textBlocksMargin,
@@ -127,12 +116,10 @@ namespace DOST {
                     Margin = new Thickness(10, 10, 160, 0),
                     Foreground = Brushes.White
                 });
-                
             }
-
         }
 
-             public class InGameCallback : InGameCallbackHandler {
+        public class InGameCallback : InGameCallbackHandler {
             public InGameCallback(Game game) {
                 this.game = game;
             }
@@ -142,6 +129,10 @@ namespace DOST {
             }
 
             public override void StartGame(string guidGame) {
+                throw new NotImplementedException();
+            }
+
+            public override void StartRound(string guidGame) {
                 throw new NotImplementedException();
             }
         }
@@ -162,6 +153,7 @@ namespace DOST {
         }
 
         public abstract void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady);
+        public abstract void StartRound(string guidGame);
         public abstract void StartGame(string guidGame);
     }
 }

@@ -342,4 +342,22 @@
   <data name="YouAreAlreadyInAGame" xml:space="preserve">
     <value>You are already in a game.</value>
   </data>
+  <data name="CouldntSelectLetterErrorText" xml:space="preserve">
+    <value>Couldn't select a letter.</value>
+  </data>
+  <data name="MustSelectALetterErrorText" xml:space="preserve">
+    <value>You must select a letter.</value>
+  </data>
+  <data name="NoHostFoundErrorText" xml:space="preserve">
+    <value>Couldn't start round. No host found.</value>
+  </data>
+  <data name="SelectButton" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="SelectLetterText" xml:space="preserve">
+    <value>Select letter</value>
+  </data>
+  <data name="CouldntJoinToGameErrorText" xml:space="preserve">
+    <value>Couldn't join to the game.</value>
+  </data>
 </root>

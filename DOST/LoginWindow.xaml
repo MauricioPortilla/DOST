@@ -8,8 +8,14 @@
         xmlns:p="clr-namespace:DOST.Properties"
         mc:Ignorable="d"
         Title="{x:Static p:Resources.LoginWindowTitle}" Height="399.283" Width="504.918">
-
     <Grid>
+        <materialDesign:DialogHost Identifier="WindowDialogHost" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="16" x:Name="loadingStackPanel">
+                    <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}" HorizontalAlignment="Center" Margin="16" IsIndeterminate="True" Value="0" />
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
         <TextBox x:Name="usernameTextBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.UsernameText}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,146,244" HorizontalAlignment="Right" Width="200" Height="38" VerticalAlignment="Bottom" />
         <PasswordBox x:Name="passwordPasswordBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.PasswordText}" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,146,201" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="200" />
         <Button x:Name="loginButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.LoginButton}" Margin="182,189,182,147" Click="LoginButton_Click"/>

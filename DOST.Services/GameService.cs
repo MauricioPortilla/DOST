@@ -214,5 +214,24 @@ namespace DOST.Services {
             findGame.Round = 1;
             return true;
         }
+
+        public bool SetGameLetter(string guidGame, bool selectRandomLetter, string letter = null) {
+            var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
+            if (findGame == null) {
+                return false;
+            } else if (!selectRandomLetter && string.IsNullOrWhiteSpace(letter)) {
+                return false;
+            }
+            findGame.LetterSelected = selectRandomLetter ? Convert.ToChar(new Random().Next(65, 90)).ToString() : letter;
+            return true;
+        }
+
+        public Game GetActiveGame(string guidGame) {
+            var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
+            if (findGame == null) {
+                return new Game();
+            }
+            return findGame;
+        }
     }
 }

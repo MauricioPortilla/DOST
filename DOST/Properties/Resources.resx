@@ -345,4 +345,22 @@
   <data name="YouAreAlreadyInAGame" xml:space="preserve">
     <value>Ya estás dentro de una partida.</value>
   </data>
+  <data name="CouldntSelectLetterErrorText" xml:space="preserve">
+    <value>Error al seleccionar la letra.</value>
+  </data>
+  <data name="MustSelectALetterErrorText" xml:space="preserve">
+    <value>Debes seleccionar una letra.</value>
+  </data>
+  <data name="NoHostFoundErrorText" xml:space="preserve">
+    <value>Error al iniciar la ronda. No se encontró un anfitrión.</value>
+  </data>
+  <data name="SelectButton" xml:space="preserve">
+    <value>Seleccionar</value>
+  </data>
+  <data name="SelectLetterText" xml:space="preserve">
+    <value>Seleccionar letra</value>
+  </data>
+  <data name="CouldntJoinToGameErrorText" xml:space="preserve">
+    <value>Error al unirse a la partida.</value>
+  </data>
 </root>

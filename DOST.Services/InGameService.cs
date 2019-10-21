@@ -44,6 +44,15 @@ namespace DOST.Services {
             }
         }
 
+        public void StartRound(string guidGame) {
+            if (!gamesClients.ContainsKey(guidGame)) {
+                return;
+            }
+            foreach (var player in gamesClients[guidGame]) {
+                player.Value.StartRound(guidGame);
+            }
+        }
+
         public void StartGame(string guidGame) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 return;
@@ -69,6 +78,10 @@ namespace DOST.Services {
 
         public void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
             base.Channel.SetPlayerReady(guidGame, guidPlayer, isPlayerReady);
+        }
+
+        public void StartRound(string guidGame) {
+            base.Channel.StartRound(guidGame);
         }
 
         public void StartGame(string guidGame) {

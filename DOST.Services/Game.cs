@@ -40,6 +40,8 @@ namespace DOST.Services {
         }
         [DataMember]
         public string ActiveGameGuid;
+        [DataMember]
+        public string LetterSelected;
 
         public Game() {
         }

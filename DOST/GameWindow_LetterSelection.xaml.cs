@@ -19,6 +19,7 @@ namespace DOST {
     /// Lógica de interacción para GameWindow_LetterSelection.xaml
     /// </summary>
     public partial class GameWindow_LetterSelection : Window {
+        public bool IsClosed { get; private set; } = false;
         private Game game;
         private Player player;
         private bool showLetterSelectionOptions = false;
@@ -29,34 +30,40 @@ namespace DOST {
             this.game = game;
             this.player = player;
             this.showLetterSelectionOptions = showLetterSelectionOptions;
-            Closed += (sender, e) => {
-                inGameService.LeavePlayer(this.game.ActiveGuidGame, this.player.ActivePlayerGuid);
-                Session.MainMenuWindow.Show();
-            };
-
             try {
-                InstanceContext gameInstance = new InstanceContext(new InGameCallback(game));
+                InstanceContext gameInstance = new InstanceContext(new InGameCallback(game, this));
                 inGameService = new InGameServiceClient(gameInstance);
                 inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
             } catch (CommunicationException communicationException) {
                 Console.WriteLine("CommunicationException -> " + communicationException.Message);
-                MessageBox.Show("Se perdió la conexión.");
+                MessageBox.Show(Properties.Resources.CouldntJoinToGameErrorText);
                 return;
             }
             ShowLetterSelectionOptions(showLetterSelectionOptions);
         }
 
         public class InGameCallback : InGameCallbackHandler {
-            public InGameCallback(Game game) {
+            private GameWindow_LetterSelection window;
+
+            public InGameCallback(Game game, GameWindow_LetterSelection window) {
                 this.game = game;
+                this.window = window;
             }
 
             public override void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
                 throw new NotImplementedException();
             }
 
-            public override void StartGame(string guidGame) {
+            public override void StartRound(string guidGame) {
                 throw new NotImplementedException();
+            }
+
+            public override void StartGame(string guidGame) {
+                if (game.ActiveGuidGame == guidGame) {
+                    Session.GameWindow = new GameWindow(game);
+                    Session.GameWindow.Show();
+                    window.Close();
+                }
             }
         }
 
@@ -71,11 +78,37 @@ namespace DOST {
         }
 
         private void SelectRandomLetterButton_Click(object sender, RoutedEventArgs e) {
-
+            if (game.SetLetter(true)) {
+                inGameService.StartGame(game.ActiveGuidGame);
+                return;
+            }
+            MessageBox.Show(Properties.Resources.CouldntSelectLetterErrorText);
         }
 
         private void SelectSpecificLetterButton_Click(object sender, RoutedEventArgs e) {
+            letterComboBox.Items.Clear();
+            for (int letterASCII = 0; letterASCII <= 26; letterASCII++) {
+                letterComboBox.Items.Add(Convert.ToChar(letterASCII).ToString());
+            }
+            letterSelectionOptionsGrid.Visibility = Visibility.Hidden;
+            letterSelectionSelectorGrid.Visibility = Visibility.Visible;
+        }
 
+        private void SelectLetterButton_Click(object sender, RoutedEventArgs e) {
+            if (letterComboBox.SelectedItem == null) {
+                MessageBox.Show(Properties.Resources.MustSelectALetterErrorText);
+                return;
+            }
+            if (game.SetLetter(false, letterComboBox.SelectedItem.ToString())) {
+                inGameService.StartGame(game.ActiveGuidGame);
+                return;
+            }
+            MessageBox.Show(Properties.Resources.CouldntSelectLetterErrorText);
+        }
+
+        protected override void OnClosed(EventArgs e) {
+            base.OnClosed(e);
+            IsClosed = true;
         }
     }
 }

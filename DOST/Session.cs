@@ -60,10 +60,58 @@ namespace DOST {
         public static List<GameConfigurationWindow.GameCategoryItem> CategoriesList {
             get { return categoriesList; }
         }
+        /*private static Game gameBeingPlayed;
+        public static Game GameBeingPlayed {
+            get { return gameBeingPlayed; }
+            set { gameBeingPlayed = value; }
+        }*/
+
+        /*private static void GetGameBeingPlayedData(IGameService service) {
+            if (gameBeingPlayed == null) {
+                return;
+            }
+            var activeGame = service.GetActiveGame(gameBeingPlayed.ActiveGuidGame);
+            if (string.IsNullOrEmpty(activeGame.ActiveGameGuid)) {
+                return;
+            }
+            var newGameBeingPlayer = new Game(activeGame.Id, activeGame.Round, activeGame.Date, new List<Player>()) {
+                ActiveGuidGame = activeGame.ActiveGameGuid,
+                LetterSelected = activeGame.LetterSelected
+            };
+            activeGame.Players.ForEach((player) => {
+                newGameBeingPlayer.Players.Add(new Player(
+                    id: 0,
+                    new Account(player.Account.Id) {
+                        Username = player.Account.Username,
+                        Password = player.Account.Password,
+                        Email = player.Account.Email,
+                        Coins = player.Account.Coins,
+                        CreationDate = player.Account.CreationDate,
+                        IsVerified = player.Account.IsVerified,
+                        ValidationCode = player.Account.ValidationCode
+                    },
+                    newGameBeingPlayer,
+                    player.Score,
+                    player.IsHost
+                ) {
+                    ActivePlayerGuid = player.ActivePlayerGuid,
+                    IsReady = player.IsReady
+                });
+            });
+            newGameBeingPlayer.Categories = new List<GameCategory>();
+            activeGame.GameCategories.ForEach((category) => {
+                newGameBeingPlayer.Categories.Add(new GameCategory(0, gameBeingPlayed, category.Name));
+            });
+            gameBeingPlayed = newGameBeingPlayer;
+        }*/
 
         public static void GetGamesList() {
             EngineNetwork.EstablishChannel<IGameService>((service) => {
                 while (mainMenuWindow != null) {
+                    //if (gameWindow != null || gameLobbyWindow != null) {
+                    //    GetGameBeingPlayedData(service);
+                    //    continue;
+                    //}
                     List<Services.Game> serviceGamesList = service.GetGamesList();
                     foreach (var serviceGame in serviceGamesList) {
                         List<Player> playersList = new List<Player>();
@@ -72,8 +120,10 @@ namespace DOST {
                             serviceGame.Round,
                             serviceGame.Date,
                             playersList
-                        );
-                        game.ActiveGuidGame = serviceGame.ActiveGameGuid;
+                        ) {
+                            ActiveGuidGame = serviceGame.ActiveGameGuid,
+                            LetterSelected = serviceGame.LetterSelected
+                        };
                         serviceGame.Players.ForEach((player) => {
                             playersList.Add(new Player(
                                 id: 0,
@@ -105,9 +155,17 @@ namespace DOST {
                             var existentGame = gamesList.ToList().Find(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid);
                             existentGame.Players = playersList;
                             existentGame.Categories = gameCategories;
+                            existentGame.LetterSelected = serviceGame.LetterSelected;
                             continue;
                         }
-                        allGamesAvailable.Add(game);
+                        if (allGamesAvailable.Exists(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid)) {
+                            var existentGame = allGamesAvailable.ToList().Find(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid);
+                            existentGame.Players = playersList;
+                            existentGame.Categories = gameCategories;
+                            existentGame.LetterSelected = serviceGame.LetterSelected;
+                        } else {
+                            allGamesAvailable.Add(game);
+                        }
                         Application.Current.Dispatcher.Invoke(delegate {
                             gamesList.Add(game);
                         });

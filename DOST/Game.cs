@@ -55,6 +55,7 @@ namespace DOST {
             set { categories = value; }
         }
         public string ActiveGuidGame;
+        public string LetterSelected;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Game(int id, int round, DateTime date, List<Player> players) {
@@ -86,6 +87,12 @@ namespace DOST {
             round = 1;
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
                 return service.StartGame(ActiveGuidGame);
+            });
+        }
+
+        public bool SetLetter(bool selectRandomLetter, string letter = null) {
+            return EngineNetwork.EstablishChannel<IGameService>((service) => {
+                return service.SetGameLetter(ActiveGuidGame, selectRandomLetter, letter);
             });
         }
     }

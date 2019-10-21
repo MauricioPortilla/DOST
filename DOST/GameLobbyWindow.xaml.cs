@@ -72,7 +72,7 @@ namespace DOST {
                 inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
             } catch (CommunicationException communicationException) {
                 Console.WriteLine("CommunicationException -> " + communicationException.Message);
-                MessageBox.Show("Error al unirse a la partida.");
+                MessageBox.Show(Properties.Resources.CouldntJoinToGameErrorText);
                 Close();
             }
         }
@@ -125,22 +125,26 @@ namespace DOST {
                 }
             }
 
-            public void StartGame(string guidGame) {
+            public void StartRound(string guidGame) {
                 if (guidGame == game.ActiveGuidGame) {
                     var findHost = game.Players.Find(player => player.IsHost);
                     if (findHost != null) {
                         var findPlayer = game.Players.Find(player => player.Account.Id == Session.Account.Id);
                         new GameWindow_LetterSelection(ref game, ref findPlayer, findHost.Account.Id == Session.Account.Id).Show();
                     } else {
-                        MessageBox.Show("Error al iniciar la partida. No se encontró un anfitrión.");
+                        MessageBox.Show(Properties.Resources.NoHostFoundErrorText);
                     }
                     Session.GameLobbyWindow.Close();
                     Session.GameLobbyWindow = null;
                 }
             }
+
+            public void StartGame(string guidGame) {
+                throw new NotImplementedException();
+            }
         }
 
-        public void LoadPlayersJoinedData() {
+        private void LoadPlayersJoinedData() {
             while (!IsClosed) {
                 try {
                     List<Game> games = Session.AllGamesAvailable;
@@ -226,7 +230,7 @@ namespace DOST {
                     return;
                 }
             }
-            inGameService.StartGame(game.ActiveGuidGame);
+            inGameService.StartRound(game.ActiveGuidGame);
         }
 
         private void ReadyButton_Click(object sender, RoutedEventArgs e) {

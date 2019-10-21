@@ -1,4 +1,5 @@
 ﻿using DOST.Services;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -32,22 +34,32 @@ namespace DOST {
                 return;
             }
             Account account = new Account(usernameTextBox.Text, passwordPasswordBox.Password);
-            if (!account.Login()) {
-                if (account.Id == 0) {
-                    MessageBox.Show(Properties.Resources.LoginErrorText);
-                    return;
-                }
-                if (!account.IsVerified) {
-                    MessageBox.Show(Properties.Resources.AccountNotConfirmedErrorText);
-                    return;
-                }
-            }
-            passwordPasswordBox.Password = "";
-            Session.Account = account;
-            Session.MainMenuWindow = new MainMenuWindow();
-            Session.LoginWindow = this;
-            Session.MainMenuWindow.Show();
-            Hide();
+            var dialogTask = DialogHost.Show(loadingStackPanel, "WindowDialogHost", (openSender, openEventArgs) => {
+                EngineNetwork.DoNetworkAction(onExecute: () => {
+                    if (!account.Login()) {
+                        if (account.Id == 0) {
+                            MessageBox.Show(Properties.Resources.LoginErrorText);
+                        } else if (!account.IsVerified) {
+                            MessageBox.Show(Properties.Resources.AccountNotConfirmedErrorText);
+                        }
+                        return false;
+                    }
+                    return true;
+                }, onSuccess: () => {
+                    Application.Current.Dispatcher.Invoke(delegate {
+                        passwordPasswordBox.Password = "";
+                        Session.Account = account;
+                        Session.MainMenuWindow = new MainMenuWindow();
+                        Session.LoginWindow = this;
+                        Session.MainMenuWindow.Show();
+                        Hide();
+                    });
+                }, onFinish: () => {
+                    Application.Current.Dispatcher.Invoke(delegate {
+                        openEventArgs.Session.Close(true);
+                    });
+                }, false);
+            }, null);
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e) {
