@@ -51,6 +51,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoryPlayerAnswer.cs" />
     <Compile Include="GameCategory.cs" />
     <Compile Include="ChatService.cs" />
     <Compile Include="Account.cs" />

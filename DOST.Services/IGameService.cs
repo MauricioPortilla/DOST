@@ -44,5 +44,8 @@ namespace DOST.Services {
 
         [OperationContract]
         Game GetActiveGame(string guidGame);
+
+        [OperationContract]
+        bool SendCategoryAnswers(string guidGame, string guidPlayer, List<CategoryPlayerAnswer> categoryPlayerAnswers);
     }
 }

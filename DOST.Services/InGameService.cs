@@ -6,10 +6,13 @@ using System.ServiceModel;
 using System.Text;
 
 namespace DOST.Services {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class InGameService : IInGameService {
         private static readonly Dictionary<string, Dictionary<string, IInGameServiceCallback>> gamesClients =
             new Dictionary<string, Dictionary<string, IInGameServiceCallback>>();
+        public static Dictionary<string, Dictionary<string, IInGameServiceCallback>> GamesClients {
+            get { return gamesClients; }
+        }
 
         public void EnterPlayer(string guidGame, string guidPlayer) {
             if (!gamesClients.ContainsKey(guidGame)) {
@@ -61,6 +64,15 @@ namespace DOST.Services {
                 player.Value.StartGame(guidGame);
             }
         }
+
+        public void EndRound(string guidGame) {
+            if (!gamesClients.ContainsKey(guidGame)) {
+                return;
+            }
+            foreach (var player in gamesClients[guidGame]) {
+                player.Value.EndRound(guidGame);
+            }
+        }
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
@@ -86,6 +98,10 @@ namespace DOST.Services {
 
         public void StartGame(string guidGame) {
             base.Channel.StartGame(guidGame);
+        }
+
+        public void EndRound(string guidGame) {
+            base.Channel.EndRound(guidGame);
         }
     }
 }

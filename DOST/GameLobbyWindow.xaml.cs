@@ -142,6 +142,10 @@ namespace DOST {
             public void StartGame(string guidGame) {
                 throw new NotImplementedException();
             }
+
+            public void EndRound(string guidGame) {
+                throw new NotImplementedException();
+            }
         }
 
         private void LoadPlayersJoinedData() {

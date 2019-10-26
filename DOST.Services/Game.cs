@@ -42,6 +42,8 @@ namespace DOST.Services {
         public string ActiveGameGuid;
         [DataMember]
         public string LetterSelected;
+        [DataMember]
+        public long RoundStartingTime;
 
         public Game() {
         }

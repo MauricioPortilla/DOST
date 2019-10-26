@@ -21,6 +21,11 @@ namespace DOST {
             get { return name; }
             set { name = value; }
         }
+        private List<CategoryPlayerAnswer> categoryPlayerAnswers = new List<CategoryPlayerAnswer>();
+        public List<CategoryPlayerAnswer> CategoryPlayerAnswer {
+            get { return categoryPlayerAnswers; }
+            set { categoryPlayerAnswers = value; }
+        }
 
         public GameCategory(int id, Game game, string name) {
             this.id = id;

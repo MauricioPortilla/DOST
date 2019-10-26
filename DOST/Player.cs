@@ -52,5 +52,19 @@ namespace DOST {
                 return service.SetPlayerReady(game.ActiveGuidGame, activePlayerGuid, isReady);
             });
         }
+
+        public bool SendCategoryAnswers(List<CategoryPlayerAnswer> categoryPlayerAnswers) {
+            List<Services.CategoryPlayerAnswer> categoryPlayerAnswersService = new List<Services.CategoryPlayerAnswer>();
+            foreach (var categoryPlayerAnswer in categoryPlayerAnswers) {
+                categoryPlayerAnswersService.Add(new Services.CategoryPlayerAnswer {
+                    Answer = categoryPlayerAnswer.Answer,
+                    Round = categoryPlayerAnswer.Round,
+                    GameCategory = new Services.GameCategory(0, null, categoryPlayerAnswer.GameCategory.Name)
+                });
+            }
+            return EngineNetwork.EstablishChannel<IGameService>((service) => {
+                return service.SendCategoryAnswers(game.ActiveGuidGame, activePlayerGuid, categoryPlayerAnswersService);
+            });
+        }
     }
 }

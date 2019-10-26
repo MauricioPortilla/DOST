@@ -65,6 +65,10 @@ namespace DOST {
                     window.Close();
                 }
             }
+
+            public override void EndRound(string guidGame) {
+                throw new NotImplementedException();
+            }
         }
 
         public void ShowLetterSelectionOptions(bool show) {

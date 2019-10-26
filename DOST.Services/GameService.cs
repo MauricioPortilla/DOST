@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using System.Threading.Tasks;
 using DOST.DataAccess;
 
 namespace DOST.Services {
@@ -13,6 +15,9 @@ namespace DOST.Services {
         /// Stores active games ID with players lists.
         /// </summary>
         private static readonly List<Game> activeGames = new List<Game>();
+        public static List<Game> ActiveGames {
+            get { return activeGames; }
+        }
         private static readonly int MAX_PLAYERS_IN_GAME = 4;
 
         public List<Game> GetGamesList() {
@@ -223,6 +228,20 @@ namespace DOST.Services {
                 return false;
             }
             findGame.LetterSelected = selectRandomLetter ? Convert.ToChar(new Random().Next(65, 90)).ToString() : letter;
+            findGame.RoundStartingTime = DateTime.Now.Ticks;
+            Task.Run(() => {
+                var gameTimer = new DateTime(findGame.RoundStartingTime).AddSeconds(40);
+                while (gameTimer > DateTime.Now) {
+                    continue;
+                }
+                var gamesClients = InGameService.GamesClients;
+                if (!gamesClients.ContainsKey(guidGame)) {
+                    return;
+                }
+                foreach (var gameClient in gamesClients[guidGame]) {
+                    gameClient.Value.EndRound(guidGame);
+                }
+            });
             return true;
         }
 
@@ -232,6 +251,46 @@ namespace DOST.Services {
                 return new Game();
             }
             return findGame;
+        }
+
+        public bool SendCategoryAnswers(string guidGame, string guidPlayer, List<CategoryPlayerAnswer> categoryPlayerAnswers) {
+            var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
+            if (findGame == null) {
+                return false;
+            }
+            foreach (var categoryPlayerAnswer in categoryPlayerAnswers) {
+                var category = findGame.GameCategories.Find(gameCategory => gameCategory.Name.Equals(categoryPlayerAnswer.GameCategory.Name));
+                if (category == null) {
+                    continue;
+                }
+                var playerAnswerToAdd = new CategoryPlayerAnswer {
+                    GameCategory = category,
+                    Answer = categoryPlayerAnswer.Answer,
+                    Round = categoryPlayerAnswer.Round
+                };
+                playerAnswerToAdd.HasCorrectAnswer = EvaluateCategoryPlayerAnswer(playerAnswerToAdd);
+                category.CategoryPlayerAnswer.Add(playerAnswerToAdd);
+            }
+            return true;
+        }
+
+        private bool EvaluateCategoryPlayerAnswer(CategoryPlayerAnswer categoryPlayerAnswer) {
+            if (!Engine.CategoriesList.Contains(categoryPlayerAnswer.GameCategory.Name)) {
+                return true;
+            }
+            try {
+                var categoryFile = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\" + categoryPlayerAnswer.GameCategory.Name + ".txt");
+                if (categoryFile.Contains(categoryPlayerAnswer.Answer.ToLower())) {
+                    return true;
+                }
+            } catch (FileNotFoundException fileNotFoundException) {
+                Console.WriteLine("FileNotFoundException (EvaluateCategoryPlayerAnswer) -> " + fileNotFoundException.Message);
+            } catch (IOException ioException) {
+                Console.WriteLine("IOException (EvaluateCategoryPlayerAnswer) -> " + ioException.Message);
+            } catch (Exception exception) {
+                Console.WriteLine("Exception (EvaluateCategoryPlayerAnswer) -> " + exception.Message);
+            }
+            return false;
         }
     }
 }

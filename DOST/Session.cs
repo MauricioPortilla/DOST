@@ -122,7 +122,8 @@ namespace DOST {
                             playersList
                         ) {
                             ActiveGuidGame = serviceGame.ActiveGameGuid,
-                            LetterSelected = serviceGame.LetterSelected
+                            LetterSelected = serviceGame.LetterSelected,
+                            RoundStartingTime = serviceGame.RoundStartingTime
                         };
                         serviceGame.Players.ForEach((player) => {
                             playersList.Add(new Player(
@@ -163,6 +164,7 @@ namespace DOST {
                             existentGame.Players = playersList;
                             existentGame.Categories = gameCategories;
                             existentGame.LetterSelected = serviceGame.LetterSelected;
+                            existentGame.RoundStartingTime = serviceGame.RoundStartingTime;
                         } else {
                             allGamesAvailable.Add(game);
                         }

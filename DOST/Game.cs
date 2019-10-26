@@ -56,6 +56,7 @@ namespace DOST {
         }
         public string ActiveGuidGame;
         public string LetterSelected;
+        public long RoundStartingTime;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Game(int id, int round, DateTime date, List<Player> players) {
