@@ -209,5 +209,8 @@
   <ItemGroup>
     <Resource Include="Images\DOST_GameWindow.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DOST_GameWindow_EndRound.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

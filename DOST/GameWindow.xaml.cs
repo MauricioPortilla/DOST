@@ -1,4 +1,5 @@
 ﻿using DOST.Services;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace DOST {
         private List<StackPanel> categoriesStackPanels = new List<StackPanel>();
         private List<TextBox> categoriesTextBox = new List<TextBox>();
         private List<Button> categoriesButton = new List<Button>();
+        private List<TextBlock> playersStatusTextBlock = new List<TextBlock>();
 
         public GameWindow(Game game) {
             InitializeComponent();
@@ -36,11 +38,16 @@ namespace DOST {
             this.player = this.game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
             Title = Properties.Resources.RoundText + game.Round + " - DOST";
             roundTextBlock.Text = game.Round.ToString();
-            InstanceContext gameInstance = new InstanceContext(new InGameCallback(
-                this.game, this.game.Players.Find(player => player.Account.Id == Session.Account.Id), categoriesTextBox
-            ));
-            inGameService = new InGameServiceClient(gameInstance);
-            inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
+            try {
+                InstanceContext gameInstance = new InstanceContext(new InGameCallback(
+                    this.game, this.game.Players.Find(player => player.Account.Id == Session.Account.Id), categoriesTextBox, this
+                ));
+                inGameService = new InGameServiceClient(gameInstance);
+                inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
+            } catch (CommunicationException communicationException) {
+                Console.WriteLine("CommunicationException (GameWindow) -> " + communicationException.Message);
+                return;
+            }
             LoadCategories();
             LoadPlayersStatus();
             LoadTimer();
@@ -59,16 +66,16 @@ namespace DOST {
         }
 
         private void LoadCategories() {
-            Thickness textBlocksMargin = new Thickness(30, 0, 0, 0);
+            Thickness textBlockMargin = new Thickness(30, 0, 0, 0);
 
             for (int index = 0; index < game.Categories.Count; index++) {
                 playerAnswerCategoriesStackPanel.Children.Add(new TextBlock() {
                     Text = game.Categories[index].Name,
-                    Margin = textBlocksMargin,
+                    Margin = textBlockMargin,
                     Foreground = Brushes.White
                 });
                 categoriesStackPanels.Add(new StackPanel {
-                    Margin = textBlocksMargin,
+                    Margin = textBlockMargin,
                     Orientation = Orientation.Horizontal
                 });
                 categoriesTextBox.Add(new TextBox() {
@@ -96,57 +103,53 @@ namespace DOST {
 
         private void CategoryTextBox_KeyDown(object sender, KeyEventArgs e) {
             var categoryTextBox = sender as TextBox;
-            if (string.IsNullOrEmpty(categoryTextBox.Text)) {
-                if (e.Key.Equals((Key) game.LetterSelected[0])) { // TODO: FIX THIS
+            if (string.IsNullOrWhiteSpace(categoryTextBox.Text)) {
+                if (e.Key != (Key) Enum.Parse(typeof(Key), game.LetterSelected)) {
                     e.Handled = true;
                     categoryTextBox.Text = "";
                 }
-            } else if (categoryTextBox.Text.First().ToString().ToUpper() != game.LetterSelected[0].ToString()) {
-                e.Handled = true;
-                categoryTextBox.Text = "";
             }
         }
 
         private void LoadPlayersStatus() {
-            List<StackPanel> statusStackPanels = new List<StackPanel>();
-            List<TextBox> usernamesTextBox = new List<TextBox>();
-            List<TextBox> statusTextBox = new List<TextBox>();
-            Thickness textBlocksMargin = new Thickness(10, 0, 0, 0);
+            Thickness usernameMargin = new Thickness(20, 10, 0, 0);
+            Thickness statusMargin = new Thickness(0, 10, 0, 0);
             for (int index = 0; index < game.Players.Count; index++) {
-                playerStatusStackPanel.Children.Add(new TextBlock() {
-                    Text = game.Players[index].Account.Username,
-                    Margin = textBlocksMargin,
-                    Foreground = Brushes.White
-                });
-                statusStackPanels.Add(new StackPanel {
-                    Margin = textBlocksMargin,
+                var playerStackPanel = new StackPanel {
                     Orientation = Orientation.Horizontal
+                };
+                playerStackPanel.Children.Add(new TextBlock {
+                    Text = game.Players[index].Account.Username,
+                    Margin = usernameMargin,
+                    Foreground = Brushes.White,
+                    Width = 248,
+                    Tag = index
                 });
-                usernamesTextBox.Add(new TextBox(){
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Width = 150,
-                    Height = 30,
-                    Margin = new Thickness(10, 10, 160, 0),
-                    Foreground = Brushes.White
+                playersStatusTextBlock.Add(new TextBlock {
+                    Text = "DOST",
+                    Margin = statusMargin,
+                    Foreground = Brushes.White,
+                    Opacity = 0.5,
+                    Tag = index
                 });
-                statusTextBox.Add(new TextBox() {
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Width = 45,
-                    Height = 30,
-                    Margin = new Thickness(10, 10, 160, 0),
-                    Foreground = Brushes.White
-                });
+                playerStackPanel.Children.Add(playersStatusTextBlock.Last());
+                playersStatusStackPanel.Children.Add(playerStackPanel);
             }
+        }
+
+        private void DostButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
         }
 
         public class InGameCallback : InGameCallbackHandler {
             private Player player;
             private List<TextBox> categoriesTextBox;
+            private GameWindow window;
 
-            public InGameCallback(Game game, Player player, List<TextBox> categoriesTextBox) {
+            public InGameCallback(Game game, Player player, List<TextBox> categoriesTextBox, GameWindow window) {
                 this.game = game;
                 this.player = player;
                 this.categoriesTextBox = categoriesTextBox;
+                this.window = window;
             }
 
             public override void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
@@ -165,17 +168,28 @@ namespace DOST {
                 if (guidGame != game.ActiveGuidGame) {
                     return;
                 }
+                window.SendCategoryAnswers();
+            }
+        }
+
+        private void SendCategoryAnswers() {
+            DialogHost.Show(loadingStackPanel, "GameWindow_WindowDialogHost", (openSender, openEventArgs) => {
                 List<CategoryPlayerAnswer> categoryPlayerAnswers = new List<CategoryPlayerAnswer>();
                 for (int index = 0; index < categoriesTextBox.Count; index++) {
                     categoryPlayerAnswers.Add(new CategoryPlayerAnswer(0, player, game.Categories[index], categoriesTextBox[index].Text, game.Round));
                 }
-                player.SendCategoryAnswers(categoryPlayerAnswers);
-                Session.GameWindow.Close();
-                Session.GameWindow = null;
-                new GameWindow_EndRound(ref game).Show();
-            }
+                EngineNetwork.DoNetworkAction(onExecute: () => {
+                    return player.SendCategoryAnswers(categoryPlayerAnswers);
+                }, onSuccess: () => {
+                    Application.Current.Dispatcher.Invoke(delegate {
+                        openEventArgs.Session.Close(true);
+                        Session.GameWindow.Close();
+                        Session.GameWindow = null;
+                        new GameWindow_EndRound(game).Show();
+                    });
+                }, onFinish: null, true);
+            }, null);
         }
-
 
         private void WindowHeader_MouseDown(object sender, MouseButtonEventArgs e) {
             if (e.ChangedButton == MouseButton.Left) {

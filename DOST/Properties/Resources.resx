@@ -244,7 +244,7 @@
     <value>Esperando jugador</value>
   </data>
   <data name="ChatWelcomeText" xml:space="preserve">
-    <value>Bienvenido al chat del lobby de DOST.</value>
+    <value>Bienvenido al chat de la partida.</value>
   </data>
   <data name="AccountNotConfirmedErrorText" xml:space="preserve">
     <value>Debes confirmar tu cuenta para iniciar sesión. Verifica tu correo electrónico.</value>
@@ -362,5 +362,17 @@
   </data>
   <data name="CouldntJoinToGameErrorText" xml:space="preserve">
     <value>Error al unirse a la partida.</value>
+  </data>
+  <data name="LanguageText" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="StatusText" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="YouDontHaveEnoughCoinsErrorText" xml:space="preserve">
+    <value>No tienes suficientes monedas para hacer esto.</value>
+  </data>
+  <data name="RankGameText" xml:space="preserve">
+    <value>Clasificación</value>
   </data>
 </root>

@@ -244,7 +244,7 @@
     <value>Waiting for player</value>
   </data>
   <data name="ChatWelcomeText" xml:space="preserve">
-    <value>Welcome to DOST's lobby chat!</value>
+    <value>Welcome to the game chat!</value>
   </data>
   <data name="AccountNotConfirmedErrorText" xml:space="preserve">
     <value>You must confirm your account to log in. Verify your e-mail address.</value>
@@ -359,5 +359,17 @@
   </data>
   <data name="CouldntJoinToGameErrorText" xml:space="preserve">
     <value>Couldn't join to the game.</value>
+  </data>
+  <data name="LanguageText" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="RankGameText" xml:space="preserve">
+    <value>Rank</value>
+  </data>
+  <data name="StatusText" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="YouDontHaveEnoughCoinsErrorText" xml:space="preserve">
+    <value>You don't have enough coins to do this.</value>
   </data>
 </root>

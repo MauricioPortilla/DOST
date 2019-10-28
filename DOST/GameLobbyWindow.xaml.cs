@@ -67,11 +67,11 @@ namespace DOST {
                         break;
                     }
                 }
-                InstanceContext gameInstance = new InstanceContext(new InGameCallbackHandler(game, ref lobbyPlayersReadyStatusTextBlocks));
+                InstanceContext gameInstance = new InstanceContext(new InGameCallback(game, ref lobbyPlayersReadyStatusTextBlocks));
                 inGameService = new InGameServiceClient(gameInstance);
                 inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
             } catch (CommunicationException communicationException) {
-                Console.WriteLine("CommunicationException -> " + communicationException.Message);
+                Console.WriteLine("CommunicationException (GameLobbyWindow) -> " + communicationException.Message);
                 MessageBox.Show(Properties.Resources.CouldntJoinToGameErrorText);
                 Close();
             }
@@ -98,20 +98,15 @@ namespace DOST {
             }
         }
 
-        public class InGameCallbackHandler : IInGameServiceCallback {
-            private Game game;
-            public Game Game {
-                get { return game; }
-                set { game = value; }
-            }
-            private List<TextBlock> lobbyPlayersReadyStatusTextBlocks;
+        public class InGameCallback : InGameCallbackHandler {
+            private readonly List<TextBlock> lobbyPlayersReadyStatusTextBlocks;
 
-            public InGameCallbackHandler(Game game, ref List<TextBlock> lobbyPlayersReadyStatusTextBlocks) {
+            public InGameCallback(Game game, ref List<TextBlock> lobbyPlayersReadyStatusTextBlocks) {
                 this.game = game;
                 this.lobbyPlayersReadyStatusTextBlocks = lobbyPlayersReadyStatusTextBlocks;
             }
 
-            public void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
+            public override void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
                 if (guidGame == game.ActiveGuidGame) {
                     var playerToInteract = game.Players.Find(playerInGame => playerInGame.ActivePlayerGuid == guidPlayer);
                     if (playerToInteract == null) {
@@ -125,7 +120,7 @@ namespace DOST {
                 }
             }
 
-            public void StartRound(string guidGame) {
+            public override void StartRound(string guidGame) {
                 if (guidGame == game.ActiveGuidGame) {
                     var findHost = game.Players.Find(player => player.IsHost);
                     if (findHost != null) {
@@ -139,11 +134,11 @@ namespace DOST {
                 }
             }
 
-            public void StartGame(string guidGame) {
+            public override void StartGame(string guidGame) {
                 throw new NotImplementedException();
             }
 
-            public void EndRound(string guidGame) {
+            public override void EndRound(string guidGame) {
                 throw new NotImplementedException();
             }
         }

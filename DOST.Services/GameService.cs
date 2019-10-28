@@ -19,6 +19,7 @@ namespace DOST.Services {
             get { return activeGames; }
         }
         private static readonly int MAX_PLAYERS_IN_GAME = 4;
+        private static readonly int ROUND_LETTER_SELECTION_COST = 20;
 
         public List<Game> GetGamesList() {
             return activeGames;
@@ -220,17 +221,31 @@ namespace DOST.Services {
             return true;
         }
 
-        public bool SetGameLetter(string guidGame, bool selectRandomLetter, string letter = null) {
+        public bool SetGameLetter(string guidGame, int idaccount, bool selectRandomLetter, string letter = null) {
             var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
             if (findGame == null) {
                 return false;
             } else if (!selectRandomLetter && string.IsNullOrWhiteSpace(letter)) {
                 return false;
+            } else if (!selectRandomLetter) {
+                using (DostDatabase db = new DostDatabase()) {
+                    var account = db.Account.Find(idaccount);
+                    if (account == null) {
+                        return false;
+                    }
+                    account.coins -= ROUND_LETTER_SELECTION_COST;
+                    if (db.SaveChanges() != 1) {
+                        return false;
+                    }
+                }
             }
-            findGame.LetterSelected = selectRandomLetter ? Convert.ToChar(new Random().Next(65, 90)).ToString() : letter;
+            int asciiLetterA = 65;
+            int asciiLetterZ = 90;
+            int roundTimeInSeconds = 40 + 3;
+            findGame.LetterSelected = selectRandomLetter ? Convert.ToChar(new Random().Next(asciiLetterA, asciiLetterZ)).ToString() : letter;
             findGame.RoundStartingTime = DateTime.Now.Ticks;
             Task.Run(() => {
-                var gameTimer = new DateTime(findGame.RoundStartingTime).AddSeconds(40);
+                var gameTimer = new DateTime(findGame.RoundStartingTime).AddSeconds(roundTimeInSeconds);
                 while (gameTimer > DateTime.Now) {
                     continue;
                 }

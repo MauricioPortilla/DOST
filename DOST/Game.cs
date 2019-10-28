@@ -91,9 +91,9 @@ namespace DOST {
             });
         }
 
-        public bool SetLetter(bool selectRandomLetter, string letter = null) {
+        public bool SetLetter(bool selectRandomLetter, int idaccount, string letter = null) {
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
-                return service.SetGameLetter(ActiveGuidGame, selectRandomLetter, letter);
+                return service.SetGameLetter(ActiveGuidGame, idaccount, selectRandomLetter, letter);
             });
         }
     }

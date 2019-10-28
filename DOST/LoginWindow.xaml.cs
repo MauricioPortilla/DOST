@@ -34,7 +34,7 @@ namespace DOST {
                 return;
             }
             Account account = new Account(usernameTextBox.Text, passwordPasswordBox.Password);
-            var dialogTask = DialogHost.Show(loadingStackPanel, "WindowDialogHost", (openSender, openEventArgs) => {
+            DialogHost.Show(loadingStackPanel, "LoginWindow_WindowDialogHost", (openSender, openEventArgs) => {
                 EngineNetwork.DoNetworkAction(onExecute: () => {
                     if (!account.Login()) {
                         if (account.Id == 0) {

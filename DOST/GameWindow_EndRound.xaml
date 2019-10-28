@@ -7,8 +7,23 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:p="clr-namespace:DOST.Properties"
-        Title="{x:Static p:Resources.EndOfTheRoundText}" Height="686.975" Width="1073.529" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="{x:Static p:Resources.EndOfTheRoundText}" Height="687" Width="1073" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <Image HorizontalAlignment="Left" Height="687" VerticalAlignment="Top" Width="1073" Source="Images/DOST_GameWindow_EndRound.png" Stretch="Fill"/>
+        <Rectangle HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="1074" MouseDown="WindowHeader_MouseDown" Fill="#00000000" Margin="0,0,-1,0" />
+        <TextBlock Text="{x:Static p:Resources.EndOfTheRoundText}" Margin="10,10,10,638" Foreground="White" FontSize="30" TextAlignment="Center"></TextBlock>
+        <TextBlock Text="{x:Static p:Resources.ResultsText}" Margin="10,49,10,599" Foreground="White" FontSize="25" TextAlignment="Center"></TextBlock>
+        <StackPanel x:Name="playerAnswersResults" Orientation="Vertical" Margin="33,98,33,218"/>
+        <ListBox x:Name="chatListBox" Margin="33,0,33,44" Foreground="#DDFFFFFF" VerticalAlignment="Bottom" MaxHeight="156">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="8, 0, 0, 0"/>
+                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="IsHitTestVisible" Value="False" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <TextBlock Text="{x:Static p:Resources.ChatWelcomeText}" Margin="0,0,0,10" Focusable="False" />
+        </ListBox>
+        <TextBox x:Name="chatMessageTextBox" Margin="42,648,15,15" Foreground="White" materialDesign:HintAssist.Hint="Escribe un mensaje..." KeyDown="ChatMessageTextBox_KeyDown" />
     </Grid>
 </Window>

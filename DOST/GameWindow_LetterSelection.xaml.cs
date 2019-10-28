@@ -1,9 +1,11 @@
 ﻿using DOST.Services;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,7 +37,7 @@ namespace DOST {
                 inGameService = new InGameServiceClient(gameInstance);
                 inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
             } catch (CommunicationException communicationException) {
-                Console.WriteLine("CommunicationException -> " + communicationException.Message);
+                Console.WriteLine("CommunicationException (GameWindow_LetterSelection) -> " + communicationException.Message);
                 MessageBox.Show(Properties.Resources.CouldntJoinToGameErrorText);
                 return;
             }
@@ -60,15 +62,32 @@ namespace DOST {
 
             public override void StartGame(string guidGame) {
                 if (game.ActiveGuidGame == guidGame) {
-                    Session.GameWindow = new GameWindow(game);
-                    Session.GameWindow.Show();
-                    window.Close();
+                    window.StartGame();
                 }
             }
 
             public override void EndRound(string guidGame) {
                 throw new NotImplementedException();
             }
+        }
+
+        private void StartGame() {
+            DialogHost.Show(loadingStackPanel, "GameWindow_LetterSelection_WindowDialogHost", (openSender, openEventArgs) => {
+                EngineNetwork.DoNetworkAction(onExecute: () => {
+                    Thread.Sleep(2000); // allows session thread to load latest game data
+                    return true;
+                }, onSuccess: () => {
+                    Application.Current.Dispatcher.Invoke(delegate {
+                        Session.GameWindow = new GameWindow(game);
+                        Session.GameWindow.Show();
+                        Close();
+                    });
+                }, onFinish: () => {
+                    Application.Current.Dispatcher.Invoke(delegate {
+                        openEventArgs.Session.Close(true);
+                    });
+                }, false);
+            }, null);
         }
 
         public void ShowLetterSelectionOptions(bool show) {
@@ -82,7 +101,7 @@ namespace DOST {
         }
 
         private void SelectRandomLetterButton_Click(object sender, RoutedEventArgs e) {
-            if (game.SetLetter(true)) {
+            if (game.SetLetter(true, Session.Account.Id)) {
                 inGameService.StartGame(game.ActiveGuidGame);
                 return;
             }
@@ -90,8 +109,14 @@ namespace DOST {
         }
 
         private void SelectSpecificLetterButton_Click(object sender, RoutedEventArgs e) {
+            if (Session.Account.Coins < Session.ROUND_LETTER_SELECTION_COST) {
+                MessageBox.Show(Properties.Resources.YouDontHaveEnoughCoinsErrorText);
+                return;
+            }
             letterComboBox.Items.Clear();
-            for (int letterASCII = 0; letterASCII <= 26; letterASCII++) {
+            int asciiLetterA = 65;
+            int asciiLetterZ = 90;
+            for (int letterASCII = asciiLetterA; letterASCII <= asciiLetterZ; letterASCII++) {
                 letterComboBox.Items.Add(Convert.ToChar(letterASCII).ToString());
             }
             letterSelectionOptionsGrid.Visibility = Visibility.Hidden;
@@ -102,8 +127,8 @@ namespace DOST {
             if (letterComboBox.SelectedItem == null) {
                 MessageBox.Show(Properties.Resources.MustSelectALetterErrorText);
                 return;
-            }
-            if (game.SetLetter(false, letterComboBox.SelectedItem.ToString())) {
+            } else if (game.SetLetter(false, Session.Account.Id, letterComboBox.SelectedItem.ToString())) {
+                Session.Account.Coins -= Session.ROUND_LETTER_SELECTION_COST;
                 inGameService.StartGame(game.ActiveGuidGame);
                 return;
             }

@@ -169,7 +169,7 @@ namespace DOST.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Bienvenido al chat del lobby de DOST..
+        ///   Busca una cadena traducida similar a Bienvenido al chat de la partida..
         /// </summary>
         public static string ChatWelcomeText {
             get {
@@ -403,6 +403,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Idioma.
+        /// </summary>
+        public static string LanguageText {
+            get {
+                return ResourceManager.GetString("LanguageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Selección de letra.
         /// </summary>
         public static string LetterSelectionWindowTitle {
@@ -574,6 +583,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Clasificación.
+        /// </summary>
+        public static string RankGameText {
+            get {
+                return ResourceManager.GetString("RankGameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Posición: .
         /// </summary>
         public static string RankText {
@@ -727,6 +745,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Estado.
+        /// </summary>
+        public static string StatusText {
+            get {
+                return ResourceManager.GetString("StatusText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Tiempo restante: .
         /// </summary>
         public static string TimeRemainingText {
@@ -795,6 +822,15 @@ namespace DOST.Properties {
         public static string YouAreAlreadyInAGame {
             get {
                 return ResourceManager.GetString("YouAreAlreadyInAGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No tienes suficientes monedas para hacer esto..
+        /// </summary>
+        public static string YouDontHaveEnoughCoinsErrorText {
+            get {
+                return ResourceManager.GetString("YouDontHaveEnoughCoinsErrorText", resourceCulture);
             }
         }
     }

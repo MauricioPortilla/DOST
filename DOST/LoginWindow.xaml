@@ -7,9 +7,9 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:p="clr-namespace:DOST.Properties"
         mc:Ignorable="d"
-        Title="{x:Static p:Resources.LoginWindowTitle}" Height="399.283" Width="504.918">
+        Title="{x:Static p:Resources.LoginWindowTitle}" Height="399.283" Width="504.918" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <materialDesign:DialogHost Identifier="WindowDialogHost" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <materialDesign:DialogHost Identifier="LoginWindow_WindowDialogHost" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
             <materialDesign:DialogHost.DialogContent>
                 <StackPanel Margin="16" x:Name="loadingStackPanel">
                     <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}" HorizontalAlignment="Center" Margin="16" IsIndeterminate="True" Value="0" />
@@ -20,7 +20,7 @@
         <PasswordBox x:Name="passwordPasswordBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.PasswordText}" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,146,201" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="200" />
         <Button x:Name="loginButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.LoginButton}" Margin="182,189,182,147" Click="LoginButton_Click"/>
         <Button x:Name="registerButton" Style="{StaticResource MaterialDesignFlatButton}" Content="{x:Static p:Resources.RegisterButton}" Margin="195,226,195,110" Click="RegisterButton_Click"/>
-        <ComboBox x:Name="languageSelectorComboBox" HorizontalAlignment="Left" Margin="367,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="LanguageSelectorComboBox_SelectionChanged">
+        <ComboBox x:Name="languageSelectorComboBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.LanguageText}" HorizontalAlignment="Left" Margin="367,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="LanguageSelectorComboBox_SelectionChanged" Foreground="Black">
             <ListBoxItem Content="Español"/>
             <ListBoxItem Content="English"/>
         </ComboBox>

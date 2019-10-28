@@ -36,9 +36,9 @@ namespace DOST {
                 valueReturned = onOpen.Invoke(serviceChannel);
                 channel.Close();
             } catch (CommunicationException communicationException) {
-                Console.WriteLine("Communication exception -> " + communicationException.Message);
+                Console.WriteLine("CommunicationException (EstablishChannel) -> " + communicationException.Message);
             } catch (Exception exception) {
-                Console.WriteLine("Exception -> " + exception.Message);
+                Console.WriteLine("Exception (EstablishChannel) -> " + exception.Message);
             }
             return valueReturned;
         }
@@ -54,7 +54,9 @@ namespace DOST {
                         didStart = true;
                         var taskToExecute = Task.Run(() => {
                             try {
-                                resultOnExecute = onExecute();
+                                if (onExecute != null) {
+                                    resultOnExecute = onExecute();
+                                }
                             } catch (Exception exception) {
                                 Console.WriteLine("DoNetworkAction Exception (OnExecute) -> " + exception.Message);
                                 didThrowException = true;
@@ -64,7 +66,7 @@ namespace DOST {
                             if (task.Exception == null) {
                                 try {
                                     if (resultOnExecute) {
-                                        onSuccess();
+                                        onSuccess?.Invoke();
                                     }
                                 } catch (Exception exception) {
                                     Console.WriteLine("DoNetworkAction Exception (OnSuccess) -> " + exception.Message);
@@ -81,7 +83,7 @@ namespace DOST {
                             }
                         }
                         try {
-                            onFinish();
+                            onFinish?.Invoke();
                         } catch (Exception exception) {
                             Console.WriteLine("DoNetworkAction Exception (OnFinish) -> " + exception.Message);
                         }

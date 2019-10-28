@@ -9,7 +9,7 @@
         xmlns:p="clr-namespace:DOST.Properties"
         Title="{x:Static p:Resources.LetterSelectionWindowTitle}" Height="162.868" Width="483.991" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Grid>
-        <materialDesign:DialogHost Identifier="WindowDialogHost" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <materialDesign:DialogHost Identifier="GameWindow_LetterSelection_WindowDialogHost" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
             <materialDesign:DialogHost.DialogContent>
                 <StackPanel Margin="16" x:Name="loadingStackPanel">
                     <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}" HorizontalAlignment="Center" Margin="16" IsIndeterminate="True" Value="0" />
@@ -17,9 +17,9 @@
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
         <Grid x:Name="letterSelectionOptionsGrid" Visibility="Hidden">
-            <TextBlock Text="{x:Static p:Resources.LetterSelectionWindowTitle}" Margin="167,10,166,0" FontSize="18" Height="25" VerticalAlignment="Top"></TextBlock>
-            <TextBlock Text="{x:Static p:Resources.CostFreeLetterSelectionText}" Margin="23,68,266,0" FontSize="18" TextAlignment="Center" Height="25" VerticalAlignment="Top"/>
-            <TextBlock Text="{x:Static p:Resources.Cost20CoinsSelectionText}" Margin="252,68,16,0" FontSize="18" TextAlignment="Center" Height="25" VerticalAlignment="Top"/>
+            <TextBlock Text="{x:Static p:Resources.LetterSelectionWindowTitle}" Margin="10,10,10,0" FontSize="18" Height="25" VerticalAlignment="Top" TextAlignment="Center"></TextBlock>
+            <TextBlock Text="{x:Static p:Resources.CostFreeLetterSelectionText}" Margin="23,68,272,0" FontSize="18" TextAlignment="Center" Height="25" VerticalAlignment="Top"/>
+            <TextBlock Text="{x:Static p:Resources.Cost20CoinsSelectionText}" Margin="252,68,22,0" FontSize="18" TextAlignment="Center" Height="25" VerticalAlignment="Top"/>
             <Button x:Name="selectRandomLetterButton" Content="{x:Static p:Resources.SelectRandomLetterButton}" HorizontalAlignment="Left" Margin="23,98,0,0" VerticalAlignment="Top" Width="189" Click="SelectRandomLetterButton_Click"/>
             <Button x:Name="selectSpecificLetterButton" Content="{x:Static p:Resources.SelectASpecificLetterButton}" HorizontalAlignment="Left" Margin="252,98,0,0" VerticalAlignment="Top" Width="210" Click="SelectSpecificLetterButton_Click"/>
         </Grid>
@@ -27,8 +27,8 @@
             <TextBlock Text="{x:Static p:Resources.WaitingForLetterSelectionText}" Margin="10,67,10,0" FontSize="18" Height="25" VerticalAlignment="Top" TextAlignment="Center"></TextBlock>
         </Grid>
         <Grid x:Name="letterSelectionSelectorGrid" Visibility="Hidden">
-            <TextBlock Text="{x:Static p:Resources.LetterSelectionWindowTitle}" Margin="126,10,125,0" FontSize="18" TextAlignment="Center" Height="25" VerticalAlignment="Top"/>
-            <ComboBox x:Name="letterComboBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.SelectLetterText}" HorizontalAlignment="Left" Margin="169,64,0,0" VerticalAlignment="Top" Width="148" Background="White"/>
+            <TextBlock Text="{x:Static p:Resources.LetterSelectionWindowTitle}" Margin="10,10,10,0" FontSize="18" TextAlignment="Center" Height="25" VerticalAlignment="Top"/>
+            <ComboBox x:Name="letterComboBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.SelectLetterText}" HorizontalAlignment="Left" Margin="169,64,0,0" VerticalAlignment="Top" Width="148" Background="White" Foreground="Black"/>
             <Button x:Name="selectLetterButton" Content="{x:Static p:Resources.SelectButton}" HorizontalAlignment="Left" Margin="169,121,0,0" VerticalAlignment="Top" Width="148" Click="SelectLetterButton_Click"/>
         </Grid>
     </Grid>

@@ -9,6 +9,13 @@
         xmlns:p="clr-namespace:DOST.Properties"
         Title="" Height="687" Width="1073" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
+        <materialDesign:DialogHost Identifier="GameWindow_WindowDialogHost" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="16" x:Name="loadingStackPanel">
+                    <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}" HorizontalAlignment="Center" Margin="16" IsIndeterminate="True" Value="0" />
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
         <Image HorizontalAlignment="Left" Height="687" VerticalAlignment="Top" Width="1073" Source="Images/DOST_GameWindow.png" Stretch="Fill"/>
         <Rectangle HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="1074" MouseDown="WindowHeader_MouseDown" Fill="#00000000" Margin="0,0,-1,0" />
         <StackPanel Orientation="Vertical" Margin="36,29,729,574">
@@ -26,14 +33,12 @@
             <TextBlock x:Name="scoreTextBlock" HorizontalAlignment="Left" Margin="7,10,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
         </StackPanel>
         <StackPanel x:Name="playerAnswerCategoriesStackPanel" Margin="0,152,370,0" Orientation="Vertical"/>
-
-        <StackPanel x:Name="playerStatusStackPanel" Margin="680,150,0,320" Orientation="Horizontal">
-            <TextBlock Margin="10,10,160,0" TextWrapping="Wrap" Text="{x:Static p:Resources.ScoreText}" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
-            <TextBlock Margin="10,10,150,0" TextWrapping="Wrap" Text="Dost" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
+        <StackPanel x:Name="playersStatusStackPanel" Margin="715,150,8,320" Orientation="Vertical" Background="#47000000">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="20,10,0,0" TextWrapping="Wrap" Text="{x:Static p:Resources.UsernameText}" VerticalAlignment="Top" Foreground="White" FontSize="20" Width="248"/>
+                <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Text="{x:Static p:Resources.StatusText}" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
+            </StackPanel>
         </StackPanel>
-
-        <StackPanel x:Name="dostButtonStackPanel" Margin="680,450,0,0" Orientation="Horizontal">
-            <Ellipse x:Name="dostButton" Width="208" Margin="60,0,0,40" Cursor="Hand"/>
-        </StackPanel>
+        <Ellipse x:Name="dostButton" Margin="784,440,103,61" Cursor="Hand" MouseLeftButtonDown="DostButton_MouseLeftButtonDown"/>
     </Grid>
 </Window>
