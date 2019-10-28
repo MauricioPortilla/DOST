@@ -1,0 +1,1188 @@
+Aardvark
+Abyssinian
+Adelie Penguin
+Affenpinscher
+Afghan Hound
+African Bush Elephant
+African Civet
+African Clawed Frog
+African Forest Elephant
+African Palm Civet
+African Penguin
+African Tree Toad
+African Wild Dog
+Ainu Dog
+Airedale Terrier
+Akbash
+Akita
+Alaskan Malamute
+Albatross
+Aldabra Giant Tortoise
+Alligator
+Alpine Dachsbracke
+American Bulldog
+American Cocker Spaniel
+American Coonhound
+American Eskimo Dog
+American Foxhound
+American Pit Bull Terrier
+American Staffordshire Terrier
+American Water Spaniel
+Anatolian Shepherd Dog
+Angelfish
+Ant
+Anteater
+Antelope
+Appenzeller Dog
+Arctic Fox
+Arctic Hare
+Arctic Wolf
+Armadillo
+Asian Elephant
+Asian Giant Hornet
+Asian Palm Civet
+Asiatic Black Bear
+Australian Cattle Dog
+Australian Kelpie Dog
+Australian Mist
+Australian Shepherd
+Australian Terrier
+Avocet
+Axolotl
+Aye Aye
+Baboon
+Bactrian Camel
+Badger
+Balinese
+Banded Palm Civet
+Bandicoot
+Barb
+Barn Owl
+Barnacle
+Barracuda
+Basenji Dog
+Basking Shark
+Basset Hound
+Bat
+Bavarian Mountain Hound
+Beagle
+Bear
+Bearded Collie
+Bearded Dragon
+Beaver
+Bedlington Terrier
+Beetle
+Bengal Tiger
+Bernese Mountain Dog
+Bichon Frise
+Binturong
+Bird
+Birds Of Paradise
+Birman
+Bison
+Black Bear
+Black Rhinoceros
+Black Russian Terrier
+Black Widow Spider
+Bloodhound
+Blue Lacy Dog
+Blue Whale
+Bluetick Coonhound
+Bobcat
+Bolognese Dog
+Bombay
+Bongo
+Bonobo
+Booby
+Border Collie
+Border Terrier
+Bornean Orang-utan
+Borneo Elephant
+Boston Terrier
+Bottle Nosed Dolphin
+Boxer Dog
+Boykin Spaniel
+Brazilian Terrier
+Brown Bear
+Budgerigar
+Buffalo
+Bull Mastiff
+Bull Shark
+Bull Terrier
+Bulldog
+Bullfrog
+Bumble Bee
+Burmese
+Burrowing Frog
+Butterfly
+Butterfly Fish
+Caiman
+Caiman Lizard
+Cairn Terrier
+Camel
+Canaan Dog
+Capybara
+Caracal
+Carolina Dog
+Cassowary
+Cat
+Caterpillar
+Catfish
+Cavalier King Charles Spaniel
+Centipede
+Cesky Fousek
+Chameleon
+Chamois
+Cheetah
+Chesapeake Bay Retriever
+Chicken
+Chihuahua
+Chimpanzee
+Chinchilla
+Chinese Crested Dog
+Chinook
+Chinstrap Penguin
+Chipmunk
+Chow Chow
+Cichlid
+Clouded Leopard
+Clown Fish
+Clumber Spaniel
+Coati
+Cockroach
+Collared Peccary
+Collie
+Common Buzzard
+Common Frog
+Common Loon
+Common Toad
+Coral
+Cottontop Tamarin
+Cougar
+Cow
+Coyote
+Crab
+Crab-Eating Macaque
+Crane
+Crested Penguin
+Crocodile
+Cross River Gorilla
+Curly Coated Retriever
+Cuscus
+Cuttlefish
+Dachshund
+Dalmatian
+Darwin's Frog
+Deer
+Desert Tortoise
+Deutsche Bracke
+Dhole
+Dingo
+Discus
+Doberman Pinscher
+Dodo
+Dog
+Dogo Argentino
+Dogue De Bordeaux
+Dolphin
+Donkey
+Dormouse
+Dragonfly
+Drever
+Duck
+Dugong
+Dunker
+Dusky Dolphin
+Dwarf Crocodile
+Eagle
+Earwig
+Eastern Gorilla
+Eastern Lowland Gorilla
+Echidna
+Edible Frog
+Egyptian Mau
+Electric Eel
+Elephant
+Elephant Seal
+Elephant Shrew
+Emperor Penguin
+Emperor Tamarin
+Emu
+English Cocker Spaniel
+English Shepherd
+English Springer Spaniel
+Entlebucher Mountain Dog
+Epagneul Pont Audemer
+Eskimo Dog
+Estrela Mountain Dog
+Falcon
+Fennec Fox
+Ferret
+Field Spaniel
+Fin Whale
+Finnish Spitz
+Fire-Bellied Toad
+Fish
+Fishing Cat
+Flamingo
+Flat Coat Retriever
+Flounder
+Fly
+Flying Squirrel
+Fossa
+Fox
+Fox Terrier
+French Bulldog
+Frigatebird
+Frilled Lizard
+Frog
+Fur Seal
+Galapagos Penguin
+Galapagos Tortoise
+Gar
+Gecko
+Gentoo Penguin
+Geoffroys Tamarin
+Gerbil
+German Pinscher
+German Shepherd
+Gharial
+Giant African Land Snail
+Giant Clam
+Giant Panda Bear
+Giant Schnauzer
+Gibbon
+Gila Monster
+Giraffe
+Glass Lizard
+Glow Worm
+Goat
+Golden Lion Tamarin
+Golden Oriole
+Golden Retriever
+Goose
+Gopher
+Gorilla
+Grasshopper
+Great Dane
+Great White Shark
+Greater Swiss Mountain Dog
+Green Bee-Eater
+Greenland Dog
+Grey Mouse Lemur
+Grey Reef Shark
+Grey Seal
+Greyhound
+Grizzly Bear
+Grouse
+Guinea Fowl
+Guinea Pig
+Guppy
+Hammerhead Shark
+Hamster
+Hare
+Harrier
+Havanese
+Hedgehog
+Hercules Beetle
+Hermit Crab
+Heron
+Highland Cattle
+Himalayan
+Hippopotamus
+Honey Bee
+Horn Shark
+Horned Frog
+Horse
+Horseshoe Crab
+Howler Monkey
+Human
+Humboldt Penguin
+Hummingbird
+Humpback Whale
+Hyena
+Ibis
+Ibizan Hound
+Iguana
+Impala
+Indian Elephant
+Indian Palm Squirrel
+Indian Rhinoceros
+Indian Star Tortoise
+Indochinese Tiger
+Indri
+Insect
+Irish Setter
+Irish WolfHound
+Jack Russel
+Jackal
+Jaguar
+Japanese Chin
+Japanese Macaque
+Javan Rhinoceros
+Javanese
+Jellyfish
+Kakapo
+Kangaroo
+Keel Billed Toucan
+Killer Whale
+King Crab
+King Penguin
+Kingfisher
+Kiwi
+Koala
+Komodo Dragon
+Kudu
+Labradoodle
+Labrador Retriever
+Ladybird
+Leaf-Tailed Gecko
+Lemming
+Lemur
+Leopard
+Leopard Cat
+Leopard Seal
+Leopard Tortoise
+Liger
+Lion
+Lionfish
+Little Penguin
+Lizard
+Llama
+Lobster
+Long-Eared Owl
+Lynx
+
+Macaroni Penguin
+Macaw
+Magellanic Penguin
+Magpie
+Maine Coon
+Malayan Civet
+Malayan Tiger
+Maltese
+Manatee
+Mandrill
+Manta Ray
+Marine Toad
+Markhor
+Marsh Frog
+Masked Palm Civet
+Mastiff
+Mayfly
+Meerkat
+Millipede
+Minke Whale
+Mole
+Molly
+Mongoose
+Mongrel
+Monitor Lizard
+Monkey
+Monte Iberia Eleuth
+Moorhen
+Moose
+Moray Eel
+Moth
+Mountain Gorilla
+Mountain Lion
+Mouse
+Mule
+Neanderthal
+Neapolitan Mastiff
+Newfoundland
+Newt
+Nightingale
+Norfolk Terrier
+Norwegian Forest
+Numbat
+Nurse Shark
+Ocelot
+Octopus
+Okapi
+Old English Sheepdog
+Olm
+Opossum
+Orang-utan
+Ostrich
+Otter
+Oyster
+Pademelon
+Panther
+Parrot
+Patas Monkey
+Peacock
+Pekingese
+Pelican
+Penguin
+Persian
+Pheasant
+Pied Tamarin
+Pig
+Pika
+Pike
+Pink Fairy Armadillo
+Piranha
+Platypus
+Pointer
+Poison Dart Frog
+Polar Bear
+Pond Skater
+Poodle
+Pool Frog
+Porcupine
+Possum
+Prawn
+Proboscis Monkey
+Puffer Fish
+Puffin
+Pug
+Puma
+Purple Emperor
+Puss Moth
+Pygmy Hippopotamus
+Pygmy Marmoset
+Quail
+Quetzal
+Quokka
+Quoll
+Rabbit
+Raccoon
+Raccoon Dog
+Radiated Tortoise
+Ragdoll
+Rat
+Rattlesnake
+Red Knee Tarantula
+Red Panda
+Red Wolf
+Red-handed Tamarin
+Reindeer
+Rhinoceros
+River Dolphin
+River Turtle
+Robin
+Rock Hyrax
+Rockhopper Penguin
+Roseate Spoonbill
+Rottweiler
+Royal Penguin
+Russian Blue
+Sabre-Toothed Tiger
+Saint Bernard
+Salamander
+Sand Lizard
+Saola
+Scorpion
+Scorpion Fish
+Sea Dragon
+Sea Lion
+Sea Otter
+Sea Slug
+Sea Squirt
+Sea Turtle
+Sea Urchin
+Seahorse
+Seal
+Serval
+Sheep
+Shih Tzu
+Shrimp
+Siamese
+Siamese Fighting Fish
+Siberian
+Siberian Husky
+Siberian Tiger
+Silver Dollar
+Skunk
+Sloth
+Slow Worm
+Snail
+Snake
+Snapping Turtle
+Snowshoe
+Snowy Owl
+Somali
+South China Tiger
+Spadefoot Toad
+Sparrow
+Spectacled Bear
+Sperm Whale
+Spider Monkey
+Spiny Dogfish
+Sponge
+Squid
+Squirrel
+Squirrel Monkey
+Sri Lankan Elephant
+Staffordshire Bull Terrier
+Stag Beetle
+Starfish
+Stellers Sea Cow
+Stick Insect
+Stingray
+Stoat
+Striped Rocket Frog
+Sumatran Elephant
+Sumatran Orang-utan
+Sumatran Rhinoceros
+Sumatran Tiger
+Sun Bear
+Swan
+Tang
+Tapanuli Orang-utan
+Tapir
+Tarsier
+Tasmanian Devil
+Tawny Owl
+Termite
+Tetra
+Thorny Devil
+Tibetan Mastiff
+Tiffany
+Tiger
+Tiger Salamander
+Tiger Shark
+Tortoise
+Toucan
+Tree Frog
+Tropicbird
+Tuatara
+Turkey
+Turkish Angora
+Uakari
+Uguisu
+Umbrellabird
+Vampire Bat
+Vervet Monkey
+Vulture
+Wallaby
+Walrus
+Warthog
+Wasp
+Water Buffalo
+Water Dragon
+Water Vole
+Weasel
+Welsh Corgi
+West Highland Terrier
+Western Gorilla
+Western Lowland Gorilla
+Whale Shark
+Whippet
+White Faced Capuchin
+White Rhinoceros
+White Tiger
+Wild Boar
+Wildebeest
+Wolf
+Wolverine
+Wombat
+Woodlouse
+Woodpecker
+Woolly Mammoth
+Woolly Monkey
+Wrasse
+X-Ray Tetra
+Yak
+Yellow-Eyed Penguin
+Yorkshire Terrier
+Zebra
+Zebra Shark
+Zebu
+Zonkey
+Zorse
+Cerdo hormiguero
+abisinio
+Pingüino Adelia
+Affenpinscher
+Sabueso afgano
+Elefante Africano de Bush
+Civeta Africana
+Rana Africana
+Elefante africano del bosque
+Civeta de palma africana
+Pingüino africano
+Sapo Africano
+Perro salvaje africano
+Perro ainu
+Airedale Terrier
+Akbash
+Akita
+Malamute de Alaska
+Albatros
+Tortuga Gigante Aldabra
+Caimán
+Dachsbracke alpino
+Bulldog Americano
+Cocker Spaniel Americano
+Coonhound Americano
+Perro esquimal americano
+Raposero americano
+American Pit Bull Terrier
+American Staffordshire Terrier
+Perro de aguas americano
+Pastor de Anatolia
+Angelote
+Hormiga
+Oso hormiguero
+Antílope
+Perro Appenzeller
+Zorro ártico
+Liebre ártica
+Lobo ártico
+Armadillo
+Elefante asiático
+Avispón gigante asiático
+Civeta de palma asiática
+Oso negro asiático
+Perro australiano del ganado
+Perro Kelpie Australiano
+Niebla australiana
+Pastor australiano
+Terrier australiano
+Avoceta
+Ajolote
+ey ey
+Babuino
+Camello bactriano
+Tejón
+Balinesa
+Civeta de palma congregada
+Bandicoot
+Lengüeta
+Lechuza
+Percebe
+Barracuda
+Perro Basenji
+Tiburón peregrino
+Basset Hound
+Murciélago
+Sabueso bávaro de montaña
+Beagle
+Oso
+Collie barbudo
+Dragon barbudo
+Castor
+Bedlington Terrier
+Escarabajo
+Tigre de Bengala
+Perro de montaña de Bernese
+Bichon Frise
+Binturong
+Pájaro
+Pájaros del paraiso
+Birman
+Bisonte
+Oso negro
+Rinoceronte negro
+Terrier ruso negro
+Araña viuda negro
+Sabueso
+Perro de encaje azul
+Ballena azul
+Coonhound Bluetick
+Gato montés
+Perro boloñés
+Bombay
+Bongo
+Bonobo
+Teta
+Border Collie
+Border Terrier
+Orangután de Borneo
+Elefante de Borneo
+Boston Terrier
+Delfín nariz de botella
+Perro boxer
+Boykin Spaniel
+Terrier Brasileño
+Oso café
+Periquito
+Búfalo
+Mastín Toro
+Tiburón toro
+Bull terrier
+Buldog
+Rana mugidora
+Abejorro
+birmano
+Rana Madriguera
+Mariposa
+Pez mariposa
+Caimán
+Lagarto Caimán
+Terrier de mojón
+Camello
+Canaan Dog
+Carpincho
+Lince
+Perro carolina
+Casuario
+Gato
+Oruga
+Bagre
+Cavalier King Charles Spaniel
+Ciempiés
+Cesky Fousek
+Camaleón
+Gamuza
+leopardo
+Chesapeake Bay Retriever
+Pollo
+Chihuahua
+Chimpancé
+Chinchilla
+Perro Crestado Chino
+Chinook
+Pingüino de barbijo
+Ardilla
+Chow Chow
+Cíclidos
+Leopardo longibando
+Pez payaso
+Clumber Spaniel
+Coatí
+Cucaracha
+Pecarí de collar
+Collie
+Ratonero Común
+Rana común
+Bribón común
+Sapo Común
+Coral
+Tamarin de algodón
+Puma
+Vaca
+Coyote
+Cangrejo
+Macaco que come cangrejos
+Grua
+Pingüino Crestado
+Cocodrilo
+Cross River Gorilla
+Perro perdiguero revestido rizado
+Cuscus
+Calamar
+Perro tejonero
+dálmata
+La rana de Darwin
+Ciervo
+Tortuga del desierto
+Deutsche Bracke
+Dhole
+Dingo
+Disco
+Doberman Pinscher
+Vejestorio
+Perro
+Dogo Argentino
+Dogo De Burdeos
+Delfín
+Burro
+Lirón
+Libélula
+Drever
+Pato
+Dugong
+Dunker
+Delfín Oscuro
+Cocodrilo enano
+Águila
+Tijereta
+Gorila oriental
+Gorila de las tierras bajas orientales
+Equidna
+Rana comestible
+Mau egipcio
+Anguila electrica
+Elefante
+Elefante marino
+Musaraña Elefante
+Pingüino emperador
+Emperador Tamarin
+Emú
+Cocker Spaniel Inglés
+Pastor inglés
+Springer Spaniel Inglés
+Perro de montaña Entlebucher
+Epagneul Pont Audemer
+Perro esquimal
+Estrela Mountain Dog
+Halcón
+Fennec Fox
+Hurón
+Spaniel de campo
+Aleta de ballena
+Spitz finlandés
+Sapo de vientre de fuego
+Pescado
+Gato de pesca
+Flamenco
+Flat Coat Retriever
+Platija
+Volar
+Ardilla voladora
+Fosa
+zorro
+Fox terrier
+Bulldog francés
+Pájaro de fragata
+Lagarto con volantes
+Rana
+Piel de foca
+Pingüino de Galápagos
+Tortuga de Galápagos
+Gar
+Geco
+Pingüino Gentoo
+Tamarin Geoffroys
+Jerbo
+Pinscher alemán
+Pastor alemán
+Gharial
+Caracol gigante africano
+Almeja gigante
+Oso panda gigante
+Schnauzer gigante
+Gibón
+Monstruo Gila
+Jirafa
+Lagarto de cristal
+Gusano Glow
+Cabra
+Tamarin León Dorado
+Oropéndola
+Golden Retriever
+ganso
+Ardilla de tierra
+Gorila
+Saltamontes
+Gran Danés
+Gran tiburón blanco
+Gran perro de montaña suizo
+Abejaruco Verde
+Perro de Groenlandia
+Lémur de ratón gris
+Tiburón Arrecife Gris
+Sello gris
+Galgo
+Oso grizzly
+Queja
+Gallina de Guinea
+Conejillo de indias
+Guppy
+Tiburon martillo
+Hámster
+liebre
+Aguilucho
+Havanese
+Erizo
+Escarabajo Hércules
+Cangrejo ermitaño
+Garza
+Ganado de las tierras altas
+Himalaya
+Hipopótamo
+Miel de abeja
+Tiburón Cuerno
+Rana cornuda
+Caballo
+Cangrejo de herradura
+Mono aullador
+Humano
+Pingüino de Humboldt
+Colibrí
+Ballena jorobada
+Hiena
+Ibis
+Sabueso ibicenco
+Iguana
+Impala
+Elefante indio
+Ardilla india de la palma
+Rinoceronte indio
+Tortuga Estrella India
+Tigre indochino
+Indri
+Insecto
+Setter irlandés
+Lobo irlandés
+Jack Russel
+Chacal
+Jaguar
+Barbilla japonesa
+Macaco japonés
+Rinoceronte de javan
+javanés
+Medusa
+Kakapo
+Canguro
+Tucán de pico de quilla
+Orca
+Cangrejo real
+Pingüino real
+Martín pescador
+kiwi
+Coala
+Dragon de Komodo
+Kudu
+Labradoodle
+Labrador retriever
+Mariquita
+Geco cola de hoja
+Leming
+Lémur
+Leopardo
+Gato leopardo
+Foca leopardo
+Tortuga leopardo
+Liger
+León
+Pez león
+Pequeño pinguino
+Lagartija
+Llama
+langosta
+Búho chico
+Lince
+
+Pingüino de macarrones
+Guacamayo
+Pingüino de Magallanes
+Urraca
+Maine Coon
+Civeta malaya
+Tigre malayo
+maltés
+Manatí
+Mandril
+Manta raya
+Sapo marino
+Markhor
+Marsh Frog
+Civeta de palma enmascarada
+Mastín
+Efímera
+Suricata
+Milpiés
+Ballena Minke
+Topo
+muchacha
+Mangosta
+Mestizo
+Monitor lagarto
+Mono
+Monte Iberia Eleuth
+Polla de agua
+Alce
+Anguila Moray
+Polilla
+Gorila de montaña
+León de montaña
+Ratón
+Mula
+neanderthal
+Mastín Napolitano
+Terranova
+Tritón
+Ruiseñor
+Terrier de Norfolk
+Bosque noruego
+Entumecido
+Tiburón nodriza
+Ocelote
+Pulpo
+Okapi
+Viejo perro pastor inglés
+Olm
+Zarigüeya
+Orangután
+Avestruz
+Nutria
+ostra
+Pademelon
+Pantera
+Loro
+Mono patas
+Pavo real
+pekinés
+Pelícano
+Pingüino
+persa
+Faisán
+Tamarin de varios colores
+Cerdo
+Pika
+Lucio
+Armadillo de hada rosa
+Piraña
+Ornitorrinco
+Puntero
+Rana dardo venenoso
+Oso polar
+Patinador
+Caniche
+Rana de la piscina
+Puerco espín
+Zarigüeya
+Gamba
+Mono de probóscide
+Pez globo
+Frailecillo
+Doguillo
+Puma
+Emperador púrpura
+La polilla del gato
+Hipopótamo pigmeo
+Tití pigmeo
+Codorniz
+Quetzal
+Quokka
+Quoll
+Conejo
+Mapache
+Perro mapache
+Tortuga Radiada
+Muñeca de trapo
+Rata
+Serpiente de cascabel
+Tarántula roja de la rodilla
+Panda rojo
+Lobo rojo
+Tamarin con las manos en la masa
+Reno
+Rinoceronte
+Delfín de río
+Tortuga del río
+Robin
+Rock Hyrax
+Pingüino de penacho amarillo
+Espátula rosada
+Rottweiler
+Pingüino real
+Azul ruso
+Tigre dientes de sable
+San Bernardo
+Salamandra
+Lagarto de arena
+Saola
+Escorpión
+Pez escorpión
+Dragón marino
+León marino
+Nutria de mar
+Babosa de mar
+Ascidia
+Tortuga marina
+Erizo de mar
+Caballo de mar
+Sello
+Gato cerval
+Oveja
+Shih Tzu
+Camarón
+siamés
+Pez luchador siamés
+siberiano
+Husky siberiano
+Tigre siberiano
+Dólar de plata
+Zorrillo
+Perezoso
+Gusano lento
+Caracol
+Serpiente
+Tortuga mordedora
+Raqueta de nieve
+Buho Nevado
+somalí
+Tigre del sur de China
+Sapo de espino
+Gorrión
+Oso con gafas
+Cachalote
+Mono araña
+Pez espinoso
+Esponja
+Calamar
+Ardilla
+Mono ardilla
+Elefante de Sri Lanka
+Staffordshire Bull Terrier
+Escarabajo ciervo
+Estrella de mar
+Stellers Sea Cow
+Insecto palo
+mantarraya
+Armiño
+Rana cohete rayada
+Elefante de Sumatra
+Orangután de Sumatra
+Rinoceronte de Sumatra
+Tigre de Sumatra
+Oso del sol
+Cisne
+Espiga
+Tapanuli Orangután
+Tapir
+Tarsier
+Demonio de Tasmania
+Buho Carabo
+Termita
+Tetra
+Diablo espinoso
+Mastín tibetano
+Tiffany
+Tigre
+Salamandra Tigre
+Tiburón tigre
+Tortuga
+Tucán
+Rana de árbol
+Tropicbird
+Tuatara
+pavo
+Angora Turca
+Uakari
+Uguisu
+AVE sombrilla
+Murciélago vampiro
+Mono verde
+Buitre
+Wallaby
+Morsa
+jabalí
+Avispa
+Búfalo de agua
+Dragón de agua
+Campaña de agua
+Comadreja
+Corgi Galés
+West Highland Terrier
+Gorila occidental
+Gorila de las tierras bajas occidentales
+Tiburón ballena
+Lebrel
+Capuchino de cara blanca
+Rinoceronte blanco
+Tigre blanco
+Jabalí
+Ñu
+Lobo
+Glotón
+Wombat
+Woodlouse
+Pájaro carpintero
+Mamut lanudo
+Mono lanudo
+Pez
+Rayos X Tetra
+Yak
+Pingüino de ojos amarillos
+Yorkshire Terrier
+Cebra
+Tiburón cebra
+Cebú
+Zonkey
+Zorse

@@ -294,7 +294,8 @@ namespace DOST.Services {
                 return true;
             }
             try {
-                var categoryFile = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\" + categoryPlayerAnswer.GameCategory.Name + ".txt");
+                var categoryFile = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\Categories\\" + categoryPlayerAnswer.GameCategory.Name + ".txt").ToList();
+                categoryFile.ForEach(line => categoryFile[categoryFile.IndexOf(line)] = line.ToLower());
                 if (categoryFile.Contains(categoryPlayerAnswer.Answer.ToLower())) {
                     return true;
                 }
