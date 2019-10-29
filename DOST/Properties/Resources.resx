@@ -375,4 +375,7 @@
   <data name="RankGameText" xml:space="preserve">
     <value>Clasificación</value>
   </data>
+  <data name="ScorePointsText" xml:space="preserve">
+    <value>Puntos</value>
+  </data>
 </root>

@@ -87,18 +87,27 @@ namespace DOST {
                     Tag = index
                 });
                 categoriesTextBox.Last().KeyDown += CategoryTextBox_KeyDown;
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(categoriesTextBox[index], game.LetterSelected + "...");
+                HintAssist.SetHint(categoriesTextBox[index], game.LetterSelected + "...");
                 categoriesStackPanels[index].Children.Add(categoriesTextBox[index]);
                 if (Session.CategoriesList.Exists(category => category.Name == game.Categories[index].Name)) {
                     categoriesButton.Add(new Button() {
                         Content = Properties.Resources.GetWordButton,
-                        Margin = new Thickness(0, 0, 146, 0),
+                        Margin = new Thickness(0, 0, 10, 0),
                         Tag = index
                     });
+                    categoriesButton.Last().Click += CategoryGetWordButton_Click;
                     categoriesStackPanels[index].Children.Add(categoriesButton[index]);
+                    categoriesStackPanels[index].Children.Add(new TextBlock {
+                        Text = Session.ROUND_GET_WORD_COST + Properties.Resources.ScorePointsText,
+                        Foreground = Brushes.White
+                    });
                 }
                 playerAnswerCategoriesStackPanel.Children.Add(categoriesStackPanels[index]);
             }
+        }
+
+        private void CategoryGetWordButton_Click(object sender, RoutedEventArgs e) {
+            throw new NotImplementedException();
         }
 
         private void CategoryTextBox_KeyDown(object sender, KeyEventArgs e) {
@@ -138,6 +147,18 @@ namespace DOST {
         }
 
         private void DostButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            bool areAllCategoryTextBoxFilled = true;
+            foreach (var categoryTextBox in categoriesTextBox) {
+                if (categoryTextBox.Text == string.Empty) {
+                    areAllCategoryTextBoxFilled = false;
+                    break;
+                }
+            }
+            if (!areAllCategoryTextBoxFilled) {
+                MessageBox.Show(Properties.Resources.UncompletedFieldsErrorText);
+                return;
+            }
+            //inGameService.PressDost();
         }
 
         public class InGameCallback : InGameCallbackHandler {

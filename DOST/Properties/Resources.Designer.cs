@@ -682,6 +682,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Puntos.
+        /// </summary>
+        public static string ScorePointsText {
+            get {
+                return ResourceManager.GetString("ScorePointsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Puntuación.
         /// </summary>
         public static string ScoreText {

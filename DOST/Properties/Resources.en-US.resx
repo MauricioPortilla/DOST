@@ -372,4 +372,7 @@
   <data name="YouDontHaveEnoughCoinsErrorText" xml:space="preserve">
     <value>You don't have enough coins to do this.</value>
   </data>
+  <data name="ScorePointsText" xml:space="preserve">
+    <value>Score points</value>
+  </data>
 </root>
