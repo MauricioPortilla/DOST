@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using DOST.DataAccess;
 
 namespace DOST.Services {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Single)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class GameService : IGameService {
         /// <summary>
         /// Stores active games ID with players lists.

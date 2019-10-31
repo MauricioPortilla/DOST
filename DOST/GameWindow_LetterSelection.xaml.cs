@@ -78,15 +78,12 @@ namespace DOST {
                     return true;
                 }, onSuccess: () => {
                     Application.Current.Dispatcher.Invoke(delegate {
+                        openEventArgs.Session.Close(true);
                         Session.GameWindow = new GameWindow(game);
                         Session.GameWindow.Show();
                         Close();
                     });
-                }, onFinish: () => {
-                    Application.Current.Dispatcher.Invoke(delegate {
-                        openEventArgs.Session.Close(true);
-                    });
-                }, false);
+                }, onFinish: null, false);
             }, null);
         }
 
