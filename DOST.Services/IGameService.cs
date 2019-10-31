@@ -22,7 +22,7 @@ namespace DOST.Services {
         bool RemovePlayer(string guidPlayer, string guidGame);
 
         [OperationContract]
-        bool CreateGame(out string guidGame);
+        bool CreateGame(out string guidGame, string language);
 
         [OperationContract]
         List<GameCategory> GetCategoriesList(int idgame);
@@ -47,5 +47,8 @@ namespace DOST.Services {
 
         [OperationContract]
         bool SendCategoryAnswers(string guidGame, string guidPlayer, List<CategoryPlayerAnswer> categoryPlayerAnswers);
+
+        [OperationContract]
+        string GetCategoryWord(string guidGame, string guidPlayer, string categoryName);
     }
 }

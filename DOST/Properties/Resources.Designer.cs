@@ -115,6 +115,24 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Ha ocurrido un error..
+        /// </summary>
+        public static string AnErrorHasOcurredErrorText {
+            get {
+                return ResourceManager.GetString("AnErrorHasOcurredErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Animal.
+        /// </summary>
+        public static string AnimalCategoryText {
+            get {
+                return ResourceManager.GetString("AnimalCategoryText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Mejores puntuaciones.
         /// </summary>
         public static string BestScoresButton {
@@ -183,6 +201,15 @@ namespace DOST.Properties {
         public static string CoinsText {
             get {
                 return ResourceManager.GetString("CoinsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Color.
+        /// </summary>
+        public static string ColorCategoryText {
+            get {
+                return ResourceManager.GetString("ColorCategoryText", resourceCulture);
             }
         }
         
@@ -322,6 +349,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Fruta.
+        /// </summary>
+        public static string FruitCategoryText {
+            get {
+                return ResourceManager.GetString("FruitCategoryText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Configuración de la partida.
         /// </summary>
         public static string GameConfigurationText {
@@ -412,6 +448,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Apellido.
+        /// </summary>
+        public static string LastNameCategoryText {
+            get {
+                return ResourceManager.GetString("LastNameCategoryText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Selección de letra.
         /// </summary>
         public static string LetterSelectionWindowTitle {
@@ -498,6 +543,15 @@ namespace DOST.Properties {
         public static string MustSelectAtLeastOneCategoryErrorText {
             get {
                 return ResourceManager.GetString("MustSelectAtLeastOneCategoryErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Nombre.
+        /// </summary>
+        public static string NameCategoryText {
+            get {
+                return ResourceManager.GetString("NameCategoryText", resourceCulture);
             }
         }
         
@@ -826,6 +880,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a No se encontró una palabra para esta categoría..
+        /// </summary>
+        public static string WordNotFoundErrorText {
+            get {
+                return ResourceManager.GetString("WordNotFoundErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Ya estás dentro de una partida..
         /// </summary>
         public static string YouAreAlreadyInAGame {
@@ -840,6 +903,15 @@ namespace DOST.Properties {
         public static string YouDontHaveEnoughCoinsErrorText {
             get {
                 return ResourceManager.GetString("YouDontHaveEnoughCoinsErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No tienes suficientes puntos para hacer esto..
+        /// </summary>
+        public static string YouDontHaveEnoughScorePointsErrorText {
+            get {
+                return ResourceManager.GetString("YouDontHaveEnoughScorePointsErrorText", resourceCulture);
             }
         }
     }

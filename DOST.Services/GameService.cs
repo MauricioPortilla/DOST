@@ -20,6 +20,7 @@ namespace DOST.Services {
         }
         private static readonly int MAX_PLAYERS_IN_GAME = 4;
         private static readonly int ROUND_LETTER_SELECTION_COST = 20;
+        private static readonly int ROUND_GET_WORD_COST = 100;
 
         public List<Game> GetGamesList() {
             return activeGames;
@@ -132,7 +133,7 @@ namespace DOST.Services {
             return true;
         }
 
-        public bool CreateGame(out string guidGame) {
+        public bool CreateGame(out string guidGame, string language) {
             Game newGame = new Game {
                 ActiveGameGuid = Guid.NewGuid().ToString(),
                 Date = DateTime.Now,
@@ -140,7 +141,7 @@ namespace DOST.Services {
                 GameCategories = new List<GameCategory>(),
                 Round = 0
             };
-            Engine.CategoriesList.ForEach((category) => {
+            Engine.CategoriesList[language].ForEach((category) => {
                 newGame.GameCategories.Add(new GameCategory {
                     Name = category
                 });
@@ -273,15 +274,20 @@ namespace DOST.Services {
             if (findGame == null) {
                 return false;
             }
+            var findPlayer = findGame.Players.Find(player => player.ActivePlayerGuid == guidPlayer);
+            if (findPlayer == null) {
+                return false;
+            }
             foreach (var categoryPlayerAnswer in categoryPlayerAnswers) {
                 var category = findGame.GameCategories.Find(gameCategory => gameCategory.Name.Equals(categoryPlayerAnswer.GameCategory.Name));
                 if (category == null) {
                     continue;
                 }
                 var playerAnswerToAdd = new CategoryPlayerAnswer {
-                    GameCategory = category,
+                    GameCategory = new GameCategory(0, null, category.Name),
                     Answer = categoryPlayerAnswer.Answer,
-                    Round = categoryPlayerAnswer.Round
+                    Round = categoryPlayerAnswer.Round,
+                    Player = findPlayer
                 };
                 playerAnswerToAdd.HasCorrectAnswer = EvaluateCategoryPlayerAnswer(playerAnswerToAdd);
                 category.CategoryPlayerAnswer.Add(playerAnswerToAdd);
@@ -290,14 +296,15 @@ namespace DOST.Services {
         }
 
         private bool EvaluateCategoryPlayerAnswer(CategoryPlayerAnswer categoryPlayerAnswer) {
-            if (!Engine.CategoriesList.Contains(categoryPlayerAnswer.GameCategory.Name)) {
+            if (string.IsNullOrWhiteSpace(categoryPlayerAnswer.Answer)) {
+                return false;
+            } else if (!Engine.CategoriesList.Any(list => list.Value.Contains(categoryPlayerAnswer.GameCategory.Name))) {
                 return true;
             }
             try {
-                var categoryFile = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\Categories\\" + categoryPlayerAnswer.GameCategory.Name + ".txt").ToList();
-                categoryFile.ForEach(line => categoryFile[categoryFile.IndexOf(line)] = line.ToLower());
-                if (categoryFile.Contains(categoryPlayerAnswer.Answer.ToLower())) {
-                    return true;
+                var categoryFileWords = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\Categories\\" + categoryPlayerAnswer.GameCategory.Name + ".txt").ToList();
+                if (!categoryFileWords.Exists(word => word.ToLower() == categoryPlayerAnswer.Answer.ToLower())) {
+                    return false;
                 }
             } catch (FileNotFoundException fileNotFoundException) {
                 Console.WriteLine("FileNotFoundException (EvaluateCategoryPlayerAnswer) -> " + fileNotFoundException.Message);
@@ -306,7 +313,36 @@ namespace DOST.Services {
             } catch (Exception exception) {
                 Console.WriteLine("Exception (EvaluateCategoryPlayerAnswer) -> " + exception.Message);
             }
-            return false;
+            return true;
+        }
+
+        public string GetCategoryWord(string guidGame, string guidPlayer, string categoryName) {
+            if (!Engine.CategoriesList.Any(list => list.Value.Contains(categoryName))) {
+                return string.Empty;
+            }
+            var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
+            if (findGame == null) {
+                return string.Empty;
+            }
+            var findPlayer = findGame.Players.Find(player => player.ActivePlayerGuid == guidPlayer);
+            if (findPlayer == null) {
+                return string.Empty;
+            }
+            try {
+                var categoryFileWords = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\Categories\\" + categoryName + ".txt").ToList();
+                var matchedWords = categoryFileWords.Where(word => word[0] == Convert.ToChar(findGame.LetterSelected))
+                    .Union(categoryFileWords.Where(lowerWord => lowerWord[0] == Convert.ToChar(findGame.LetterSelected.ToLower()))).ToList();
+                var wordFound = matchedWords[new Random().Next(0, matchedWords.Count() - 1)];
+                findPlayer.Score -= ROUND_GET_WORD_COST;
+                return wordFound.ToUpperInvariant();
+            } catch (FileNotFoundException fileNotFoundException) {
+                Console.WriteLine("FileNotFoundException (EvaluateCategoryPlayerAnswer) -> " + fileNotFoundException.Message);
+            } catch (IOException ioException) {
+                Console.WriteLine("IOException (EvaluateCategoryPlayerAnswer) -> " + ioException.Message);
+            } catch (Exception exception) {
+                Console.WriteLine("Exception (EvaluateCategoryPlayerAnswer) -> " + exception.Message);
+            }
+            return string.Empty;
         }
     }
 }

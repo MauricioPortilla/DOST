@@ -15,14 +15,10 @@ namespace DOST {
     /// Lógica de interacción para App.xaml
     /// </summary>
     public partial class App : Application {
-        public static string ConnectionIP = "localhost";
-        public static int ConnectionPort = 25618;
         public static string Language = "es-MX";
 
         public App() {
             var appConfig = GetAppConfiguration();
-            ConnectionIP = appConfig["Connection"]["IP"];
-            ConnectionPort = int.Parse(appConfig["Connection"]["Port"]);
             Language = appConfig["DOST"]["Language"];
             if (Language == "en-US") {
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(Language);
@@ -54,11 +50,6 @@ namespace DOST {
                         new XElement(
                             "DOST",
                             new XElement("Language", "es-MX")
-                        ),
-                        new XElement(
-                            "Connection",
-                            new XElement("IP", "localhost"),
-                            new XElement("Port", "25618")
                         )
                     )
                 ).Save(dir + "config.xml");
@@ -71,9 +62,6 @@ namespace DOST {
             }
             foreach (KeyValuePair<string, Dictionary<XName, string>> xmlElement in xmlElements) {
                 foreach (KeyValuePair<XName, string> insideElement in xmlElement.Value) {
-                    if (insideElement.Key == "DatabasePassword") {
-                        continue;
-                    }
                     if (string.IsNullOrWhiteSpace(insideElement.Value)) {
                         Process.Start("notepad.exe", dir + "config.xml");
                         Environment.Exit(0);

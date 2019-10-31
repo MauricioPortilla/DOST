@@ -14,6 +14,10 @@ namespace DOST {
         }
         private Game game;
         private int score;
+        public int Score {
+            get { return score; }
+            set { score = value; }
+        }
         private bool isHost;
         public bool IsHost {
             get { return isHost; }
@@ -65,6 +69,15 @@ namespace DOST {
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
                 return service.SendCategoryAnswers(game.ActiveGuidGame, activePlayerGuid, categoryPlayerAnswersService);
             });
+        }
+
+        public string GetCategoryWord(GameCategory category) {
+            var word = string.Empty;
+            EngineNetwork.EstablishChannel<IGameService>((service) => {
+                word = service.GetCategoryWord(game.ActiveGuidGame, activePlayerGuid, category.Name);
+                return true;
+            });
+            return word;
         }
     }
 }

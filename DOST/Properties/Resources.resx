@@ -378,4 +378,28 @@
   <data name="ScorePointsText" xml:space="preserve">
     <value>Puntos</value>
   </data>
+  <data name="AnErrorHasOcurredErrorText" xml:space="preserve">
+    <value>Ha ocurrido un error.</value>
+  </data>
+  <data name="AnimalCategoryText" xml:space="preserve">
+    <value>Animal</value>
+  </data>
+  <data name="ColorCategoryText" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="FruitCategoryText" xml:space="preserve">
+    <value>Fruta</value>
+  </data>
+  <data name="LastNameCategoryText" xml:space="preserve">
+    <value>Apellido</value>
+  </data>
+  <data name="NameCategoryText" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="WordNotFoundErrorText" xml:space="preserve">
+    <value>No se encontró una palabra para esta categoría.</value>
+  </data>
+  <data name="YouDontHaveEnoughScorePointsErrorText" xml:space="preserve">
+    <value>No tienes suficientes puntos para hacer esto.</value>
+  </data>
 </root>

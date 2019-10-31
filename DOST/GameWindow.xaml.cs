@@ -2,7 +2,9 @@
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Media;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
@@ -38,6 +40,7 @@ namespace DOST {
             this.player = this.game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
             Title = Properties.Resources.RoundText + game.Round + " - DOST";
             roundTextBlock.Text = game.Round.ToString();
+            scoreTextBlock.Text = player.Score.ToString();
             try {
                 InstanceContext gameInstance = new InstanceContext(new InGameCallback(
                     this.game, this.game.Players.Find(player => player.Account.Id == Session.Account.Id), categoriesTextBox, this
@@ -55,7 +58,13 @@ namespace DOST {
 
         private void LoadTimer() {
             Task.Run(() => {
+                bool isSoundPlaying = false;
                 while (timeRemaining >= 0) {
+                    if (timeRemaining == 10 && !isSoundPlaying) {
+                        SoundPlayer soundPlayer = new SoundPlayer(Properties.SoundResources.HurrySFX as Stream);
+                        soundPlayer.Play();
+                        isSoundPlaying = true;
+                    }
                     Application.Current.Dispatcher.Invoke(delegate {
                         timeRemainingTextBlock.Text = timeRemaining.ToString();
                     });
@@ -67,7 +76,6 @@ namespace DOST {
 
         private void LoadCategories() {
             Thickness textBlockMargin = new Thickness(30, 0, 0, 0);
-
             for (int index = 0; index < game.Categories.Count; index++) {
                 playerAnswerCategoriesStackPanel.Children.Add(new TextBlock() {
                     Text = game.Categories[index].Name,
@@ -89,17 +97,18 @@ namespace DOST {
                 categoriesTextBox.Last().KeyDown += CategoryTextBox_KeyDown;
                 HintAssist.SetHint(categoriesTextBox[index], game.LetterSelected + "...");
                 categoriesStackPanels[index].Children.Add(categoriesTextBox[index]);
-                if (Session.CategoriesList.Exists(category => category.Name == game.Categories[index].Name)) {
+                if (Session.DefaultCategoriesNameList.Contains(game.Categories[index].Name)) {
                     categoriesButton.Add(new Button() {
                         Content = Properties.Resources.GetWordButton,
                         Margin = new Thickness(0, 0, 10, 0),
                         Tag = index
                     });
                     categoriesButton.Last().Click += CategoryGetWordButton_Click;
-                    categoriesStackPanels[index].Children.Add(categoriesButton[index]);
+                    categoriesStackPanels[index].Children.Add(categoriesButton.Last());
                     categoriesStackPanels[index].Children.Add(new TextBlock {
-                        Text = Session.ROUND_GET_WORD_COST + Properties.Resources.ScorePointsText,
-                        Foreground = Brushes.White
+                        Text = Session.ROUND_GET_WORD_COST + " " + Properties.Resources.ScorePointsText,
+                        Foreground = Brushes.White,
+                        Margin = new Thickness(0, 15, 0, 0)
                     });
                 }
                 playerAnswerCategoriesStackPanel.Children.Add(categoriesStackPanels[index]);
@@ -107,7 +116,20 @@ namespace DOST {
         }
 
         private void CategoryGetWordButton_Click(object sender, RoutedEventArgs e) {
-            throw new NotImplementedException();
+            var getWordButton = sender as Button;
+            if (player.Score < Session.ROUND_GET_WORD_COST) {
+                MessageBox.Show(Properties.Resources.YouDontHaveEnoughScorePointsErrorText);
+                return;
+            }
+            var word = player.GetCategoryWord(game.Categories[(int) getWordButton.Tag]);
+            if (string.IsNullOrWhiteSpace(word)) {
+                MessageBox.Show(Properties.Resources.WordNotFoundErrorText);
+                return;
+            }
+            scoreTextBlock.Text = (Convert.ToInt32(scoreTextBlock.Text) - Session.ROUND_GET_WORD_COST).ToString();
+            categoriesTextBox[(int) getWordButton.Tag].Text = word;
+            categoriesTextBox[(int) getWordButton.Tag].IsEnabled = false;
+            getWordButton.IsEnabled = false;
         }
 
         private void CategoryTextBox_KeyDown(object sender, KeyEventArgs e) {
@@ -158,7 +180,14 @@ namespace DOST {
                 MessageBox.Show(Properties.Resources.UncompletedFieldsErrorText);
                 return;
             }
-            //inGameService.PressDost();
+            try {
+                inGameService.PressDost(game.ActiveGuidGame, player.ActivePlayerGuid);
+                dostButton.IsEnabled = false;
+            } catch (CommunicationException communicationException) {
+                Console.WriteLine("CommunicationException (DostButton_MouseLeftButtonDown) -> " + communicationException.Message);
+                MessageBox.Show(Properties.Resources.AnErrorHasOcurredErrorText);
+                dostButton.IsEnabled = true;
+            }
         }
 
         public class InGameCallback : InGameCallbackHandler {
@@ -174,15 +203,12 @@ namespace DOST {
             }
 
             public override void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
-                throw new NotImplementedException();
             }
 
             public override void StartGame(string guidGame) {
-                throw new NotImplementedException();
             }
 
             public override void StartRound(string guidGame) {
-                throw new NotImplementedException();
             }
 
             public override void EndRound(string guidGame) {
@@ -191,9 +217,28 @@ namespace DOST {
                 }
                 window.SendCategoryAnswers();
             }
+
+            public override void PressDost(string guidGame, string guidPlayer) {
+                if (game.ActiveGuidGame != guidGame) {
+                    return;
+                }
+                var findPlayer = game.Players.Find(playerInGame => playerInGame.ActivePlayerGuid == guidPlayer);
+                if (findPlayer == null) {
+                    return;
+                }
+                try {
+                    var playerStatus = window.playersStatusTextBlock[game.Players.IndexOf(findPlayer)];
+                    playerStatus.Opacity = 1;
+                    playerStatus.Foreground = Brushes.LimeGreen;
+                } catch (ArgumentOutOfRangeException argumentOutOfRangeException) {
+                    Console.WriteLine("ArgumentOutOfRangeException (PressDost in Callback) -> " + argumentOutOfRangeException.Message);
+                    MessageBox.Show(Properties.Resources.AnErrorHasOcurredErrorText);
+                }
+            }
         }
 
         private void SendCategoryAnswers() {
+            IsEnabled = false;
             DialogHost.Show(loadingStackPanel, "GameWindow_WindowDialogHost", (openSender, openEventArgs) => {
                 List<CategoryPlayerAnswer> categoryPlayerAnswers = new List<CategoryPlayerAnswer>();
                 for (int index = 0; index < categoriesTextBox.Count; index++) {
@@ -202,6 +247,7 @@ namespace DOST {
                 EngineNetwork.DoNetworkAction(onExecute: () => {
                     return player.SendCategoryAnswers(categoryPlayerAnswers);
                 }, onSuccess: () => {
+                    Thread.Sleep(1500);
                     Application.Current.Dispatcher.Invoke(delegate {
                         openEventArgs.Session.Close(true);
                         Session.GameWindow.Close();
@@ -230,5 +276,6 @@ namespace DOST {
         public abstract void StartRound(string guidGame);
         public abstract void StartGame(string guidGame);
         public abstract void EndRound(string guidGame);
+        public abstract void PressDost(string guidGame, string guidPlayer);
     }
 }

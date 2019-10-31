@@ -11,17 +11,6 @@ using System.Windows;
 
 namespace DOST {
     static class EngineNetwork {
-        public static readonly Dictionary<string, Uri[]> URIS_SERVICES = new Dictionary<string, Uri[]>() {
-            { "CuentaService", new Uri[] {
-                new Uri("net.tcp://" + App.ConnectionIP + ":" + App.ConnectionPort + "/AccountService")
-            } },
-            { "PartidaService", new Uri[] {
-                new Uri("net.tcp://" + App.ConnectionIP + ":" + App.ConnectionPort + "/GameService")
-            } },
-            { "ChatService", new Uri[] {
-                new Uri("net.tcp://" + App.ConnectionIP + ":" + App.ConnectionPort + "/ChatService")
-            } }
-        };
         private static readonly Dictionary<Type, string> CHANNEL_SERVICES = new Dictionary<Type, string>() {
             { typeof(IAccountService), "AccountService" },
             { typeof(IGameService), "GameService" },
@@ -35,12 +24,13 @@ namespace DOST {
                 var serviceChannel = channel.CreateChannel();
                 valueReturned = onOpen.Invoke(serviceChannel);
                 channel.Close();
+                return valueReturned;
             } catch (CommunicationException communicationException) {
-                Console.WriteLine("CommunicationException (EstablishChannel) -> " + communicationException.Message);
+                Console.WriteLine("CommunicationException (EstablishChannel) -> " + communicationException.Message + " | " + communicationException.StackTrace);
             } catch (Exception exception) {
-                Console.WriteLine("Exception (EstablishChannel) -> " + exception.Message);
+                Console.WriteLine("Exception (EstablishChannel) -> " + exception.Message + " | " + exception.StackTrace);
             }
-            return valueReturned;
+            return false;
         }
 
         public static void DoNetworkAction(Func<bool> onExecute, Action onSuccess, Action onFinish, bool retryOnFail) {

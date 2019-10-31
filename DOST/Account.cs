@@ -109,7 +109,7 @@ namespace DOST {
         public bool CreateGame(out string guidGame) {
             string guidNewGame = "";
             bool returnedValue = EngineNetwork.EstablishChannel<IGameService>((service) => {
-                return service.CreateGame(out guidNewGame);
+                return service.CreateGame(out guidNewGame, App.Language);
             });
             guidGame = guidNewGame;
             return returnedValue;

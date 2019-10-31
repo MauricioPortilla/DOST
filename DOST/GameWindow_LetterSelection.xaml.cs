@@ -53,11 +53,9 @@ namespace DOST {
             }
 
             public override void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
-                throw new NotImplementedException();
             }
 
             public override void StartRound(string guidGame) {
-                throw new NotImplementedException();
             }
 
             public override void StartGame(string guidGame) {
@@ -67,7 +65,9 @@ namespace DOST {
             }
 
             public override void EndRound(string guidGame) {
-                throw new NotImplementedException();
+            }
+
+            public override void PressDost(string guidGame, string guidPlayer) {
             }
         }
 
@@ -101,11 +101,13 @@ namespace DOST {
         }
 
         private void SelectRandomLetterButton_Click(object sender, RoutedEventArgs e) {
+            IsEnabled = false;
             if (game.SetLetter(true, Session.Account.Id)) {
                 inGameService.StartGame(game.ActiveGuidGame);
                 return;
             }
             MessageBox.Show(Properties.Resources.CouldntSelectLetterErrorText);
+            IsEnabled = true;
         }
 
         private void SelectSpecificLetterButton_Click(object sender, RoutedEventArgs e) {
@@ -127,12 +129,15 @@ namespace DOST {
             if (letterComboBox.SelectedItem == null) {
                 MessageBox.Show(Properties.Resources.MustSelectALetterErrorText);
                 return;
-            } else if (game.SetLetter(false, Session.Account.Id, letterComboBox.SelectedItem.ToString())) {
+            }
+            IsEnabled = false;
+            if (game.SetLetter(false, Session.Account.Id, letterComboBox.SelectedItem.ToString())) {
                 Session.Account.Coins -= Session.ROUND_LETTER_SELECTION_COST;
                 inGameService.StartGame(game.ActiveGuidGame);
                 return;
             }
             MessageBox.Show(Properties.Resources.CouldntSelectLetterErrorText);
+            IsEnabled = true;
         }
 
         protected override void OnClosed(EventArgs e) {

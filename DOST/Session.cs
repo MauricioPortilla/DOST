@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using KellermanSoftware.CompareNetObjects;
 
 namespace DOST {
     class Session {
@@ -17,7 +18,7 @@ namespace DOST {
         };
         public static readonly int MAX_PLAYERS_IN_GAME = 4;
         public static readonly int ROUND_LETTER_SELECTION_COST = 20;
-        public static readonly int ROUND_GET_WORD_COST = 20;
+        public static readonly int ROUND_GET_WORD_COST = 100;
         private static Account account;
         public static Account Account {
             get { return account; }
@@ -52,23 +53,23 @@ namespace DOST {
             get { return allGamesAvailable; }
             set { allGamesAvailable = value; }
         }
-        private static readonly List<GameConfigurationWindow.GameCategoryItem> categoriesList = new List<GameConfigurationWindow.GameCategoryItem>() {
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Nombre", GameCategory = new GameCategory(0, null, "Nombre"), IsSelected = false },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Apellido", GameCategory = new GameCategory(0, null, "Apellido"), IsSelected = false },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Color", GameCategory = new GameCategory(0, null, "Color"), IsSelected = false },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Animal", GameCategory = new GameCategory(0, null, "Animal"), IsSelected = false },
-            new GameConfigurationWindow.GameCategoryItem() { Name = "Fruta", GameCategory = new GameCategory(0, null, "Fruta"), IsSelected = false }
+        private static readonly List<GameConfigurationWindow.GameCategoryItem> defaultCategoriesList = new List<GameConfigurationWindow.GameCategoryItem>() {
+            new GameConfigurationWindow.GameCategoryItem() { Name = Properties.Resources.NameCategoryText, GameCategory = new GameCategory(0, null, Properties.Resources.NameCategoryText), IsSelected = false },
+            new GameConfigurationWindow.GameCategoryItem() { Name = Properties.Resources.LastNameCategoryText, GameCategory = new GameCategory(0, null, Properties.Resources.LastNameCategoryText), IsSelected = false },
+            new GameConfigurationWindow.GameCategoryItem() { Name = Properties.Resources.ColorCategoryText, GameCategory = new GameCategory(0, null, Properties.Resources.ColorCategoryText), IsSelected = false },
+            new GameConfigurationWindow.GameCategoryItem() { Name = Properties.Resources.AnimalCategoryText, GameCategory = new GameCategory(0, null, Properties.Resources.AnimalCategoryText), IsSelected = false },
+            new GameConfigurationWindow.GameCategoryItem() { Name = Properties.Resources.FruitCategoryText, GameCategory = new GameCategory(0, null, Properties.Resources.FruitCategoryText), IsSelected = false }
         };
-        public static List<GameConfigurationWindow.GameCategoryItem> CategoriesList {
-            get { return categoriesList; }
+        public static List<GameConfigurationWindow.GameCategoryItem> DefaultCategoriesList {
+            get { return defaultCategoriesList; }
         }
-        /*private static Game gameBeingPlayed;
-        public static Game GameBeingPlayed {
-            get { return gameBeingPlayed; }
-            set { gameBeingPlayed = value; }
-        }*/
+        public static readonly List<string> DefaultCategoriesNameList = new List<string>() {
+            "Nombre", "Name", "Apellido", "Last name", "Color", "Animal", "Fruta", "Fruit"
+        };
+        public static bool IsPlayerInGame = false;
 
-        /*private static void GetGameBeingPlayedData(IGameService service) {
+        private static void GetGameBeingPlayedData(IGameService service) {
+            var gameBeingPlayed = allGamesAvailable.Find(game => game.Players.Find(player => player.Account.Id == Session.Account.Id) != null);
             if (gameBeingPlayed == null) {
                 return;
             }
@@ -76,12 +77,9 @@ namespace DOST {
             if (string.IsNullOrEmpty(activeGame.ActiveGameGuid)) {
                 return;
             }
-            var newGameBeingPlayer = new Game(activeGame.Id, activeGame.Round, activeGame.Date, new List<Player>()) {
-                ActiveGuidGame = activeGame.ActiveGameGuid,
-                LetterSelected = activeGame.LetterSelected
-            };
+            var players = new List<Player>();
             activeGame.Players.ForEach((player) => {
-                newGameBeingPlayer.Players.Add(new Player(
+                players.Add(new Player(
                     id: 0,
                     new Account(player.Account.Id) {
                         Username = player.Account.Username,
@@ -92,7 +90,7 @@ namespace DOST {
                         IsVerified = player.Account.IsVerified,
                         ValidationCode = player.Account.ValidationCode
                     },
-                    newGameBeingPlayer,
+                    gameBeingPlayed,
                     player.Score,
                     player.IsHost
                 ) {
@@ -100,20 +98,30 @@ namespace DOST {
                     IsReady = player.IsReady
                 });
             });
-            newGameBeingPlayer.Categories = new List<GameCategory>();
+            var categories = new List<GameCategory>();
             activeGame.GameCategories.ForEach((category) => {
-                newGameBeingPlayer.Categories.Add(new GameCategory(0, gameBeingPlayed, category.Name));
+                categories.Add(new GameCategory(0, gameBeingPlayed, category.Name));
+                foreach (var categoryAnswer in category.CategoryPlayerAnswer) {
+                    categories.Last().CategoryPlayerAnswer = new List<CategoryPlayerAnswer>();
+                    categories.Last().CategoryPlayerAnswer.Add(new CategoryPlayerAnswer(0, null, categories.Last(), categoryAnswer.Answer, categoryAnswer.Round));
+                    categories.Last().CategoryPlayerAnswer.Last().Player = players.Find(player => player.ActivePlayerGuid == categoryAnswer.Player.ActivePlayerGuid);
+                    categories.Last().CategoryPlayerAnswer.Last().HasCorrectAnswer = categoryAnswer.HasCorrectAnswer;
+                }
             });
-            gameBeingPlayed = newGameBeingPlayer;
-        }*/
+            gameBeingPlayed.Round = activeGame.Round;
+            gameBeingPlayed.RoundStartingTime = activeGame.RoundStartingTime;
+            gameBeingPlayed.Categories = categories;
+            gameBeingPlayed.Players = players;
+            gameBeingPlayed.LetterSelected = activeGame.LetterSelected;
+        }
 
         public static void GetGamesList() {
             EngineNetwork.EstablishChannel<IGameService>((service) => {
                 while (mainMenuWindow != null) {
-                    //if (gameWindow != null || gameLobbyWindow != null) {
-                    //    GetGameBeingPlayedData(service);
-                    //    continue;
-                    //}
+                    if (IsPlayerInGame) {
+                        GetGameBeingPlayedData(service);
+                        continue;
+                    }
                     List<Services.Game> serviceGamesList = service.GetGamesList();
                     foreach (var serviceGame in serviceGamesList) {
                         List<Player> playersList = new List<Player>();
@@ -167,6 +175,7 @@ namespace DOST {
                             existentGame.Categories = gameCategories;
                             existentGame.LetterSelected = serviceGame.LetterSelected;
                             existentGame.RoundStartingTime = serviceGame.RoundStartingTime;
+                            existentGame.Round = serviceGame.Round;
                         } else {
                             allGamesAvailable.Add(game);
                         }

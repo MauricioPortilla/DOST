@@ -9,8 +9,13 @@ using System.Xml.Linq;
 
 namespace DOST.Services {
     class Engine {
-        public static readonly List<string> CategoriesList = new List<string>() {
-            "Nombre", "Apellido", "Color", "Animal", "Fruta"
+        public static readonly Dictionary<string, List<string>> CategoriesList = new Dictionary<string, List<string>>() {
+            { "es-MX", new List<string>() {
+                "Nombre", "Apellido", "Color", "Animal", "Fruta"
+            } },
+            { "en-US", new List<string>() {
+                "Name", "Last name", "Color", "Animal", "Fruit"
+            } }
         };
 
         public static Dictionary<string, Dictionary<XName, string>> GetConfigFileElements() {
@@ -18,11 +23,6 @@ namespace DOST.Services {
             if (!File.Exists(dir)) {
                 new XDocument(
                     new XElement("Configuration",
-                        new XElement(
-                            "Connection",
-                            new XElement("IP", "localhost"),
-                            new XElement("Port", "25618")
-                        ),
                         new XElement(
                             "Smtp",
                             new XElement("SMTPServer", "smtp.live.com"),
@@ -41,9 +41,6 @@ namespace DOST.Services {
             }
             foreach (KeyValuePair<string, Dictionary<XName, string>> xmlElement in xmlElements) {
                 foreach (KeyValuePair<XName, string> insideElement in xmlElement.Value) {
-                    if (insideElement.Key == "DatabasePassword") {
-                        continue;
-                    }
                     if (string.IsNullOrWhiteSpace(insideElement.Value)) {
                         Process.Start("notepad.exe", dir);
                         Environment.Exit(0);
@@ -54,10 +51,8 @@ namespace DOST.Services {
         }
 
         public static string HashWithSHA256(string text) {
-            return string.Join("", (
-                SHA256.Create().ComputeHash(
-                    Encoding.UTF8.GetBytes(text)
-                )
+            return string.Join("", SHA256.Create().ComputeHash(
+                Encoding.UTF8.GetBytes(text)
             ).Select(x => x.ToString("x2")).ToArray()).ToLower();
         }
     }

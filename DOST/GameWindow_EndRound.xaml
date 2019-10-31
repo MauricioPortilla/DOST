@@ -13,7 +13,7 @@
         <Rectangle HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="1074" MouseDown="WindowHeader_MouseDown" Fill="#00000000" Margin="0,0,-1,0" />
         <TextBlock Text="{x:Static p:Resources.EndOfTheRoundText}" Margin="10,10,10,638" Foreground="White" FontSize="30" TextAlignment="Center"></TextBlock>
         <TextBlock Text="{x:Static p:Resources.ResultsText}" Margin="10,49,10,599" Foreground="White" FontSize="25" TextAlignment="Center"></TextBlock>
-        <StackPanel x:Name="playerAnswersResults" Orientation="Vertical" Margin="33,98,33,218"/>
+        <StackPanel x:Name="playerAnswersResultsStackPanel" Orientation="Vertical" Margin="33,98,33,218"/>
         <ListBox x:Name="chatListBox" Margin="33,0,33,44" Foreground="#DDFFFFFF" VerticalAlignment="Bottom" MaxHeight="156">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">

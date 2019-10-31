@@ -34,7 +34,7 @@ namespace DOST {
                     GameCategory = category
                 })
             );
-            var defaultCategories = Session.CategoriesList.ToList();
+            var defaultCategories = Session.DefaultCategoriesList.ToList();
             defaultCategories.ForEach((category) => {
                 if (!categoriesList.ToList().Exists(categoryInList => categoryInList.Name == category.Name)) {
                     categoriesList.Add(category);

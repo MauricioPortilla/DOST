@@ -33,6 +33,7 @@ namespace DOST {
         private int actualNumberOfPlayers = 0;
 
         public GameLobbyWindow(ref Game game) {
+            Session.IsPlayerInGame = true;
             InitializeComponent();
             this.game = game;
             lobbyPlayersUsernameTextBlocks = new List<TextBlock>() {
@@ -135,11 +136,12 @@ namespace DOST {
             }
 
             public override void StartGame(string guidGame) {
-                throw new NotImplementedException();
             }
 
             public override void EndRound(string guidGame) {
-                throw new NotImplementedException();
+            }
+
+            public override void PressDost(string guidGame, string guidPlayer) {
             }
         }
 
@@ -207,19 +209,25 @@ namespace DOST {
 
         private void ExitButton_Click(object sender, RoutedEventArgs e) {
             if (player.LeaveGame(game)) {
-                chatService.LeaveChat(game.ActiveGuidGame, player.Account.Username);
-                inGameService.LeavePlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
-                Session.GameLobbyWindow = null;
-                Session.MainMenuWindow.Show();
-                Close();
+                try {
+                    chatService.LeaveChat(game.ActiveGuidGame, player.Account.Username);
+                    inGameService.LeavePlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
+                    Session.IsPlayerInGame = false;
+                    Session.GameLobbyWindow = null;
+                    Session.MainMenuWindow.Show();
+                    Close();
+                } catch (CommunicationException communicationException) {
+                    Console.WriteLine("CommunicationException (ExitButton_Click) -> " + communicationException.Message);
+                    MessageBox.Show(Properties.Resources.AnErrorHasOcurredErrorText);
+                }
             }
         }
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e) {
-            if (game.Players.Count < 2) {
-                MessageBox.Show(Properties.Resources.MustHaveAtLeastTwoPlayersErrorText);
-                return;
-            }
+            //if (game.Players.Count < 2) {
+            //    MessageBox.Show(Properties.Resources.MustHaveAtLeastTwoPlayersErrorText);
+            //    return;
+            //}
             if (game.Players.Find(playerInGame => playerInGame.IsReady == false && playerInGame.ActivePlayerGuid != player.ActivePlayerGuid) != null) {
                 MessageBox.Show(Properties.Resources.PlayersNotReadyErrorText);
                 return;

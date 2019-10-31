@@ -21,11 +21,6 @@ namespace DOST.Server {
                 new XDocument(
                     new XElement("Configuration",
                         new XElement(
-                            "Connection",
-                            new XElement("IP", "localhost"),
-                            new XElement("Port", "25618")
-                        ),
-                        new XElement(
                             "Smtp",
                             new XElement("SMTPServer", "smtp.live.com"),
                             new XElement("Email", ""),
@@ -43,9 +38,6 @@ namespace DOST.Server {
             }
             foreach (KeyValuePair<string, Dictionary<XName, string>> xmlElement in xmlElements) {
                 foreach (KeyValuePair<XName, string> insideElement in xmlElement.Value) {
-                    if (insideElement.Key == "DatabasePassword") {
-                        continue;
-                    }
                     if (string.IsNullOrWhiteSpace(insideElement.Value)) {
                         Process.Start("notepad.exe", dir);
                         Environment.Exit(0);

@@ -73,6 +73,18 @@ namespace DOST.Services {
                 player.Value.EndRound(guidGame);
             }
         }
+
+        public void PressDost(string guidGame, string guidPlayer) {
+            if (!gamesClients.ContainsKey(guidGame)) {
+                return;
+            }
+            if (!gamesClients[guidGame].ContainsKey(guidPlayer)) {
+                return;
+            }
+            foreach (var player in gamesClients[guidGame]) {
+                player.Value.PressDost(guidGame, guidPlayer);
+            }
+        }
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
@@ -102,6 +114,10 @@ namespace DOST.Services {
 
         public void EndRound(string guidGame) {
             base.Channel.EndRound(guidGame);
+        }
+
+        public void PressDost(string guidGame, string guidPlayer) {
+            base.Channel.PressDost(guidGame, guidPlayer);
         }
     }
 }
