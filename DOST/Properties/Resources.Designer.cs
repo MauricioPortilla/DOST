@@ -790,6 +790,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Mostrar resultados de la partida.
+        /// </summary>
+        public static string ShowGameResultsButton {
+            get {
+                return ResourceManager.GetString("ShowGameResultsButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Iniciar partida.
         /// </summary>
         public static string StartGameButton {
@@ -804,6 +813,15 @@ namespace DOST.Properties {
         public static string StartGameErrorText {
             get {
                 return ResourceManager.GetString("StartGameErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Iniciar siguiente ronda.
+        /// </summary>
+        public static string StartNextRoundButton {
+            get {
+                return ResourceManager.GetString("StartNextRoundButton", resourceCulture);
             }
         }
         

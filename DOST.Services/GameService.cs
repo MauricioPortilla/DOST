@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using DOST.DataAccess;
 
 namespace DOST.Services {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Multiple)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Single)]
     public class GameService : IGameService {
         /// <summary>
         /// Stores active games ID with players lists.
@@ -18,9 +18,12 @@ namespace DOST.Services {
         public static List<Game> ActiveGames {
             get { return activeGames; }
         }
+        private static readonly int MAX_ROUNDS_PER_GAME = 5;
         private static readonly int MAX_PLAYERS_IN_GAME = 4;
         private static readonly int ROUND_LETTER_SELECTION_COST = 20;
         private static readonly int ROUND_GET_WORD_COST = 100;
+        private static readonly int SCORE_POINTS_FOR_CORRECT_ANSWER = 100;
+        private static readonly int ROUND_TIME = 40;
 
         public List<Game> GetGamesList() {
             return activeGames;
@@ -213,12 +216,15 @@ namespace DOST.Services {
             var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
             if (findGame == null) {
                 return false;
-            } else if (findGame.Round != 0) {
+            } else if (findGame.Round >= MAX_ROUNDS_PER_GAME) {
                 return false;
             } else if (findGame.Players.Find(player => player.IsReady == false) != null) {
                 return false;
             }
-            findGame.Round = 1;
+            findGame.Round += 1;
+            findGame.Players.ForEach((player) => {
+                player.IsReady = false;
+            });
             return true;
         }
 
@@ -242,7 +248,7 @@ namespace DOST.Services {
             }
             int asciiLetterA = 65;
             int asciiLetterZ = 90;
-            int roundTimeInSeconds = 40 + 3;
+            int roundTimeInSeconds = ROUND_TIME + 3;
             findGame.LetterSelected = selectRandomLetter ? Convert.ToChar(new Random().Next(asciiLetterA, asciiLetterZ)).ToString() : letter;
             findGame.RoundStartingTime = DateTime.Now.Ticks;
             Task.Run(() => {
@@ -290,6 +296,13 @@ namespace DOST.Services {
                     Player = findPlayer
                 };
                 playerAnswerToAdd.HasCorrectAnswer = EvaluateCategoryPlayerAnswer(playerAnswerToAdd);
+                if (playerAnswerToAdd.HasCorrectAnswer) {
+                    if (category.CategoryPlayerAnswer.Exists(answer => answer.Answer == playerAnswerToAdd.Answer)) {
+                        findPlayer.Score += SCORE_POINTS_FOR_CORRECT_ANSWER / 2;
+                    } else {
+                        findPlayer.Score += SCORE_POINTS_FOR_CORRECT_ANSWER;
+                    }
+                }
                 category.CategoryPlayerAnswer.Add(playerAnswerToAdd);
             }
             return true;

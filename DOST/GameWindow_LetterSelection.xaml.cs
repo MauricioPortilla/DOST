@@ -69,6 +69,9 @@ namespace DOST {
 
             public override void PressDost(string guidGame, string guidPlayer) {
             }
+
+            public override void EndGame(string guidGame) {
+            }
         }
 
         private void StartGame() {

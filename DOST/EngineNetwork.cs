@@ -26,14 +26,18 @@ namespace DOST {
                 channel.Close();
                 return valueReturned;
             } catch (CommunicationException communicationException) {
-                Console.WriteLine("CommunicationException (EstablishChannel) -> " + communicationException.Message + " | " + communicationException.StackTrace);
+                Console.WriteLine("CommunicationException (EstablishChannel<" + typeof(IService).Name + ">) -> " + communicationException.Message + " | " + communicationException.StackTrace);
             } catch (Exception exception) {
-                Console.WriteLine("Exception (EstablishChannel) -> " + exception.Message + " | " + exception.StackTrace);
+                Console.WriteLine("Exception (EstablishChannel<" + typeof(IService).Name + ">) -> " + exception.Message + " | " + exception.StackTrace);
             }
             return false;
         }
 
-        public static void DoNetworkAction(Func<bool> onExecute, Action onSuccess, Action onFinish, bool retryOnFail) {
+        public static void DoNetworkAction(Func<bool> onExecute, Action onSuccess = null, Action onFinish = null, bool retryOnFail = false) {
+            DoNetworkAction<Exception>(onExecute, onSuccess, onFinish, retryOnFail);
+        }
+
+        public static void DoNetworkAction<TException>(Func<bool> onExecute, Action onSuccess = null, Action onFinish = null, bool retryOnFail = false) where TException : Exception {
             Task.Run(() => {
                 bool resultOnExecute = false;
                 bool didStart = false;
@@ -47,19 +51,18 @@ namespace DOST {
                                 if (onExecute != null) {
                                     resultOnExecute = onExecute();
                                 }
-                            } catch (Exception exception) {
-                                Console.WriteLine("DoNetworkAction Exception (OnExecute) -> " + exception.Message);
+                            } catch (TException exception) {
+                                Console.WriteLine("DoNetworkAction<" + typeof(TException).Name + "> Exception (OnExecute) -> " + exception.Message);
                                 didThrowException = true;
-                                throw exception;
                             }
                         }).ContinueWith((task) => {
-                            if (task.Exception == null) {
+                            if (!didThrowException) {
                                 try {
                                     if (resultOnExecute) {
                                         onSuccess?.Invoke();
                                     }
                                 } catch (Exception exception) {
-                                    Console.WriteLine("DoNetworkAction Exception (OnSuccess) -> " + exception.Message);
+                                    Console.WriteLine("DoNetworkAction<" + typeof(TException).Name + "> Exception (OnSuccess) -> " + exception.Message);
                                     didThrowException = true;
                                 }
                             }
@@ -69,13 +72,15 @@ namespace DOST {
                     if (didStart && didFinish) {
                         if (didThrowException) {
                             if (retryOnFail) {
+                                didStart = false;
+                                didFinish = false;
                                 continue;
                             }
                         }
                         try {
                             onFinish?.Invoke();
                         } catch (Exception exception) {
-                            Console.WriteLine("DoNetworkAction Exception (OnFinish) -> " + exception.Message);
+                            Console.WriteLine("DoNetworkAction<" + typeof(TException).Name + "> Exception (OnFinish) -> " + exception.Message);
                         }
                         break;
                     }

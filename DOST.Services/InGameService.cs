@@ -85,6 +85,15 @@ namespace DOST.Services {
                 player.Value.PressDost(guidGame, guidPlayer);
             }
         }
+
+        public void EndGame(string guidGame) {
+            if (!gamesClients.ContainsKey(guidGame)) {
+                return;
+            }
+            foreach (var player in gamesClients[guidGame]) {
+                player.Value.EndGame(guidGame);
+            }
+        }
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
@@ -118,6 +127,10 @@ namespace DOST.Services {
 
         public void PressDost(string guidGame, string guidPlayer) {
             base.Channel.PressDost(guidGame, guidPlayer);
+        }
+
+        public void EndGame(string guidGame) {
+            base.Channel.EndGame(guidGame);
         }
     }
 }

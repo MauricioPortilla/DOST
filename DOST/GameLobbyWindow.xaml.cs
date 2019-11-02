@@ -34,6 +34,7 @@ namespace DOST {
 
         public GameLobbyWindow(ref Game game) {
             Session.IsPlayerInGame = true;
+            Session.Game_ForPlayerIndex = 1;
             InitializeComponent();
             this.game = game;
             lobbyPlayersUsernameTextBlocks = new List<TextBlock>() {
@@ -143,6 +144,9 @@ namespace DOST {
 
             public override void PressDost(string guidGame, string guidPlayer) {
             }
+
+            public override void EndGame(string guidGame) {
+            }
         }
 
         private void LoadPlayersJoinedData() {
@@ -224,10 +228,10 @@ namespace DOST {
         }
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e) {
-            //if (game.Players.Count < 2) {
-            //    MessageBox.Show(Properties.Resources.MustHaveAtLeastTwoPlayersErrorText);
-            //    return;
-            //}
+            if (game.Players.Count < 2) {
+                MessageBox.Show(Properties.Resources.MustHaveAtLeastTwoPlayersErrorText);
+                return;
+            }
             if (game.Players.Find(playerInGame => playerInGame.IsReady == false && playerInGame.ActivePlayerGuid != player.ActivePlayerGuid) != null) {
                 MessageBox.Show(Properties.Resources.PlayersNotReadyErrorText);
                 return;
@@ -244,8 +248,14 @@ namespace DOST {
             if (player.IsHost) {
                 return;
             } else if (player.SetPlayerReady(true)) {
-                readyButton.IsEnabled = false;
-                inGameService.SetPlayerReady(game.ActiveGuidGame, player.ActivePlayerGuid, true);
+                try {
+                    readyButton.IsEnabled = false;
+                    inGameService.SetPlayerReady(game.ActiveGuidGame, player.ActivePlayerGuid, true);
+                } catch (CommunicationException communicationException) {
+                    Console.WriteLine("CommunicationException (ReadyButton_Click) -> " + communicationException.Message);
+                    MessageBox.Show(Properties.Resources.AnErrorHasOcurredErrorText);
+                    readyButton.IsEnabled = true;
+                }
             }
         }
 

@@ -28,6 +28,9 @@ namespace DOST.Services {
 
         [OperationContract(IsOneWay = true)]
         void PressDost(string guidGame, string guidPlayer);
+
+        [OperationContract(IsOneWay = true)]
+        void EndGame(string guidGame);
     }
 
     [ServiceContract]
@@ -46,5 +49,8 @@ namespace DOST.Services {
 
         [OperationContract(IsOneWay = true)]
         void PressDost(string guidGame, string guidPlayer);
+
+        [OperationContract(IsOneWay = true)]
+        void EndGame(string guidGame);
     }
 }

@@ -52,7 +52,7 @@ namespace DOST {
                 return;
             }
             LoadCategories();
-            LoadPlayersStatus();
+            LoadPlayers();
             LoadTimer();
         }
 
@@ -62,7 +62,7 @@ namespace DOST {
                 while (timeRemaining >= 0) {
                     if (timeRemaining == 10 && !isSoundPlaying) {
                         SoundPlayer soundPlayer = new SoundPlayer(Properties.SoundResources.HurrySFX as Stream);
-                        soundPlayer.Play();
+                        //soundPlayer.Play();
                         isSoundPlaying = true;
                     }
                     Application.Current.Dispatcher.Invoke(delegate {
@@ -142,7 +142,7 @@ namespace DOST {
             }
         }
 
-        private void LoadPlayersStatus() {
+        private void LoadPlayers() {
             Thickness usernameMargin = new Thickness(20, 10, 0, 0);
             Thickness statusMargin = new Thickness(0, 10, 0, 0);
             for (int index = 0; index < game.Players.Count; index++) {
@@ -235,6 +235,8 @@ namespace DOST {
                     MessageBox.Show(Properties.Resources.AnErrorHasOcurredErrorText);
                 }
             }
+            public override void EndGame(string guidGame) {
+            }
         }
 
         private void SendCategoryAnswers() {
@@ -247,7 +249,7 @@ namespace DOST {
                 EngineNetwork.DoNetworkAction(onExecute: () => {
                     return player.SendCategoryAnswers(categoryPlayerAnswers);
                 }, onSuccess: () => {
-                    Thread.Sleep(1500);
+                    Thread.Sleep(2500);
                     Application.Current.Dispatcher.Invoke(delegate {
                         openEventArgs.Session.Close(true);
                         Session.GameWindow.Close();
@@ -277,5 +279,6 @@ namespace DOST {
         public abstract void StartGame(string guidGame);
         public abstract void EndRound(string guidGame);
         public abstract void PressDost(string guidGame, string guidPlayer);
+        public abstract void EndGame(string guidGame);
     }
 }

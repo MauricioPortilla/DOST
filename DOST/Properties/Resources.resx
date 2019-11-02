@@ -402,4 +402,10 @@
   <data name="YouDontHaveEnoughScorePointsErrorText" xml:space="preserve">
     <value>No tienes suficientes puntos para hacer esto.</value>
   </data>
+  <data name="StartNextRoundButton" xml:space="preserve">
+    <value>Iniciar siguiente ronda</value>
+  </data>
+  <data name="ShowGameResultsButton" xml:space="preserve">
+    <value>Mostrar resultados de la partida</value>
+  </data>
 </root>
