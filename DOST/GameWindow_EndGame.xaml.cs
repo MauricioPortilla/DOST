@@ -3,17 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using static DOST.GameLobbyWindow;
 
 namespace DOST {
     /// <summary>
@@ -34,15 +26,7 @@ namespace DOST {
             InitializeComponent();
             this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
             try {
-                InstanceContext chatInstance = new InstanceContext(new ChatCallbackHandler(game, chatListBox));
-                chatService = new ChatServiceClient(chatInstance);
-                while (true) {
-                    player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
-                    if (player != null) {
-                        chatService.EnterChat(game.ActiveGuidGame, player.Account.Username);
-                        break;
-                    }
-                }
+                Session.JoinGameChat(game, player, chatListBox, ref chatService);
             } catch (CommunicationException communicationException) {
                 Console.WriteLine("CommunicationException (GameLobbyWindow) -> " + communicationException.Message);
                 MessageBox.Show(Properties.Resources.CouldntJoinToGameErrorText);
@@ -65,8 +49,8 @@ namespace DOST {
                 playerOnePlaceTitleTextBlock, playerTwoPlaceTitleTextBlock,
                 playerThreePlaceTitleTextBlock, playerFourPlaceTitleTextBlock
             };
-            LoadPlayers();
             CalculatePlaces();
+            LoadPlayers();
         }
 
         private void CalculatePlaces() {

@@ -1,15 +1,10 @@
 ﻿using DOST.Services;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using KellermanSoftware.CompareNetObjects;
+using System.ServiceModel;
 
 namespace DOST {
     class Session {
@@ -205,6 +200,17 @@ namespace DOST {
                     return true;
                 });
                 if (valueReturned) {
+                    break;
+                }
+            }
+        }
+
+        public static void JoinGameChat(Game game, Player player, System.Windows.Controls.ListBox chatListBox, ref ChatServiceClient chatServiceClient) {
+            InstanceContext chatInstanceContext = new InstanceContext(new ChatCallbackHandler(game, chatListBox));
+            chatServiceClient = new ChatServiceClient(chatInstanceContext);
+            while (true) {
+                if (player != null) {
+                    chatServiceClient.EnterChat(game.ActiveGuidGame, player.Account.Username);
                     break;
                 }
             }

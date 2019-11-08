@@ -3,17 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace DOST {
     /// <summary>
@@ -60,15 +53,8 @@ namespace DOST {
             Thread loadPlayersJoinedDataThread = new Thread(LoadPlayersJoinedData);
             loadPlayersJoinedDataThread.Start();
             try {
-                InstanceContext chatInstance = new InstanceContext(new ChatCallbackHandler(game, chatListBox));
-                chatService = new ChatServiceClient(chatInstance);
-                while (true) {
-                    player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
-                    if (player != null) {
-                        chatService.EnterChat(game.ActiveGuidGame, player.Account.Username);
-                        break;
-                    }
-                }
+                player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
+                Session.JoinGameChat(game, player, chatListBox, ref chatService);
                 InstanceContext gameInstance = new InstanceContext(new InGameCallback(game, ref lobbyPlayersReadyStatusTextBlocks));
                 inGameService = new InGameServiceClient(gameInstance);
                 inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
@@ -76,27 +62,6 @@ namespace DOST {
                 Console.WriteLine("CommunicationException (GameLobbyWindow) -> " + communicationException.Message);
                 MessageBox.Show(Properties.Resources.CouldntJoinToGameErrorText);
                 Close();
-            }
-        }
-
-        public class ChatCallbackHandler : IChatServiceCallback {
-            private Game game;
-            private ListBox chatListBox;
-            public string LastMessageReceived;
-
-            public ChatCallbackHandler(Game game, ListBox chatListBox) {
-                this.game = game;
-                this.chatListBox = chatListBox;
-            }
-
-            public void BroadcastMessage(string guidGame, string username, string message) {
-                if (guidGame == game.ActiveGuidGame) {
-                    LastMessageReceived = message;
-                    chatListBox.Items.Add(new TextBlock() {
-                        Text = username + ": " + message
-                    });
-                    chatListBox.ScrollIntoView(chatListBox.Items[chatListBox.Items.Count - 1]);
-                }
             }
         }
 
@@ -181,22 +146,13 @@ namespace DOST {
                     configurationButton.Visibility = Visibility.Visible;
                 }
             }
-            // Can be improved
-            for (int index = 0; index < Session.MAX_PLAYERS_IN_GAME; index++) {
-                lobbyPlayersUsernameTextBlocks[index].Text = "...";
-                lobbyPlayersTypeTextBlocks[index].Text = Properties.Resources.WaitingForPlayerText;
-                lobbyPlayersRankTextBlocks[index].Text = "#0";
-                lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Hidden;
-                lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Hidden;
-                lobbyPlayersReadyStatusTextBlocks[index].Visibility = Visibility.Hidden;
-            }
+            ResetLobbyUI();
             for (int index = 0; index < game.Players.Count; index++) {
                 if (lobbyPlayersUsernameTextBlocks[index].Text == game.Players[index].Account.Username) {
                     continue;
                 }
                 lobbyPlayersUsernameTextBlocks[index].Text = game.Players[index].Account.Username;
-                lobbyPlayersTypeTextBlocks[index].Text = game.Players[index].IsHost ?
-                    Properties.Resources.HostPlayerText : Properties.Resources.PlayerText;
+                lobbyPlayersTypeTextBlocks[index].Text = game.Players[index].IsHost ? Properties.Resources.HostPlayerText : Properties.Resources.PlayerText;
                 lobbyPlayersRankTextBlocks[index].Text = game.Players[index].GetRank();
                 lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Visible;
                 lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Visible;
@@ -209,6 +165,17 @@ namespace DOST {
                 lobbyStatusTextBlock.Text = Properties.Resources.WaitingForPlayersText;
             }
             actualNumberOfPlayers = game.Players.Count;
+        }
+
+        private void ResetLobbyUI() {
+            for (int index = 0; index < Session.MAX_PLAYERS_IN_GAME; index++) {
+                lobbyPlayersUsernameTextBlocks[index].Text = "...";
+                lobbyPlayersTypeTextBlocks[index].Text = Properties.Resources.WaitingForPlayerText;
+                lobbyPlayersRankTextBlocks[index].Text = "#0";
+                lobbyPlayersRankTextBlocks[index].Visibility = Visibility.Hidden;
+                lobbyPlayersRankTitleTextBlocks[index].Visibility = Visibility.Hidden;
+                lobbyPlayersReadyStatusTextBlocks[index].Visibility = Visibility.Hidden;
+            }
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e) {

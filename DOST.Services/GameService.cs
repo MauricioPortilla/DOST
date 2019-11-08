@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 using System.Threading.Tasks;
 using DOST.DataAccess;
 
@@ -23,7 +21,7 @@ namespace DOST.Services {
         private static readonly int ROUND_LETTER_SELECTION_COST = 20;
         private static readonly int ROUND_GET_WORD_COST = 100;
         private static readonly int SCORE_POINTS_FOR_CORRECT_ANSWER = 100;
-        private static readonly int ROUND_TIME = 5;
+        private static readonly int ROUND_TIME = 40;
 
         public List<Game> GetGamesList() {
             return activeGames;

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ServiceModel;
-
-namespace DOST.Services {
+﻿namespace DOST.Services {
     public class UserScore {
         public int Ranking;
         public string Username;

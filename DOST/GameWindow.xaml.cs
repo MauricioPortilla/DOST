@@ -6,18 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.ServiceModel;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace DOST {
     /// <summary>
@@ -265,20 +259,5 @@ namespace DOST {
                 DragMove();
             }
         }
-    }
-
-    public abstract class InGameCallbackHandler : IInGameServiceCallback {
-        protected Game game;
-        public Game Game {
-            get { return game; }
-            set { game = value; }
-        }
-
-        public abstract void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady);
-        public abstract void StartRound(string guidGame, int playerSelectorIndex);
-        public abstract void StartGame(string guidGame);
-        public abstract void EndRound(string guidGame);
-        public abstract void PressDost(string guidGame, string guidPlayer);
-        public abstract void EndGame(string guidGame);
     }
 }

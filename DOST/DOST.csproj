@@ -75,6 +75,7 @@
       <DependentUpon>BestScoresWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="CategoryPlayerAnswer.cs" />
+    <Compile Include="ChatCallbackHandler.cs" />
     <Compile Include="GameCategory.cs" />
     <Compile Include="Account.cs" />
     <Compile Include="GameConfigurationWindow.xaml.cs">
@@ -98,6 +99,7 @@
     <Compile Include="GameWindow_LetterSelection.xaml.cs">
       <DependentUpon>GameWindow_LetterSelection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InGameCallbackHandler.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="MainMenuWindow.xaml.cs">
       <DependentUpon>MainMenuWindow.xaml</DependentUpon>
