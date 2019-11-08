@@ -65,7 +65,7 @@ namespace DOST {
 
         private void StartGame() {
             DialogHost.Show(loadingStackPanel, "GameWindow_LetterSelection_WindowDialogHost", (openSender, openEventArgs) => {
-                EngineNetwork.DoNetworkAction(onExecute: () => {
+                EngineNetwork.DoNetworkOperation(onExecute: () => {
                     Thread.Sleep(2000); // allows session thread to load latest game data
                     return true;
                 }, onSuccess: () => {

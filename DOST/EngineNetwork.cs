@@ -5,13 +5,27 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 
 namespace DOST {
+
+    /// <summary>
+    /// Manages connections between client and server services.
+    /// </summary>
     static class EngineNetwork {
+
+        /// <summary>
+        /// Server services
+        /// </summary>
         private static readonly Dictionary<Type, string> CHANNEL_SERVICES = new Dictionary<Type, string>() {
             { typeof(IAccountService), "AccountService" },
             { typeof(IGameService), "GameService" },
             { typeof(IChatService), "ChatService" }
         };
 
+        /// <summary>
+        /// Establishes a connection with a service and executes an operation when connection is opened.
+        /// </summary>
+        /// <typeparam name="IService">Service interface</typeparam>
+        /// <param name="onOpen">Operation to execute on connection opening</param>
+        /// <returns>True if operation and connection closure was successful; False if not</returns>
         public static bool EstablishChannel<IService>(Func<IService, bool> onOpen) {
             var channel = new ChannelFactory<IService>(CHANNEL_SERVICES[typeof(IService)]);
             var valueReturned = false;
@@ -28,11 +42,26 @@ namespace DOST {
             return false;
         }
 
-        public static void DoNetworkAction(Func<bool> onExecute, Action onSuccess = null, Action onFinish = null, bool retryOnFail = false) {
-            DoNetworkAction<Exception>(onExecute, onSuccess, onFinish, retryOnFail);
+        /// <summary>
+        /// Executes a network operation asynchronously.
+        /// </summary>
+        /// <param name="onExecute">Operation to execute</param>
+        /// <param name="onSuccess">Operation to execute if onExecute operation was successful</param>
+        /// <param name="onFinish">Operation to execute if onExecute and onSuccess operation was successful</param>
+        /// <param name="retryOnFail">True if should retry onExecute operation if an exception is throwed in onExecute or onSuccess operation</param>
+        public static void DoNetworkOperation(Func<bool> onExecute, Action onSuccess = null, Action onFinish = null, bool retryOnFail = false) {
+            DoNetworkOperation<Exception>(onExecute, onSuccess, onFinish, retryOnFail);
         }
 
-        public static void DoNetworkAction<TException>(Func<bool> onExecute, Action onSuccess = null, Action onFinish = null, bool retryOnFail = false) where TException : Exception {
+        /// <summary>
+        /// Executes a network operation asynchronously.
+        /// </summary>
+        /// <typeparam name="TException">Exception to handle if necessary in onExecute operation</typeparam>
+        /// <param name="onExecute">Operation to execute</param>
+        /// <param name="onSuccess">Operation to execute if onExecute operation was successful</param>
+        /// <param name="onFinish">Operation to execute if onExecute and onSuccess operation was successful</param>
+        /// <param name="retryOnFail">True if should retry onExecute operation if an exception is throwed in onExecute or onSuccess operation</param>
+        public static void DoNetworkOperation<TException>(Func<bool> onExecute, Action onSuccess = null, Action onFinish = null, bool retryOnFail = false) where TException : Exception {
             Task.Run(() => {
                 bool resultOnExecute = false;
                 bool didStart = false;

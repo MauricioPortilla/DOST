@@ -56,7 +56,7 @@ namespace DOST {
                 while (timeRemaining >= 0) {
                     if (timeRemaining == 10 && !isSoundPlaying) {
                         SoundPlayer soundPlayer = new SoundPlayer(Properties.SoundResources.HurrySFX as Stream);
-                        //soundPlayer.Play();
+                        soundPlayer.Play();
                         isSoundPlaying = true;
                     }
                     Application.Current.Dispatcher.Invoke(delegate {
@@ -240,7 +240,7 @@ namespace DOST {
                 for (int index = 0; index < categoriesTextBox.Count; index++) {
                     categoryPlayerAnswers.Add(new CategoryPlayerAnswer(0, player, game.Categories[index], categoriesTextBox[index].Text, game.Round));
                 }
-                EngineNetwork.DoNetworkAction(onExecute: () => {
+                EngineNetwork.DoNetworkOperation(onExecute: () => {
                     return player.SendCategoryAnswers(categoryPlayerAnswers);
                 }, onSuccess: () => {
                     Thread.Sleep(2500);

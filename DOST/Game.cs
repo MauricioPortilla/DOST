@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace DOST {
+
+    /// <summary>
+    /// Represents a game in the game.
+    /// </summary>
     public class Game : INotifyPropertyChanged {
         private int id;
         public int Id {
@@ -56,6 +60,13 @@ namespace DOST {
         public long RoundStartingTime;
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Creates a Game instance with data given.
+        /// </summary>
+        /// <param name="id">Game identifier</param>
+        /// <param name="round">Game round</param>
+        /// <param name="date">Game creation date</param>
+        /// <param name="players">Game Players</param>
         public Game(int id, int round, DateTime date, List<Player> players) {
             this.id = id;
             this.round = round;
@@ -63,26 +74,44 @@ namespace DOST {
             Players = players;
         }
 
+        /// <summary>
+        /// If any data from this Game changes, notifies it to an observer.
+        /// </summary>
+        /// <param name="obj">Object to be notified</param>
         private void NotifyPropertyChanged(string obj) {
             if (PropertyChanged != null) {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(obj));
             }
         }
 
+        /// <summary>
+        /// Establishes a connection with game service to add a new GameCategory to the game.
+        /// </summary>
+        /// <param name="category">GameCategory to be added</param>
+        /// <returns>True if category was added successfully; False if not</returns>
         public bool AddCategory(GameCategory category) {
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
                 return service.AddCategory(ActiveGuidGame, category.Name);
             });
         }
 
+        /// <summary>
+        /// Establishes a connection with game service to remove a GameCategory from the game.
+        /// </summary>
+        /// <param name="category">GameCategory to be removed</param>
+        /// <returns>True if category was removed successfully; False if not</returns>
         public bool RemoveCategory(GameCategory category) {
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
                 return service.RemoveCategory(ActiveGuidGame, category.Name);
             });
         }
 
+        /// <summary>
+        /// Establishes a connection with game service to start the game, increasing round value in 1.
+        /// </summary>
+        /// <returns>True if game was started successfully; False if not, or if round value was higher or equal to max rounds per game value</returns>
         public bool Start() {
-            if (round >= 5) {
+            if (round >= Session.MAX_ROUNDS_PER_GAME) {
                 return false;
             }
             round += 1;
@@ -91,6 +120,13 @@ namespace DOST {
             });
         }
 
+        /// <summary>
+        /// Establishes a connection with game service to set the letter to be played.
+        /// </summary>
+        /// <param name="selectRandomLetter">True if letter should be selected randomly</param>
+        /// <param name="idaccount">Account identifier who made the choice</param>
+        /// <param name="letter">Letter to be selected if random option was not selected</param>
+        /// <returns></returns>
         public bool SetLetter(bool selectRandomLetter, int idaccount, string letter = null) {
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
                 return service.SetGameLetter(ActiveGuidGame, idaccount, selectRandomLetter, letter);

@@ -1,4 +1,8 @@
 ﻿namespace DOST {
+
+    /// <summary>
+    /// Represents an answer written by a Player for a GameCategory
+    /// </summary>
     public class CategoryPlayerAnswer {
         private int id;
         public int Id {
@@ -31,6 +35,14 @@
             set { hasCorrectAnswer = value; }
         }
 
+        /// <summary>
+        /// Creates a CategoryPlayerAnswer instance based on data given.
+        /// </summary>
+        /// <param name="id">Identifier</param>
+        /// <param name="player">Player who wrote the answer</param>
+        /// <param name="gameCategory">GameCategory where the answer belongs to</param>
+        /// <param name="answer">Answer written by the Player</param>
+        /// <param name="round">Round where the answer was written</param>
         public CategoryPlayerAnswer(int id, Player player, GameCategory gameCategory, string answer, int round) {
             this.id = id;
             this.player = player;

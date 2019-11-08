@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 
 namespace DOST {
+
+    /// <summary>
+    /// Represents a category in the game.
+    /// </summary>
     public class GameCategory {
         private int id;
         public int Id {
@@ -23,6 +27,12 @@ namespace DOST {
             set { categoryPlayerAnswers = value; }
         }
 
+        /// <summary>
+        /// Creates a GameCategory instance by data given.
+        /// </summary>
+        /// <param name="id">GameCategory identifier</param>
+        /// <param name="game">Game where category belongs to</param>
+        /// <param name="name">GameCategory name</param>
         public GameCategory(int id, Game game, string name) {
             this.id = id;
             this.game = game;

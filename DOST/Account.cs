@@ -2,6 +2,9 @@
 using System;
 
 namespace DOST {
+    /// <summary>
+    /// Represents an account in the game.
+    /// </summary>
     public class Account {
         private int id;
         public int Id {
@@ -44,15 +47,35 @@ namespace DOST {
             set { validationCode = value; }
         }
 
+        /// <summary>
+        /// Creates an account instance based on an account identifier.
+        /// </summary>
+        /// <param name="id">Account identifier</param>
         public Account(int id) {
             this.id = id;
         }
 
+        /// <summary>
+        /// Creates an account instance based on an username and a password.
+        /// </summary>
+        /// <param name="username">Account username</param>
+        /// <param name="password">Account password</param>
         public Account(string username, string password) {
             this.username = username;
             this.password = password;
         }
 
+        /// <summary>
+        /// Creates an account instance given complete data.
+        /// </summary>
+        /// <param name="id">Account identifier</param>
+        /// <param name="username">Account username</param>
+        /// <param name="password">Account password</param>
+        /// <param name="email">Account email</param>
+        /// <param name="coins">Account coins</param>
+        /// <param name="creationDate">Account creation date</param>
+        /// <param name="verified">Is the account verified</param>
+        /// <param name="validationCode">Account validation code</param>
         public Account(
             int id, string username, string password, string email, int coins,
             DateTime creationDate, bool verified, string validationCode
@@ -67,6 +90,11 @@ namespace DOST {
             this.validationCode = validationCode;
         }
 
+        /// <summary>
+        /// Establishes a connection with account service and checks if there's an account registered
+        /// with the username and password associated to this account.
+        /// </summary>
+        /// <returns>True if exists; False if not exists</returns>
         public bool Login() {
             return EngineNetwork.EstablishChannel<IAccountService>((loginService) => {
                 var account = loginService.TryLogin(username, password);
@@ -87,6 +115,11 @@ namespace DOST {
             });
         }
 
+        /// <summary>
+        /// Establishes a connection with account service to try to register an account
+        /// with the data stored in this account instance.
+        /// </summary>
+        /// <returns>True if account was registered successfully; False if not</returns>
         public bool Register() {
             return EngineNetwork.EstablishChannel<IAccountService>((registerService) => {
                 Services.Account account = new Services.Account(
@@ -96,12 +129,26 @@ namespace DOST {
             });
         }
 
+        /// <summary>
+        /// Establishes a connnection with game service to try to join to a game.
+        /// </summary>
+        /// <param name="game">Game to join in</param>
+        /// <param name="asAnfitrion">True to join as host; False to join as guest</param>
+        /// <returns>True if join request was successful; False if not</returns>
         public bool JoinGame(Game game, bool asAnfitrion) {
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
                 return service.AddPlayer(id, game.ActiveGuidGame, asAnfitrion);
             });
         }
 
+        /// <summary>
+        /// Establishes a connnection with game service to try to create a new game.
+        /// </summary>
+        /// <param name="guidGame">
+        ///     Stores a global unique identifier that identifies the new game created.
+        ///     If game couldn't be created, this value will be empty.
+        /// </param>
+        /// <returns>True if creation request was successful; False if not</returns>
         public bool CreateGame(out string guidGame) {
             string guidNewGame = "";
             bool returnedValue = EngineNetwork.EstablishChannel<IGameService>((service) => {
@@ -111,6 +158,13 @@ namespace DOST {
             return returnedValue;
         }
 
+        /// <summary>
+        /// Establishes a connnection with account service to get the account rank.
+        /// </summary>
+        /// <returns>
+        ///     If this account has games played, will return rank as #N, where N is the place.
+        ///     If it has no games played, will return a "Not ranked" string.
+        /// </returns>
         public string GetRank() {
             var rank = Properties.Resources.NotRankedText;
             EngineNetwork.EstablishChannel<IAccountService>((service) => {

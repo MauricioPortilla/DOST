@@ -9,8 +9,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace DOST {
+
     /// <summary>
-    /// Lógica de interacción para GameLobbyWindow.xaml
+    /// Represents GameLobbyWindow.xaml interaction logic.
     /// </summary>
     public partial class GameLobbyWindow : Window {
         public bool IsClosed { get; private set; } = false;
@@ -25,6 +26,10 @@ namespace DOST {
         private InGameServiceClient inGameService;
         private int actualNumberOfPlayers = 0;
 
+        /// <summary>
+        /// Creates an instance and initializes it.
+        /// </summary>
+        /// <param name="game">Game reference to create lobby</param>
         public GameLobbyWindow(ref Game game) {
             Session.IsPlayerInGame = true;
             Session.Game_ForPlayerIndex = 1;
@@ -65,14 +70,28 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Manages client-side in-game callback.
+        /// </summary>
         public class InGameCallback : InGameCallbackHandler {
             private readonly List<TextBlock> lobbyPlayersReadyStatusTextBlocks;
 
+            /// <summary>
+            /// Creates an instance for a given game.
+            /// </summary>
+            /// <param name="game">Game where this callback belongs to</param>
+            /// <param name="lobbyPlayersReadyStatusTextBlocks">List of all players' ready status</param>
             public InGameCallback(Game game, ref List<TextBlock> lobbyPlayersReadyStatusTextBlocks) {
                 this.game = game;
                 this.lobbyPlayersReadyStatusTextBlocks = lobbyPlayersReadyStatusTextBlocks;
             }
 
+            /// <summary>
+            /// Receives data from a player who just went ready and changes his ready status.
+            /// </summary>
+            /// <param name="guidGame">Game global unique identifier</param>
+            /// <param name="guidPlayer">Player global unique identifier</param>
+            /// <param name="isPlayerReady">Player ready status</param>
             public override void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
                 if (guidGame == game.ActiveGuidGame) {
                     var playerToInteract = game.Players.Find(playerInGame => playerInGame.ActivePlayerGuid == guidPlayer);
@@ -87,6 +106,11 @@ namespace DOST {
                 }
             }
 
+            /// <summary>
+            /// Receives data from in-game service to indicate the round starting.
+            /// </summary>
+            /// <param name="guidGame">Game global unique identifier</param>
+            /// <param name="playerSelectorIndex"></param>
             public override void StartRound(string guidGame, int playerSelectorIndex) {
                 if (guidGame == game.ActiveGuidGame) {
                     var findHost = game.Players.Find(player => player.IsHost);

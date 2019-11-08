@@ -187,7 +187,7 @@ namespace DOST {
             if (player.IsHost) {
                 return;
             }
-            EngineNetwork.DoNetworkAction<CommunicationException>(onExecute: () => {
+            EngineNetwork.DoNetworkOperation<CommunicationException>(onExecute: () => {
                 if (player.SetPlayerReady(true)) {
                     inGameService.SetPlayerReady(game.ActiveGuidGame, player.ActivePlayerGuid, true);
                     return true;

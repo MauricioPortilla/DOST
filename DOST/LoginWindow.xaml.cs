@@ -21,7 +21,7 @@ namespace DOST {
             }
             Account account = new Account(usernameTextBox.Text, passwordPasswordBox.Password);
             DialogHost.Show(loadingStackPanel, "LoginWindow_WindowDialogHost", (openSender, openEventArgs) => {
-                EngineNetwork.DoNetworkAction(onExecute: () => {
+                EngineNetwork.DoNetworkOperation(onExecute: () => {
                     if (!account.Login()) {
                         if (account.Id == 0) {
                             MessageBox.Show(Properties.Resources.LoginErrorText);

@@ -14,6 +14,9 @@ namespace DOST {
     public partial class App : Application {
         public static string Language = "es-MX";
 
+        /// <summary>
+        /// Starts application with language selected in configuration file.
+        /// </summary>
         public App() {
             var appConfig = GetAppConfiguration();
             Language = appConfig["DOST"]["Language"];
@@ -22,35 +25,42 @@ namespace DOST {
             }
         }
 
-        public static void ChangeLanguage(string language) {
+        /// <summary>
+        /// Verifies if configuration file exists. If not, a new one will be created.
+        /// </summary>
+        public static void CheckForConfigurationFile() {
             string dir = AppDomain.CurrentDomain.BaseDirectory;
             if (!File.Exists(dir + "config.xml")) {
                 new XDocument(
                     new XElement("Configuration",
                         new XElement(
                             "DOST",
-                            new XElement("Language", language)
+                            new XElement("Language", Language)
                         )
                     )
                 ).Save(dir + "config.xml");
             }
+        }
+
+        /// <summary>
+        /// Changes application language in configuration file. Only supported es-MX and en-US.
+        /// </summary>
+        /// <param name="language">Language culture information</param>
+        public static void ChangeLanguage(string language) {
+            string dir = AppDomain.CurrentDomain.BaseDirectory;
+            CheckForConfigurationFile();
             XDocument configXml = XDocument.Load(dir + "config.xml");
             var elements = configXml.Root.Descendants("Language").FirstOrDefault().Value = language;
             configXml.Save("config.xml");
         }
 
+        /// <summary>
+        /// Gets data from configuration file.
+        /// </summary>
+        /// <returns>Dictionary with nodes name and their values</returns>
         public static Dictionary<string, Dictionary<XName, string>> GetAppConfiguration() {
             string dir = AppDomain.CurrentDomain.BaseDirectory;
-            if (!File.Exists(dir + "config.xml")) {
-                new XDocument(
-                    new XElement("Configuration",
-                        new XElement(
-                            "DOST",
-                            new XElement("Language", "es-MX")
-                        )
-                    )
-                ).Save(dir + "config.xml");
-            }
+            CheckForConfigurationFile();
             XDocument configXml = XDocument.Load(dir + "config.xml");
             Dictionary<string, Dictionary<XName, string>> xmlElements = new Dictionary<string, Dictionary<XName, string>>();
             foreach (var xmlElement in configXml.Root.Elements()) {

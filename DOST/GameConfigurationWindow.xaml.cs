@@ -3,8 +3,9 @@ using System.Linq;
 using System.Windows;
 
 namespace DOST {
+
     /// <summary>
-    /// Lógica de interacción para GameConfigurationWindow.xaml
+    /// Represents GameConfigurationWindow.xaml interaction logic.
     /// </summary>
     public partial class GameConfigurationWindow : Window {
         private ObservableCollection<GameCategoryItem> categoriesList = new ObservableCollection<GameCategoryItem>();
@@ -13,6 +14,10 @@ namespace DOST {
         }
         private Game game;
 
+        /// <summary>
+        /// Creates an instance and initializes it.
+        /// </summary>
+        /// <param name="game">Game to be configured</param>
         public GameConfigurationWindow(ref Game game) {
             DataContext = this;
             InitializeComponent();
@@ -31,6 +36,11 @@ namespace DOST {
             });
         }
 
+        /// <summary>
+        /// Handles SaveButton click event.
+        /// </summary>
+        /// <param name="sender">SaveButton object</param>
+        /// <param name="e">Button click event</param>
         private void SaveButton_Click(object sender, RoutedEventArgs e) {
             if (!categoriesList.ToList().Exists(category => category.IsSelected == true)) {
                 MessageBox.Show(Properties.Resources.MustSelectAtLeastOneCategoryErrorText);
@@ -47,6 +57,11 @@ namespace DOST {
             Close();
         }
 
+        /// <summary>
+        /// Handles AddButton click event.
+        /// </summary>
+        /// <param name="sender">AddButton object</param>
+        /// <param name="e">Button click event</param>
         private void AddButton_Click(object sender, RoutedEventArgs e) {
             var addCategoryWindow = new GameConfiguration_AddCategoryWindow();
             addCategoryWindow.Closed += (windowSender, windowEvent) => {
@@ -64,10 +79,18 @@ namespace DOST {
             addCategoryWindow.Show();
         }
 
+        /// <summary>
+        /// Handles CancelButton click event.
+        /// </summary>
+        /// <param name="sender">CancelButton object</param>
+        /// <param name="e">Button click event</param>
         private void CancelButton_Click(object sender, RoutedEventArgs e) {
             Close();
         }
 
+        /// <summary>
+        /// Represents a game category in list.
+        /// </summary>
         public class GameCategoryItem {
             public bool IsSelected { get; set; } = false;
             private string name;
