@@ -208,7 +208,7 @@ namespace DOST {
             public override void StartGame(string guidGame) {
             }
 
-            public override void StartRound(string guidGame) {
+            public override void StartRound(string guidGame, int playerSelectorIndex) {
             }
 
             public override void EndRound(string guidGame) {
@@ -275,7 +275,7 @@ namespace DOST {
         }
 
         public abstract void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady);
-        public abstract void StartRound(string guidGame);
+        public abstract void StartRound(string guidGame, int playerSelectorIndex);
         public abstract void StartGame(string guidGame);
         public abstract void EndRound(string guidGame);
         public abstract void PressDost(string guidGame, string guidPlayer);

@@ -28,7 +28,7 @@ namespace DOST {
         private List<TextBlock> lobbyPlayersScoreTextBlocks;
         private List<TextBlock> lobbyPlayersPlaceTextBlocks;
         private List<TextBlock> lobbyPlayersPlaceTitleTextBlocks;
-        private SortedList<int, string> sortedScores = new SortedList<int, string>();
+        private List<Player> playerPlaces = new List<Player>();
 
         public GameWindow_EndGame(Game game) {
             InitializeComponent();
@@ -66,12 +66,11 @@ namespace DOST {
                 playerThreePlaceTitleTextBlock, playerFourPlaceTitleTextBlock
             };
             LoadPlayers();
+            CalculatePlaces();
         }
 
         private void CalculatePlaces() {
-            foreach (var playerInGame in game.Players) {
-                sortedScores.Add(playerInGame.Score, playerInGame.ActivePlayerGuid);
-            }
+            playerPlaces.OrderBy(playerPlace => playerPlace.Score);
         }
 
         private void LoadPlayers() {
@@ -79,7 +78,7 @@ namespace DOST {
             for (int playerIndex = 0; playerIndex < players.Count; playerIndex++) {
                 lobbyPlayersUsernameTextBlocks[playerIndex].Text = players[playerIndex].Account.Username;
                 lobbyPlayersUsernameTextBlocks[playerIndex].Visibility = Visibility.Visible;
-                lobbyPlayersPlaceTextBlocks[playerIndex].Text = "#" + sortedScores.IndexOfValue(players[playerIndex].ActivePlayerGuid);
+                lobbyPlayersPlaceTextBlocks[playerIndex].Text = "#" + playerPlaces.IndexOf(playerPlaces.Find(playerPlace => playerPlace.ActivePlayerGuid == players[playerIndex].ActivePlayerGuid));
                 lobbyPlayersPlaceTextBlocks[playerIndex].Visibility = Visibility.Visible;
                 lobbyPlayersScoreTextBlocks[playerIndex].Text += ": " + players[playerIndex].Score;
                 lobbyPlayersScoreTextBlocks[playerIndex].Visibility = Visibility.Visible;

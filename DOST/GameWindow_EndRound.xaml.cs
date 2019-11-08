@@ -91,20 +91,13 @@ namespace DOST {
             public override void StartGame(string guidGame) {
             }
 
-            public override void StartRound(string guidGame) {
+            public override void StartRound(string guidGame, int playerSelectorIndex) {
                 if (guidGame == game.ActiveGuidGame) {
                     this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
                     var findHost = game.Players.Find(player => player.IsHost);
                     if (findHost != null) {
                         var findPlayer = game.Players.Find(player => player.Account.Id == Session.Account.Id);
-                        if (game.Round != 1 || game.Round % game.Players.Count != 0) {
-                            while (game.Round % (game.Players.Count + Session.Game_ForPlayerIndex) == 0) {
-                                Session.Game_ForPlayerIndex += game.Players.Count;
-                            }
-                        }
-                        int nextPlayerIndexLetterSelector = game.Round - Session.Game_ForPlayerIndex;
-                        Console.WriteLine("Index: " + nextPlayerIndexLetterSelector + " | Player: " + game.Players[nextPlayerIndexLetterSelector].Account.Username);
-                        new GameWindow_LetterSelection(ref game, ref findPlayer, game.Players[nextPlayerIndexLetterSelector].Account.Id == Session.Account.Id).Show();
+                        new GameWindow_LetterSelection(ref game, ref findPlayer, game.Players[playerSelectorIndex].Account.Id == Session.Account.Id).Show();
                         window.Close();
                     } else {
                         MessageBox.Show(Properties.Resources.NoHostFoundErrorText);
@@ -219,7 +212,7 @@ namespace DOST {
                 Application.Current.Dispatcher.Invoke(delegate {
                     readyButton.IsEnabled = false;
                 });
-            });
+            }, null, true);
         }
 
         private void StartNextRoundButton_Click(object sender, RoutedEventArgs e) {
@@ -232,7 +225,7 @@ namespace DOST {
                     MessageBox.Show(Properties.Resources.StartGameErrorText);
                     return;
                 }
-                inGameService.StartRound(game.ActiveGuidGame);
+                inGameService.StartRound(game.ActiveGuidGame, 0);
             }
         }
 

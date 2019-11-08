@@ -122,7 +122,7 @@ namespace DOST {
                 }
             }
 
-            public override void StartRound(string guidGame) {
+            public override void StartRound(string guidGame, int playerSelectorIndex) {
                 if (guidGame == game.ActiveGuidGame) {
                     var findHost = game.Players.Find(player => player.IsHost);
                     if (findHost != null) {
@@ -241,7 +241,7 @@ namespace DOST {
                     return;
                 }
             }
-            inGameService.StartRound(game.ActiveGuidGame);
+            inGameService.StartRound(game.ActiveGuidGame, 0);
         }
 
         private void ReadyButton_Click(object sender, RoutedEventArgs e) {

@@ -18,7 +18,7 @@ namespace DOST.Services {
         void LeavePlayer(string guidGame, string guidPlayer);
 
         [OperationContract(IsOneWay = true)]
-        void StartRound(string guidGame);
+        void StartRound(string guidGame, int playerSelectorIndex);
 
         [OperationContract(IsOneWay = true)]
         void StartGame(string guidGame);
@@ -39,7 +39,7 @@ namespace DOST.Services {
         void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady);
 
         [OperationContract(IsOneWay = true)]
-        void StartRound(string guidGame);
+        void StartRound(string guidGame, int playerSelectorIndex);
 
         [OperationContract(IsOneWay = true)]
         void StartGame(string guidGame);

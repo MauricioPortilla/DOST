@@ -55,7 +55,7 @@ namespace DOST {
             public override void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
             }
 
-            public override void StartRound(string guidGame) {
+            public override void StartRound(string guidGame, int playerSelectorIndex) {
             }
 
             public override void StartGame(string guidGame) {

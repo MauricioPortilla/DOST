@@ -23,7 +23,7 @@ namespace DOST.Services {
         private static readonly int ROUND_LETTER_SELECTION_COST = 20;
         private static readonly int ROUND_GET_WORD_COST = 100;
         private static readonly int SCORE_POINTS_FOR_CORRECT_ANSWER = 100;
-        private static readonly int ROUND_TIME = 40;
+        private static readonly int ROUND_TIME = 5;
 
         public List<Game> GetGamesList() {
             return activeGames;

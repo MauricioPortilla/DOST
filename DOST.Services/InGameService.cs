@@ -6,13 +6,14 @@ using System.ServiceModel;
 using System.Text;
 
 namespace DOST.Services {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class InGameService : IInGameService {
         private static readonly Dictionary<string, Dictionary<string, IInGameServiceCallback>> gamesClients =
             new Dictionary<string, Dictionary<string, IInGameServiceCallback>>();
         public static Dictionary<string, Dictionary<string, IInGameServiceCallback>> GamesClients {
             get { return gamesClients; }
         }
+        private static Dictionary<string, int> gamesPlayerSelectorIndexHandler = new Dictionary<string, int>();
 
         public void EnterPlayer(string guidGame, string guidPlayer) {
             if (!gamesClients.ContainsKey(guidGame)) {
@@ -47,12 +48,27 @@ namespace DOST.Services {
             }
         }
 
-        public void StartRound(string guidGame) {
+        public void StartRound(string guidGame, int playerSelectorIndex) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 return;
             }
+            Game game = GameService.ActiveGames.Find(activeGame => activeGame.ActiveGameGuid == guidGame);
+            if (game == null) {
+                return;
+            }
+            if (!gamesPlayerSelectorIndexHandler.ContainsKey(guidGame)) {
+                gamesPlayerSelectorIndexHandler.Add(guidGame, 1);
+            }
+            int playerSelectorIndexHandler = gamesPlayerSelectorIndexHandler[guidGame];
+            if (game.Round != 1 || game.Round % game.Players.Count != 0) {
+                while (game.Round % (game.Players.Count + playerSelectorIndexHandler) == 0) {
+                    playerSelectorIndexHandler += game.Players.Count;
+                }
+            }
+            gamesPlayerSelectorIndexHandler[guidGame] = playerSelectorIndexHandler;
+            int nextPlayerIndexLetterSelector = game.Round - playerSelectorIndexHandler;
             foreach (var player in gamesClients[guidGame]) {
-                player.Value.StartRound(guidGame);
+                player.Value.StartRound(guidGame, nextPlayerIndexLetterSelector);
             }
         }
 
@@ -113,8 +129,8 @@ namespace DOST.Services {
             base.Channel.SetPlayerReady(guidGame, guidPlayer, isPlayerReady);
         }
 
-        public void StartRound(string guidGame) {
-            base.Channel.StartRound(guidGame);
+        public void StartRound(string guidGame, int playerSelectorIndex) {
+            base.Channel.StartRound(guidGame, playerSelectorIndex);
         }
 
         public void StartGame(string guidGame) {

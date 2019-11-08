@@ -118,8 +118,8 @@ namespace DOST {
         }
 
         public static void GetGamesList() {
-            EngineNetwork.DoNetworkAction(onExecute: () => {
-                return EngineNetwork.EstablishChannel<IGameService>((service) => {
+            while (true) {
+                var valueReturned = EngineNetwork.EstablishChannel<IGameService>((service) => {
                     while (mainMenuWindow != null) {
                         if (IsPlayerInGame) {
                             GetGameBeingPlayedData(service);
@@ -204,7 +204,10 @@ namespace DOST {
                     }
                     return true;
                 });
-            }, null, null, true);
+                if (valueReturned) {
+                    break;
+                }
+            }
         }
 
         static void Game_PropertyChanged(object sender, PropertyChangedEventArgs e) {
