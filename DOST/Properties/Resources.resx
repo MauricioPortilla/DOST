@@ -408,4 +408,10 @@
   <data name="ShowGameResultsButton" xml:space="preserve">
     <value>Mostrar resultados de la partida</value>
   </data>
+  <data name="EndOfTheGameText" xml:space="preserve">
+    <value>Fin de la partida</value>
+  </data>
+  <data name="PlaceText" xml:space="preserve">
+    <value>Lugar</value>
+  </data>
 </root>

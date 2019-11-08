@@ -331,6 +331,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Fin de la partida.
+        /// </summary>
+        public static string EndOfTheGameText {
+            get {
+                return ResourceManager.GetString("EndOfTheGameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Fin de la ronda.
         /// </summary>
         public static string EndOfTheRoundText {
@@ -615,6 +624,15 @@ namespace DOST.Properties {
         public static string PasswordText {
             get {
                 return ResourceManager.GetString("PasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Lugar.
+        /// </summary>
+        public static string PlaceText {
+            get {
+                return ResourceManager.GetString("PlaceText", resourceCulture);
             }
         }
         

@@ -103,6 +103,7 @@ namespace DOST {
                             }
                         }
                         int nextPlayerIndexLetterSelector = game.Round - Session.Game_ForPlayerIndex;
+                        Console.WriteLine("Index: " + nextPlayerIndexLetterSelector + " | Player: " + game.Players[nextPlayerIndexLetterSelector].Account.Username);
                         new GameWindow_LetterSelection(ref game, ref findPlayer, game.Players[nextPlayerIndexLetterSelector].Account.Id == Session.Account.Id).Show();
                         window.Close();
                     } else {

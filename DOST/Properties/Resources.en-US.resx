@@ -405,4 +405,10 @@
   <data name="ShowGameResultsButton" xml:space="preserve">
     <value>Show game results</value>
   </data>
+  <data name="EndOfTheGameText" xml:space="preserve">
+    <value>End of the game</value>
+  </data>
+  <data name="PlaceText" xml:space="preserve">
+    <value>Place</value>
+  </data>
 </root>
