@@ -24,6 +24,7 @@ namespace DOST.Services {
         private static readonly int ROUND_TIME = 40;
         public static readonly int ROUND_REDUCE_TIME_COST = 50;
         public static readonly int ROUND_REDUCE_TIME_SECONDS = 5;
+        public static readonly int MAX_COINS_PER_GAME_WIN = 80;
         public static readonly Dictionary<string, DateTime> GamesTimer = new Dictionary<string, DateTime>();
 
         public List<Game> GetGamesList() {

@@ -1,5 +1,6 @@
 ﻿using DOST.DataAccess;
 using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel;
 
 namespace DOST.Services {
@@ -102,6 +103,57 @@ namespace DOST.Services {
         public void EndGame(string guidGame) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 return;
+            }
+            var game = GameService.ActiveGames.Find(activeGame => activeGame.ActiveGameGuid == guidGame);
+            if (game == null) {
+                return;
+            }
+            using (DostDatabase db = new DostDatabase()) {
+                var newGame = new DataAccess.Game {
+                    date = game.Date,
+                    round = game.Round
+                };
+                db.Game.Add(newGame);
+                if (db.SaveChanges() == 0) {
+                    return;
+                }
+                game.Players.ForEach(player => {
+                    newGame.Player.Add(new DataAccess.Player {
+                        idaccount = player.Account.Id,
+                        idgame = newGame.idgame,
+                        isHost = player.IsHost ? 1 : 0,
+                        score = player.Score
+                    });
+                });
+                if (db.SaveChanges() == 0) {
+                    return;
+                }
+                game.GameCategories.ForEach(category => {
+                    var newCategory = new DataAccess.GameCategory {
+                        idgame = newGame.idgame,
+                        name = category.Name
+                    };
+                    newGame.GameCategory.Add(newCategory);
+                    newGame.Player.ToList().ForEach(player => {
+                        var playerCategoryAnswers = category.CategoryPlayerAnswer.Where(categoryAnswer => categoryAnswer.Player.Account.Id == player.idaccount).ToList();
+                        playerCategoryAnswers.ForEach(categoryAnswer => {
+                            newCategory.CategoryPlayerAnswer.Add(new DataAccess.CategoryPlayerAnswer {
+                                idcategory = newCategory.idcategory,
+                                idplayer = player.idplayer,
+                                answer = categoryAnswer.Answer,
+                                round = categoryAnswer.Round
+                            });
+                        });
+                    });
+                });
+                var playerPlaces = game.Players.ToList();
+                playerPlaces.OrderBy(playerPlace => playerPlace.Score);
+                for (int index = 0; index < playerPlaces.Count; index++) {
+                    db.Account.Find(playerPlaces[index].Account.Id).coins += GameService.MAX_COINS_PER_GAME_WIN / (index + 1);
+                }
+                if (db.SaveChanges() == 0) {
+                    return;
+                }
             }
             foreach (var player in gamesClients[guidGame]) {
                 player.Value.EndGame(guidGame);

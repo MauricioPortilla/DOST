@@ -52,9 +52,11 @@ namespace DOST {
             };
             CalculatePlaces();
             LoadPlayers();
+            Session.Account.Coins += Session.MAX_COINS_PER_GAME_WIN / (playerPlaces.IndexOf(playerPlaces.Find(playerPlace => playerPlace.ActivePlayerGuid == player.ActivePlayerGuid)) + 1);
         }
 
         private void CalculatePlaces() {
+            playerPlaces = game.Players.ToList();
             playerPlaces.OrderBy(playerPlace => playerPlace.Score);
         }
 
@@ -63,7 +65,7 @@ namespace DOST {
             for (int playerIndex = 0; playerIndex < players.Count; playerIndex++) {
                 lobbyPlayersUsernameTextBlocks[playerIndex].Text = players[playerIndex].Account.Username;
                 lobbyPlayersUsernameTextBlocks[playerIndex].Visibility = Visibility.Visible;
-                lobbyPlayersPlaceTextBlocks[playerIndex].Text = "#" + playerPlaces.IndexOf(playerPlaces.Find(playerPlace => playerPlace.ActivePlayerGuid == players[playerIndex].ActivePlayerGuid));
+                lobbyPlayersPlaceTextBlocks[playerIndex].Text = "#" + (playerPlaces.IndexOf(playerPlaces.Find(playerPlace => playerPlace.ActivePlayerGuid == players[playerIndex].ActivePlayerGuid)) + 1);
                 lobbyPlayersPlaceTextBlocks[playerIndex].Visibility = Visibility.Visible;
                 lobbyPlayersScoreTextBlocks[playerIndex].Text += ": " + players[playerIndex].Score;
                 lobbyPlayersScoreTextBlocks[playerIndex].Visibility = Visibility.Visible;

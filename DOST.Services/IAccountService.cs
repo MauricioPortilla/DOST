@@ -15,5 +15,8 @@ namespace DOST.Services {
 
         [OperationContract]
         string GetRank(int idaccount);
+
+        [OperationContract]
+        Account GetAccount(int idaccount);
     }
 }

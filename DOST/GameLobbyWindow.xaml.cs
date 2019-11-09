@@ -149,6 +149,9 @@ namespace DOST {
                 try {
                     List<Game> games = Session.AllGamesAvailable;
                     this.game = games.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+                    if (game == null) {
+                        continue;
+                    }
                     if (actualNumberOfPlayers != game.Players.Count) {
                         Application.Current.Dispatcher.Invoke(delegate {
                             PerformLobbyUIChanges();

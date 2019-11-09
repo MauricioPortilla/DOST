@@ -179,5 +179,27 @@ namespace DOST.Services {
             }
             return rank;
         }
+
+        public Account GetAccount(int idaccount) {
+            Account account = new Account();
+            try {
+                using (DostDatabase db = new DostDatabase()) {
+                    var accountDb = db.Account.Find(idaccount);
+                    if (accountDb != null) {
+                        account.Id = accountDb.idaccount;
+                        account.Username = accountDb.username;
+                        account.Password = accountDb.password;
+                        account.Email = accountDb.email;
+                        account.Coins = accountDb.coins;
+                        account.CreationDate = accountDb.creationDate;
+                        account.IsVerified = accountDb.isVerified == 1;
+                        account.ValidationCode = accountDb.validationCode;
+                    }
+                }
+            } catch (Exception exception) {
+                Console.WriteLine("Exception -> " + exception.Message);
+            }
+            return account;
+        }
     }
 }

@@ -130,6 +130,27 @@ namespace DOST {
         }
 
         /// <summary>
+        /// Establishes a connection with account service to try to reload account data.
+        /// </summary>
+        /// <returns>True if account data was reloaded successfully; False if not</returns>
+        public bool Reload() {
+            return EngineNetwork.EstablishChannel<IAccountService>((loginService) => {
+                var account = loginService.GetAccount(id);
+                if (account.Id == 0) {
+                    return false;
+                }
+                username = account.Username;
+                password = account.Password;
+                email = account.Email;
+                coins = account.Coins;
+                creationDate = account.CreationDate;
+                isVerified = account.IsVerified;
+                validationCode = account.ValidationCode;
+                return true;
+            });
+        }
+
+        /// <summary>
         /// Establishes a connnection with game service to try to join to a game.
         /// </summary>
         /// <param name="game">Game to join in</param>

@@ -22,12 +22,21 @@ namespace DOST {
         public MainMenuWindow() {
             DataContext = this;
             InitializeComponent();
-            usernameTextBlock.Text = Session.Account.Username;
-            coinsTextBlock.Text = Session.Account.Coins.ToString();
-            rankTextBlock.Text = Session.Account.GetRank();
             GamesList.CollectionChanged += GamesList_CollectionChanged;
             new Thread(Session.GetGamesList).Start();
             new Thread(JoinGameIfNeeded).Start();
+            IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => {
+                if (((bool) e.NewValue)) {
+                    LoadAccountDataUI();
+                }
+            };
+        }
+
+        private void LoadAccountDataUI() {
+            Session.Account.Reload();
+            usernameTextBlock.Text = Session.Account.Username;
+            coinsTextBlock.Text = Session.Account.Coins.ToString();
+            rankTextBlock.Text = Session.Account.GetRank();
         }
 
         void GamesList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {

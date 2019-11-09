@@ -17,6 +17,7 @@ namespace DOST {
         public static readonly int ROUND_GET_WORD_COST = 100;
         public static readonly int ROUND_REDUCE_TIME_COST = 50;
         public static readonly int ROUND_REDUCE_TIME_SECONDS = 5;
+        public static readonly int MAX_COINS_PER_GAME_WIN = 80;
         private static Account account;
         public static Account Account {
             get { return account; }
