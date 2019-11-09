@@ -22,6 +22,9 @@ namespace DOST.Services {
         private static readonly int ROUND_GET_WORD_COST = 100;
         private static readonly int SCORE_POINTS_FOR_CORRECT_ANSWER = 100;
         private static readonly int ROUND_TIME = 40;
+        public static readonly int ROUND_REDUCE_TIME_COST = 50;
+        public static readonly int ROUND_REDUCE_TIME_SECONDS = 5;
+        public static readonly Dictionary<string, DateTime> GamesTimer = new Dictionary<string, DateTime>();
 
         public List<Game> GetGamesList() {
             return activeGames;
@@ -238,6 +241,9 @@ namespace DOST.Services {
                     if (account == null) {
                         return false;
                     }
+                    if (account.coins < ROUND_LETTER_SELECTION_COST) {
+                        return false;
+                    }
                     account.coins -= ROUND_LETTER_SELECTION_COST;
                     if (db.SaveChanges() != 1) {
                         return false;
@@ -250,8 +256,12 @@ namespace DOST.Services {
             findGame.LetterSelected = selectRandomLetter ? Convert.ToChar(new Random().Next(asciiLetterA, asciiLetterZ)).ToString() : letter;
             findGame.RoundStartingTime = DateTime.Now.Ticks;
             Task.Run(() => {
-                var gameTimer = new DateTime(findGame.RoundStartingTime).AddSeconds(roundTimeInSeconds);
-                while (gameTimer > DateTime.Now) {
+                if (!GamesTimer.ContainsKey(findGame.ActiveGameGuid)) {
+                    GamesTimer.Add(findGame.ActiveGameGuid, new DateTime(findGame.RoundStartingTime).AddSeconds(roundTimeInSeconds));
+                } else {
+                    GamesTimer[findGame.ActiveGameGuid] = new DateTime(findGame.RoundStartingTime).AddSeconds(roundTimeInSeconds);
+                }
+                while (GamesTimer[findGame.ActiveGameGuid] > DateTime.Now) {
                     continue;
                 }
                 var gamesClients = InGameService.GamesClients;

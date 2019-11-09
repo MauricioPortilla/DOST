@@ -691,6 +691,15 @@ namespace DOST.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Reducir tiempo.
+        /// </summary>
+        public static string ReduceTimeButton {
+            get {
+                return ResourceManager.GetString("ReduceTimeButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Registrarse.
         /// </summary>
         public static string RegisterButton {

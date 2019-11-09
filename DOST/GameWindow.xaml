@@ -40,5 +40,6 @@
             </StackPanel>
         </StackPanel>
         <Rectangle x:Name="dostButton" HorizontalAlignment="Left" Height="186" Margin="784,440,0,0" VerticalAlignment="Top" Width="186" MouseLeftButtonDown="DostButton_MouseLeftButtonDown" Cursor="Hand" Fill="#00000000"/>
+        <Button x:Name="reduceTimeButton" Content="{x:Static p:Resources.ReduceTimeButton}" HorizontalAlignment="Left" Margin="349,67,0,0" VerticalAlignment="Top" Width="187" Visibility="Hidden" Click="ReduceTimeButton_Click"/>
     </Grid>
 </Window>

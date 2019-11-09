@@ -10,5 +10,6 @@ namespace DOST {
         public abstract void EndRound(string guidGame);
         public abstract void PressDost(string guidGame, string guidPlayer);
         public abstract void EndGame(string guidGame);
+        public abstract void ReduceTime(string guidGame);
     }
 }

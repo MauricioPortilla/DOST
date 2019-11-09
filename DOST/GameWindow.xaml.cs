@@ -27,6 +27,7 @@ namespace DOST {
         private List<TextBox> categoriesTextBox = new List<TextBox>();
         private List<Button> categoriesButton = new List<Button>();
         private List<TextBlock> playersStatusTextBlock = new List<TextBlock>();
+        private bool didPressDostButton = false;
 
         public GameWindow(Game game) {
             InitializeComponent();
@@ -54,10 +55,13 @@ namespace DOST {
             Task.Run(() => {
                 bool isSoundPlaying = false;
                 while (timeRemaining >= 0) {
-                    if (timeRemaining == 10 && !isSoundPlaying) {
+                    if (timeRemaining <= 10 && !isSoundPlaying) {
                         SoundPlayer soundPlayer = new SoundPlayer(Properties.SoundResources.HurrySFX as Stream);
                         soundPlayer.Play();
                         isSoundPlaying = true;
+                        Application.Current.Dispatcher.Invoke(delegate {
+                            reduceTimeButton.IsEnabled = false;
+                        });
                     }
                     Application.Current.Dispatcher.Invoke(delegate {
                         timeRemainingTextBlock.Text = timeRemaining.ToString();
@@ -111,6 +115,7 @@ namespace DOST {
 
         private void CategoryGetWordButton_Click(object sender, RoutedEventArgs e) {
             var getWordButton = sender as Button;
+            player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
             if (player.Score < Session.ROUND_GET_WORD_COST) {
                 MessageBox.Show(Properties.Resources.YouDontHaveEnoughScorePointsErrorText);
                 return;
@@ -163,6 +168,9 @@ namespace DOST {
         }
 
         private void DostButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            if (didPressDostButton) {
+                return;
+            }
             bool areAllCategoryTextBoxFilled = true;
             foreach (var categoryTextBox in categoriesTextBox) {
                 if (categoryTextBox.Text == string.Empty) {
@@ -177,10 +185,13 @@ namespace DOST {
             try {
                 inGameService.PressDost(game.ActiveGuidGame, player.ActivePlayerGuid);
                 dostButton.IsEnabled = false;
+                didPressDostButton = true;
+                reduceTimeButton.Visibility = Visibility.Visible;
             } catch (CommunicationException communicationException) {
                 Console.WriteLine("CommunicationException (DostButton_MouseLeftButtonDown) -> " + communicationException.Message);
                 MessageBox.Show(Properties.Resources.AnErrorHasOcurredErrorText);
                 dostButton.IsEnabled = true;
+                reduceTimeButton.Visibility = Visibility.Hidden;
             }
         }
 
@@ -229,7 +240,16 @@ namespace DOST {
                     MessageBox.Show(Properties.Resources.AnErrorHasOcurredErrorText);
                 }
             }
+
             public override void EndGame(string guidGame) {
+            }
+
+            public override void ReduceTime(string guidGame) {
+                if (guidGame == game.ActiveGuidGame) {
+                    if (window.timeRemaining > Session.ROUND_REDUCE_TIME_SECONDS) {
+                        window.timeRemaining -= Session.ROUND_REDUCE_TIME_SECONDS;
+                    }
+                } 
             }
         }
 
@@ -258,6 +278,27 @@ namespace DOST {
             if (e.ChangedButton == MouseButton.Left) {
                 DragMove();
             }
+        }
+
+        private void ReduceTimeButton_Click(object sender, RoutedEventArgs e) {
+            if (!didPressDostButton) {
+                return;
+            }
+            player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
+            if (player.Account.Coins < Session.ROUND_REDUCE_TIME_COST) {
+                MessageBox.Show(Properties.Resources.YouDontHaveEnoughCoinsErrorText);
+                return;
+            } else if (timeRemaining <= Session.ROUND_REDUCE_TIME_SECONDS) {
+                return;
+            }
+            EngineNetwork.DoNetworkOperation<CommunicationException>(onExecute: () => {
+                inGameService.ReduceTime(game.ActiveGuidGame, player.ActivePlayerGuid);
+                return true;
+            }, onSuccess: () => {
+                Application.Current.Dispatcher.Invoke(delegate {
+                    reduceTimeButton.IsEnabled = false;
+                });
+            });
         }
     }
 }

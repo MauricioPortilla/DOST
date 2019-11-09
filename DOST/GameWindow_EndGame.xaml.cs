@@ -24,8 +24,9 @@ namespace DOST {
 
         public GameWindow_EndGame(Game game) {
             InitializeComponent();
-            this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
             try {
+                this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+                player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
                 Session.JoinGameChat(game, player, chatListBox, ref chatService);
             } catch (CommunicationException communicationException) {
                 Console.WriteLine("CommunicationException (GameLobbyWindow) -> " + communicationException.Message);
@@ -87,8 +88,13 @@ namespace DOST {
                 if (string.IsNullOrWhiteSpace(chatMessageTextBox.Text)) {
                     return;
                 }
-                chatService.BroadcastMessage(game.ActiveGuidGame, player.Account.Username, chatMessageTextBox.Text);
-                chatMessageTextBox.Clear();
+                EngineNetwork.DoNetworkOperation<CommunicationException>(onExecute: () => {
+                    Application.Current.Dispatcher.Invoke(delegate {
+                        chatService.BroadcastMessage(game.ActiveGuidGame, player.Account.Username, chatMessageTextBox.Text);
+                        chatMessageTextBox.Clear();
+                    });
+                    return true;
+                });
             }
         }
 

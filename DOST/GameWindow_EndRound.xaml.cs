@@ -23,6 +23,7 @@ namespace DOST {
             InitializeComponent();
             this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
             try {
+                player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
                 Session.JoinGameChat(game, player, chatListBox, ref chatService);
                 InstanceContext gameInstance = new InstanceContext(new InGameCallback(game, player, this));
                 inGameService = new InGameServiceClient(gameInstance);
@@ -102,6 +103,9 @@ namespace DOST {
                     new GameWindow_EndGame(game).Show();
                 }
             }
+
+            public override void ReduceTime(string guidGame) {
+            }
         }
 
         private void LoadCategoryPlayerAnswers() {
@@ -172,8 +176,13 @@ namespace DOST {
                 if (string.IsNullOrWhiteSpace(chatMessageTextBox.Text)) {
                     return;
                 }
-                chatService.BroadcastMessage(game.ActiveGuidGame, player.Account.Username, chatMessageTextBox.Text);
-                chatMessageTextBox.Clear();
+                EngineNetwork.DoNetworkOperation<CommunicationException>(onExecute: () => {
+                    Application.Current.Dispatcher.Invoke(delegate {
+                        chatService.BroadcastMessage(game.ActiveGuidGame, player.Account.Username, chatMessageTextBox.Text);
+                        chatMessageTextBox.Clear();
+                    });
+                    return true;
+                });
             }
         }
 

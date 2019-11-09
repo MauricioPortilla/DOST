@@ -411,4 +411,7 @@
   <data name="PlaceText" xml:space="preserve">
     <value>Place</value>
   </data>
+  <data name="ReduceTimeButton" xml:space="preserve">
+    <value>Reduce time</value>
+  </data>
 </root>

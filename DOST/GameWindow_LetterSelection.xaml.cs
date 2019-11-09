@@ -61,6 +61,9 @@ namespace DOST {
 
             public override void EndGame(string guidGame) {
             }
+
+            public override void ReduceTime(string guidGame) {
+            }
         }
 
         private void StartGame() {

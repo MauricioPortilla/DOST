@@ -110,7 +110,7 @@ namespace DOST {
             /// Receives data from in-game service to indicate the round starting.
             /// </summary>
             /// <param name="guidGame">Game global unique identifier</param>
-            /// <param name="playerSelectorIndex"></param>
+            /// <param name="playerSelectorIndex">Player index selected to select letter</param>
             public override void StartRound(string guidGame, int playerSelectorIndex) {
                 if (guidGame == game.ActiveGuidGame) {
                     var findHost = game.Players.Find(player => player.IsHost);
@@ -136,8 +136,14 @@ namespace DOST {
 
             public override void EndGame(string guidGame) {
             }
+
+            public override void ReduceTime(string guidGame) {
+            }
         }
 
+        /// <summary>
+        /// Reloads players data in UI if the number of players in game changed.
+        /// </summary>
         private void LoadPlayersJoinedData() {
             while (!IsClosed) {
                 try {
@@ -154,6 +160,9 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Reloads all the UI data.
+        /// </summary>
         private void PerformLobbyUIChanges() {
             if (game.Players.Count == 0) {
                 return;
@@ -191,6 +200,9 @@ namespace DOST {
             actualNumberOfPlayers = game.Players.Count;
         }
 
+        /// <summary>
+        /// Resets UI data to default values.
+        /// </summary>
         private void ResetLobbyUI() {
             for (int index = 0; index < Session.MAX_PLAYERS_IN_GAME; index++) {
                 lobbyPlayersUsernameTextBlocks[index].Text = "...";
@@ -202,6 +214,11 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Handles ExitButton click event.
+        /// </summary>
+        /// <param name="sender">ExitButton object</param>
+        /// <param name="e">Button click event</param>
         private void ExitButton_Click(object sender, RoutedEventArgs e) {
             if (player.LeaveGame(game)) {
                 try {
@@ -218,6 +235,11 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Handles StartGameButton click event.
+        /// </summary>
+        /// <param name="sender">StartGameButton object</param>
+        /// <param name="e">Button click event</param>
         private void StartGameButton_Click(object sender, RoutedEventArgs e) {
             if (game.Players.Count < 2) {
                 MessageBox.Show(Properties.Resources.MustHaveAtLeastTwoPlayersErrorText);
@@ -235,6 +257,11 @@ namespace DOST {
             inGameService.StartRound(game.ActiveGuidGame, 0);
         }
 
+        /// <summary>
+        /// Handles ReadyButton click event.
+        /// </summary>
+        /// <param name="sender">ReadyButton object</param>
+        /// <param name="e">Button click event</param>
         private void ReadyButton_Click(object sender, RoutedEventArgs e) {
             if (player.IsHost) {
                 return;
@@ -250,25 +277,49 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Handles ConfigurationButton click event.
+        /// </summary>
+        /// <param name="sender">ConfigurationButton object</param>
+        /// <param name="e">Button click event</param>
         private void ConfigurationButton_Click(object sender, RoutedEventArgs e) {
             new GameConfigurationWindow(ref game).Show();
         }
 
+        /// <summary>
+        /// Sends a chat message on enter key down.
+        /// </summary>
+        /// <param name="sender">ChatMessageTextBox object</param>
+        /// <param name="e">Key event</param>
         private void ChatMessageTextBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
                 if (string.IsNullOrWhiteSpace(chatMessageTextBox.Text)) {
                     return;
                 }
-                chatService.BroadcastMessage(game.ActiveGuidGame, player.Account.Username, chatMessageTextBox.Text);
-                chatMessageTextBox.Clear();
+                EngineNetwork.DoNetworkOperation<CommunicationException>(onExecute: () => {
+                    Application.Current.Dispatcher.Invoke(delegate {
+                        chatService.BroadcastMessage(game.ActiveGuidGame, player.Account.Username, chatMessageTextBox.Text);
+                        chatMessageTextBox.Clear();
+                    });
+                    return true;
+                });
             }
         }
 
+        /// <summary>
+        /// Executed when window was closed.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnClosed(EventArgs e) {
             base.OnClosed(e);
             IsClosed = true;
         }
 
+        /// <summary>
+        /// Manages window header to enable drag the window.
+        /// </summary>
+        /// <param name="sender">Window header element</param>
+        /// <param name="e">Mouse event handler</param>
         private void WindowHeader_MouseDown(object sender, MouseButtonEventArgs e) {
             if (e.ChangedButton == MouseButton.Left) {
                 DragMove();

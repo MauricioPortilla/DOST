@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DOST.DataAccess;
+using System.Collections.Generic;
 using System.ServiceModel;
 
 namespace DOST.Services {
@@ -106,6 +107,43 @@ namespace DOST.Services {
                 player.Value.EndGame(guidGame);
             }
         }
+
+        public void ReduceTime(string guidGame, string guidPlayer) {
+            if (!gamesClients.ContainsKey(guidGame)) {
+                return;
+            }
+            if (!gamesClients[guidGame].ContainsKey(guidPlayer)) {
+                return;
+            }
+            var game = GameService.ActiveGames.Find(playerInGame => playerInGame.ActiveGameGuid == guidGame);
+            if (game == null) {
+                return;
+            }
+            var player = game.Players.Find(playerInGame => playerInGame.ActivePlayerGuid == guidPlayer);
+            if (player == null) {
+                return;
+            }
+            if (!GameService.GamesTimer.ContainsKey(game.ActiveGameGuid)) {
+                return;
+            }
+            using (DostDatabase db = new DostDatabase()) {
+                var account = db.Account.Find(player.Account.Id);
+                if (account == null) {
+                    return;
+                }
+                if (account.coins < GameService.ROUND_REDUCE_TIME_COST) {
+                    return;
+                }
+                account.coins -= GameService.ROUND_REDUCE_TIME_COST;
+                if (db.SaveChanges() != 1) {
+                    return;
+                }
+            }
+            GameService.GamesTimer[game.ActiveGameGuid] = GameService.GamesTimer[game.ActiveGameGuid].AddSeconds(-GameService.ROUND_REDUCE_TIME_SECONDS);
+            foreach (var playerInGame in gamesClients[guidGame]) {
+                playerInGame.Value.ReduceTime(guidGame);
+            }
+        }
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
@@ -143,6 +181,10 @@ namespace DOST.Services {
 
         public void EndGame(string guidGame) {
             base.Channel.EndGame(guidGame);
+        }
+
+        public void ReduceTime(string guidGame, string guidPlayer) {
+            base.Channel.ReduceTime(guidGame, guidPlayer);
         }
     }
 }
