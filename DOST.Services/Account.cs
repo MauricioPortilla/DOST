@@ -4,6 +4,9 @@ using System.Runtime.Serialization;
 using DOST.DataAccess;
 
 namespace DOST.Services {
+    /// <summary>
+    /// Represents an account in the service.
+    /// </summary>
     [DataContract]
     public class Account {
         private int id;
@@ -55,9 +58,23 @@ namespace DOST.Services {
             set { validationCode = value; }
         }
 
+        /// <summary>
+        /// Creates and initializes a new empty instance.
+        /// </summary>
         public Account() {
         }
 
+        /// <summary>
+        /// Creates and initializes a new instance with data given.
+        /// </summary>
+        /// <param name="id">Account identifier</param>
+        /// <param name="username">Account username</param>
+        /// <param name="password">Account password</param>
+        /// <param name="email">Account email</param>
+        /// <param name="coins">Account coins</param>
+        /// <param name="creationDate">Account creation date</param>
+        /// <param name="isVerified">True if account is verified; False if not</param>
+        /// <param name="validationCode">Account validation code</param>
         public Account(
             int id, string username, string password, string email, int coins,
             DateTime creationDate, bool isVerified, string validationCode
@@ -72,19 +89,28 @@ namespace DOST.Services {
             this.validationCode = validationCode;
         }
 
+        /// <summary>
+        /// Creates and initializes a new instance with identifier given and establishes a connection with
+        /// database to try to load the account data.
+        /// </summary>
+        /// <param name="id">Account identifier</param>
         public Account(int id) {
             this.id = id;
-            using (DostDatabase db = new DostDatabase()) {
-                var accountDb = db.Account.ToList().Find(account => account.idaccount == id);
-                if (accountDb != null) {
-                    username = accountDb.username;
-                    password = accountDb.password;
-                    email = accountDb.email;
-                    coins = accountDb.coins;
-                    creationDate = accountDb.creationDate;
-                    isVerified = accountDb.isVerified == 1;
-                    validationCode = accountDb.validationCode;
+            try {
+                using (DostDatabase db = new DostDatabase()) {
+                    var accountDb = db.Account.ToList().Find(account => account.idaccount == id);
+                    if (accountDb != null) {
+                        username = accountDb.username;
+                        password = accountDb.password;
+                        email = accountDb.email;
+                        coins = accountDb.coins;
+                        creationDate = accountDb.creationDate;
+                        isVerified = accountDb.isVerified == 1;
+                        validationCode = accountDb.validationCode;
+                    }
                 }
+            } catch (Exception exception) {
+                Console.WriteLine("Exception (Account) -> " + exception.Message);
             }
         }
     }

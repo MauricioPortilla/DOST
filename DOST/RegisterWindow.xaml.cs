@@ -3,13 +3,23 @@ using System.Windows;
 
 namespace DOST {
     /// <summary>
-    /// Lógica de interacción para RegisterWindow.xaml
+    /// Represents RegisterWindow.xaml interaction logic.
     /// </summary>
     public partial class RegisterWindow : Window {
+
+        /// <summary>
+        /// Creates an instance and initializes it.
+        /// </summary>
         public RegisterWindow() {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Handles RegisterButton click event. Establishes a connection with account service to try
+        /// to register a new account with data given.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void RegisterButton_Click(object sender, RoutedEventArgs e) {
             if (string.IsNullOrWhiteSpace(usernameTextBox.Text) ||
                 string.IsNullOrWhiteSpace(passwordPasswordBox.Password) ||

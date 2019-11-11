@@ -2,6 +2,9 @@
 using System.Runtime.Serialization;
 
 namespace DOST.Services {
+    /// <summary>
+    /// Represents a game category in service.
+    /// </summary>
     [DataContract]
     public class GameCategory {
         private int id;
@@ -29,9 +32,18 @@ namespace DOST.Services {
             set { categoryPlayerAnswers = value; }
         }
 
+        /// <summary>
+        /// Creates and initializes a new instance.
+        /// </summary>
         public GameCategory() {
         }
 
+        /// <summary>
+        /// Creates and initializes a new instance with data given.
+        /// </summary>
+        /// <param name="id">GameCategory identifier</param>
+        /// <param name="game">Game where it belongs to</param>
+        /// <param name="name">GameCategory name</param>
         public GameCategory(int id, Game game, string name) {
             this.id = id;
             this.game = game;

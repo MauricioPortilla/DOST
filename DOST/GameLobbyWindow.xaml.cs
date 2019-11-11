@@ -32,7 +32,6 @@ namespace DOST {
         /// <param name="game">Game reference to create lobby</param>
         public GameLobbyWindow(ref Game game) {
             Session.IsPlayerInGame = true;
-            Session.Game_ForPlayerIndex = 1;
             InitializeComponent();
             this.game = game;
             lobbyPlayersUsernameTextBlocks = new List<TextBlock>() {
@@ -312,7 +311,7 @@ namespace DOST {
         /// <summary>
         /// Executed when window was closed.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">Window event</param>
         protected override void OnClosed(EventArgs e) {
             base.OnClosed(e);
             IsClosed = true;

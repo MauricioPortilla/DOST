@@ -1,6 +1,9 @@
 ﻿using System.ServiceModel;
 
 namespace DOST.Services {
+    /// <summary>
+    /// Interface for ingame service.
+    /// </summary>
     [ServiceContract(CallbackContract = typeof(IInGameServiceCallback))]
     public interface IInGameService {
         [OperationContract(IsOneWay = true)]
@@ -31,6 +34,9 @@ namespace DOST.Services {
         void ReduceTime(string guidGame, string guidPlayer);
     }
 
+    /// <summary>
+    /// Interface for ingame service callback.
+    /// </summary>
     [ServiceContract]
     public interface IInGameServiceCallback {
         [OperationContract(IsOneWay = true)]

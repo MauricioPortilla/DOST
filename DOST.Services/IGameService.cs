@@ -2,6 +2,9 @@
 using System.ServiceModel;
 
 namespace DOST.Services {
+    /// <summary>
+    /// Interface for game service.
+    /// </summary>
     [ServiceContract]
     public interface IGameService {
         [OperationContract]

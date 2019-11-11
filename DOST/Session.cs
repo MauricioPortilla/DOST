@@ -7,7 +7,13 @@ using System.Windows;
 using System.ServiceModel;
 
 namespace DOST {
+    /// <summary>
+    /// Manages the current session in the application.
+    /// </summary>
     class Session {
+        /// <summary>
+        /// Languages available as language name and its culture.
+        /// </summary>
         public static readonly Dictionary<string, string> LANGUAGES = new Dictionary<string, string>() {
             { "Español", "es-MX" }, { "English", "en-US" }
         };
@@ -52,6 +58,9 @@ namespace DOST {
             get { return allGamesAvailable; }
             set { allGamesAvailable = value; }
         }
+        /// <summary>
+        /// All the default game categories for a game.
+        /// </summary>
         private static readonly List<GameConfigurationWindow.GameCategoryItem> defaultCategoriesList = new List<GameConfigurationWindow.GameCategoryItem>() {
             new GameConfigurationWindow.GameCategoryItem() { Name = Properties.Resources.NameCategoryText, GameCategory = new GameCategory(0, null, Properties.Resources.NameCategoryText), IsSelected = false },
             new GameConfigurationWindow.GameCategoryItem() { Name = Properties.Resources.LastNameCategoryText, GameCategory = new GameCategory(0, null, Properties.Resources.LastNameCategoryText), IsSelected = false },
@@ -62,12 +71,18 @@ namespace DOST {
         public static List<GameConfigurationWindow.GameCategoryItem> DefaultCategoriesList {
             get { return defaultCategoriesList; }
         }
+        /// <summary>
+        /// All the default game categories name for a game.
+        /// </summary>
         public static readonly List<string> DefaultCategoriesNameList = new List<string>() {
             "Nombre", "Name", "Apellido", "Last name", "Color", "Animal", "Fruta", "Fruit"
         };
         public static bool IsPlayerInGame = false;
-        public static int Game_ForPlayerIndex = 1;
 
+        /// <summary>
+        /// Sets all the data from game that is being played in this session.
+        /// </summary>
+        /// <param name="service">GameService service</param>
         private static void GetGameBeingPlayedData(IGameService service) {
             var gameBeingPlayed = allGamesAvailable.Find(game => game.Players.Find(player => player.Account.Id == Session.Account.Id) != null);
             if (gameBeingPlayed == null) {
@@ -115,6 +130,9 @@ namespace DOST {
             gameBeingPlayed.LetterSelected = activeGame.LetterSelected;
         }
 
+        /// <summary>
+        /// Establishes a connection with game service to get all the games in course and waiting for players to be joined.
+        /// </summary>
         public static void GetGamesList() {
             while (true) {
                 var valueReturned = EngineNetwork.EstablishChannel<IGameService>((service) => {
@@ -208,6 +226,13 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Establishes a connection with chat callback to enter to the game chat.
+        /// </summary>
+        /// <param name="game">Game to interact</param>
+        /// <param name="player">Player who will enter to the game chat</param>
+        /// <param name="chatListBox">Chat list box where the messages will be placed on</param>
+        /// <param name="chatServiceClient">Instance where connection will be placed on</param>
         public static void JoinGameChat(Game game, Player player, System.Windows.Controls.ListBox chatListBox, ref ChatServiceClient chatServiceClient) {
             InstanceContext chatInstanceContext = new InstanceContext(new ChatCallbackHandler(game, chatListBox));
             chatServiceClient = new ChatServiceClient(chatInstanceContext);
@@ -219,6 +244,11 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Gets executed when a game property changes and refreshes game list view of the main menu window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         static void Game_PropertyChanged(object sender, PropertyChangedEventArgs e) {
             Application.Current.Dispatcher.Invoke(delegate {
                 mainMenuWindow.gamesListView.Items.Refresh();

@@ -4,7 +4,13 @@ using System.Collections.Generic;
 using System.ServiceModel;
 
 namespace DOST.Server {
+    /// <summary>
+    /// Manages server network.
+    /// </summary>
     static class EngineNetwork {
+        /// <summary>
+        /// Service addresses.
+        /// </summary>
         public static readonly Dictionary<string, Uri[]> URIS_SERVICES = new Dictionary<string, Uri[]>() {
             { "AccountService", new Uri[] {
                 new Uri("net.tcp://localhost:25618/AccountService")
@@ -20,6 +26,9 @@ namespace DOST.Server {
             } }
         };
 
+        /// <summary>
+        /// Creates the hosts for all the services to establish connections.
+        /// </summary>
         public static void CreateHosts() {
             try {
                 ServiceHost loginHost = new ServiceHost(typeof(AccountService));

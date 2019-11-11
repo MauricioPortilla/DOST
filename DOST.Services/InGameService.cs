@@ -4,15 +4,29 @@ using System.Linq;
 using System.ServiceModel;
 
 namespace DOST.Services {
+    /// <summary>
+    /// Manages ingame operations through network.
+    /// </summary>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class InGameService : IInGameService {
+        /// <summary>
+        /// Stores active players in games.
+        /// </summary>
         private static readonly Dictionary<string, Dictionary<string, IInGameServiceCallback>> gamesClients =
             new Dictionary<string, Dictionary<string, IInGameServiceCallback>>();
         public static Dictionary<string, Dictionary<string, IInGameServiceCallback>> GamesClients {
             get { return gamesClients; }
         }
+        /// <summary>
+        /// Manages player letter selectors for each active game.
+        /// </summary>
         private static Dictionary<string, int> gamesPlayerSelectorIndexHandler = new Dictionary<string, int>();
 
+        /// <summary>
+        /// Joins a new player to an ingame environment.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
         public void EnterPlayer(string guidGame, string guidPlayer) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 gamesClients.Add(guidGame, new Dictionary<string, IInGameServiceCallback>());
@@ -24,6 +38,11 @@ namespace DOST.Services {
             }
         }
 
+        /// <summary>
+        /// Removes a player from an ingame environment.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
         public void LeavePlayer(string guidGame, string guidPlayer) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 return;
@@ -34,6 +53,12 @@ namespace DOST.Services {
             gamesClients[guidGame].Remove(guidPlayer);
         }
 
+        /// <summary>
+        /// Sets a player ready status in an ingame environment.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
+        /// <param name="isPlayerReady">True if player is ready; False if not</param>
         public void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 return;
@@ -46,6 +71,11 @@ namespace DOST.Services {
             }
         }
 
+        /// <summary>
+        /// Starts a new round in an ingame environment.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="playerSelectorIndex">Player letter selector index</param>
         public void StartRound(string guidGame, int playerSelectorIndex) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 return;
@@ -70,6 +100,10 @@ namespace DOST.Services {
             }
         }
 
+        /// <summary>
+        /// Starts a new game in an ingame environment.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
         public void StartGame(string guidGame) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 return;
@@ -79,6 +113,10 @@ namespace DOST.Services {
             }
         }
 
+        /// <summary>
+        /// Ends a round in an ingame environment.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
         public void EndRound(string guidGame) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 return;
@@ -88,6 +126,11 @@ namespace DOST.Services {
             }
         }
 
+        /// <summary>
+        /// Indicates that a player pressed dost button in an ingame environment.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
         public void PressDost(string guidGame, string guidPlayer) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 return;
@@ -100,6 +143,10 @@ namespace DOST.Services {
             }
         }
 
+        /// <summary>
+        /// Ends the game in an ingame environment.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
         public void EndGame(string guidGame) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 return;
@@ -160,6 +207,11 @@ namespace DOST.Services {
             }
         }
 
+        /// <summary>
+        /// Reduces the timer time of an ingame environment.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
         public void ReduceTime(string guidGame, string guidPlayer) {
             if (!gamesClients.ContainsKey(guidGame)) {
                 return;
@@ -198,43 +250,93 @@ namespace DOST.Services {
         }
     }
 
+    /// <summary>
+    /// Manages ingame service callbacks operations through network.
+    /// </summary>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class InGameServiceClient : DuplexClientBase<IInGameService>, IInGameService {
+        /// <summary>
+        /// Creates and initializes a new instance.
+        /// </summary>
+        /// <param name="callbackContext"></param>
         public InGameServiceClient(InstanceContext callbackContext) : base(callbackContext) {
         }
 
+        /// <summary>
+        /// Sends to ingame service information about the player that is about to join to the game.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
         public void EnterPlayer(string guidGame, string guidPlayer) {
             base.Channel.EnterPlayer(guidGame, guidPlayer);
         }
 
+        /// <summary>
+        /// Sends to ingame service information about the player that is about to leave the game.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
         public void LeavePlayer(string guidGame, string guidPlayer) {
             base.Channel.LeavePlayer(guidGame, guidPlayer);
         }
 
+        /// <summary>
+        /// Sends to ingame service information about the player that is about to change his ready status.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
+        /// <param name="isPlayerReady">True if player is ready; False if not</param>
         public void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
             base.Channel.SetPlayerReady(guidGame, guidPlayer, isPlayerReady);
         }
 
+        /// <summary>
+        /// Sends to ingame service information about the round that is about to start.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="playerSelectorIndex">Player letter selector index</param>
         public void StartRound(string guidGame, int playerSelectorIndex) {
             base.Channel.StartRound(guidGame, playerSelectorIndex);
         }
 
+        /// <summary>
+        /// Sends to ingame service information about the game that is about to start.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
         public void StartGame(string guidGame) {
             base.Channel.StartGame(guidGame);
         }
 
+        /// <summary>
+        /// Sends to ingame service information about the round that is about to end.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
         public void EndRound(string guidGame) {
             base.Channel.EndRound(guidGame);
         }
 
+        /// <summary>
+        /// Sends to ingame service information about the player that pressed the dost button.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
         public void PressDost(string guidGame, string guidPlayer) {
             base.Channel.PressDost(guidGame, guidPlayer);
         }
 
+        /// <summary>
+        /// Sends to ingame service information about the game that is about to end.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
         public void EndGame(string guidGame) {
             base.Channel.EndGame(guidGame);
         }
 
+        /// <summary>
+        /// Sends to ingame service information about the time reducing in a game.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
         public void ReduceTime(string guidGame, string guidPlayer) {
             base.Channel.ReduceTime(guidGame, guidPlayer);
         }

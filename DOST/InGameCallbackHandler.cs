@@ -1,6 +1,10 @@
 ﻿using DOST.Services;
 
 namespace DOST {
+
+    /// <summary>
+    /// Provides methods associated to game service callback.
+    /// </summary>
     public abstract class InGameCallbackHandler : IInGameServiceCallback {
         protected Game game;
 

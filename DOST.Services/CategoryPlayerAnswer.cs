@@ -1,6 +1,9 @@
 ﻿using System.Runtime.Serialization;
 
 namespace DOST.Services {
+    /// <summary>
+    /// Represents a player category answer in service.
+    /// </summary>
     [DataContract]
     public class CategoryPlayerAnswer {
         private int id;
@@ -40,6 +43,9 @@ namespace DOST.Services {
             set { hasCorrectAnswer = value; }
         }
 
+        /// <summary>
+        /// Creates a new empty instance.
+        /// </summary>
         public CategoryPlayerAnswer() {
         }
     }

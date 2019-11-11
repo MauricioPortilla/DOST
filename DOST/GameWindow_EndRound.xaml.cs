@@ -29,7 +29,7 @@ namespace DOST {
             try {
                 player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
                 Session.JoinGameChat(game, player, chatListBox, ref chatService);
-                InstanceContext gameInstance = new InstanceContext(new InGameCallback(game, player, this));
+                InstanceContext gameInstance = new InstanceContext(new InGameCallback(game, this));
                 inGameService = new InGameServiceClient(gameInstance);
                 inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
             } catch (CommunicationException communicationException) {
@@ -57,7 +57,6 @@ namespace DOST {
         /// </summary>
         public class InGameCallback : InGameCallbackHandler {
             private GameWindow_EndRound window;
-            private Player player;
 
             /// <summary>
             /// Creates an instance and initializes it.
@@ -65,9 +64,8 @@ namespace DOST {
             /// <param name="game">Game in course</param>
             /// <param name="player">Session player in game</param>
             /// <param name="window">Window where instance will operate</param>
-            public InGameCallback(Game game, Player player, GameWindow_EndRound window) {
+            public InGameCallback(Game game, GameWindow_EndRound window) {
                 this.game = game;
-                this.player = player;
                 this.window = window;
             }
 

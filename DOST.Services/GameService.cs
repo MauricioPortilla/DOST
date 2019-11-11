@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using DOST.DataAccess;
 
 namespace DOST.Services {
+    /// <summary>
+    /// Manages game operations through network.
+    /// </summary>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Single)]
     public class GameService : IGameService {
         /// <summary>
@@ -27,10 +30,19 @@ namespace DOST.Services {
         public static readonly int MAX_COINS_PER_GAME_WIN = 80;
         public static readonly Dictionary<string, DateTime> GamesTimer = new Dictionary<string, DateTime>();
 
+        /// <summary>
+        /// Gets all active games.
+        /// </summary>
+        /// <returns>List of active games</returns>
         public List<Game> GetGamesList() {
             return activeGames;
         }
 
+        /// <summary>
+        /// Gets a list of all players in a game stored in database.
+        /// </summary>
+        /// <param name="idgame">Game identifier</param>
+        /// <returns>List of players</returns>
         public List<Player> GetPlayersList(int idgame) {
             List<Player> playersList = new List<Player>();
             try {
@@ -59,6 +71,12 @@ namespace DOST.Services {
             return playersList;
         }
 
+        /// <summary>
+        /// Gets a player in a game from database.
+        /// </summary>
+        /// <param name="idaccount">Account identifier</param>
+        /// <param name="idgame">Game identifier</param>
+        /// <returns>A game player</returns>
         public Player GetPlayer(int idaccount, int idgame) {
             Player player = new Player();
             try {
@@ -85,6 +103,13 @@ namespace DOST.Services {
             return player;
         }
 
+        /// <summary>
+        /// Adds a player to an active game.
+        /// </summary>
+        /// <param name="idaccount">Account identifier</param>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="asHost">True if his rol is to be a host; False if not</param>
+        /// <returns>True if player was added successfully; False if not</returns>
         public bool AddPlayer(int idaccount, string guidGame, bool asHost) {
             try {
                 var foundGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
@@ -119,6 +144,12 @@ namespace DOST.Services {
             return false;
         }
 
+        /// <summary>
+        /// Removes a player from an active game.
+        /// </summary>
+        /// <param name="guidPlayer">Player global unique identifier</param>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <returns>True if player was removed successfully; False if not</returns>
         public bool RemovePlayer(string guidPlayer, string guidGame) {
             var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
             if (findGame == null) {
@@ -138,6 +169,12 @@ namespace DOST.Services {
             return true;
         }
 
+        /// <summary>
+        /// Creates a new active game and adds default game categories based on language given.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="language">Host player language</param>
+        /// <returns>True if game was created successfully; False if not</returns>
         public bool CreateGame(out string guidGame, string language) {
             Game newGame = new Game {
                 ActiveGameGuid = Guid.NewGuid().ToString(),
@@ -156,6 +193,11 @@ namespace DOST.Services {
             return true;
         }
 
+        /// <summary>
+        /// Gets all game categories from a game stored in database.
+        /// </summary>
+        /// <param name="idgame">Game identifier</param>
+        /// <returns>List of game categories</returns>
         public List<GameCategory> GetCategoriesList(int idgame) {
             List<GameCategory> categoriesList = new List<GameCategory>();
             try {
@@ -173,6 +215,12 @@ namespace DOST.Services {
             return categoriesList;
         }
 
+        /// <summary>
+        /// Adds a new game category to an active game.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="name">Game category name</param>
+        /// <returns>True if game category was added successfully; False if not</returns>
         public bool AddCategory(string guidGame, string name) {
             var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
             if (findGame == null) {
@@ -188,6 +236,12 @@ namespace DOST.Services {
             return true;
         }
 
+        /// <summary>
+        /// Removes a game category from an active game.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="name">Game category name</param>
+        /// <returns>True if game category was removed successfully; False if not</returns>
         public bool RemoveCategory(string guidGame, string name) {
             var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
             if (findGame == null) {
@@ -201,6 +255,13 @@ namespace DOST.Services {
             return true;
         }
 
+        /// <summary>
+        /// Sets player ready status from an active game.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
+        /// <param name="isPlayerReady">True if player is ready; False if not</param>
+        /// <returns>True if status was changed successfully; False if not</returns>
         public bool SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
             var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
             if (findGame == null) {
@@ -214,6 +275,11 @@ namespace DOST.Services {
             return true;
         }
 
+        /// <summary>
+        /// Starts an active game.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <returns>True if game was started successfully; False if not</returns>
         public bool StartGame(string guidGame) {
             var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
             if (findGame == null) {
@@ -230,6 +296,14 @@ namespace DOST.Services {
             return true;
         }
 
+        /// <summary>
+        /// Sets a new letter for an active game.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="idaccount">Account identifier of letter selector</param>
+        /// <param name="selectRandomLetter">True if letter should be selected randomly; False if not</param>
+        /// <param name="letter">Letter to be selected if selectRandomLetter parameter has false value</param>
+        /// <returns>True if letter was set successfully; False if not</returns>
         public bool SetGameLetter(string guidGame, int idaccount, bool selectRandomLetter, string letter = null) {
             var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
             if (findGame == null) {
@@ -276,6 +350,11 @@ namespace DOST.Services {
             return true;
         }
 
+        /// <summary>
+        /// Gets an active game.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <returns>Game which has guid given.</returns>
         public Game GetActiveGame(string guidGame) {
             var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
             if (findGame == null) {
@@ -284,6 +363,13 @@ namespace DOST.Services {
             return findGame;
         }
 
+        /// <summary>
+        /// Sends the player category answers for an active game.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
+        /// <param name="categoryPlayerAnswers">List of category answers</param>
+        /// <returns>True if category answers was sent successfully; False if not</returns>
         public bool SendCategoryAnswers(string guidGame, string guidPlayer, List<CategoryPlayerAnswer> categoryPlayerAnswers) {
             var findGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
             if (findGame == null) {
@@ -317,6 +403,14 @@ namespace DOST.Services {
             return true;
         }
 
+        /// <summary>
+        /// Evaluates if the word given for a category answer is correct, based on stored files.
+        /// </summary>
+        /// <param name="categoryPlayerAnswer">Category answer to evaluate</param>
+        /// <returns>
+        ///     True if category is not a default one, or file doesn't exist, or file contains the word;
+        ///     False if answer is empty, or file exists and doesn't contain the word
+        /// </returns>
         private bool EvaluateCategoryPlayerAnswer(CategoryPlayerAnswer categoryPlayerAnswer) {
             if (string.IsNullOrWhiteSpace(categoryPlayerAnswer.Answer)) {
                 return false;
@@ -338,6 +432,16 @@ namespace DOST.Services {
             return true;
         }
 
+        /// <summary>
+        /// Gets a category correct word.
+        /// </summary>
+        /// <param name="guidGame">Game global unique identifier</param>
+        /// <param name="guidPlayer">Player global unique identifier</param>
+        /// <param name="categoryName">Category name</param>
+        /// <returns>
+        ///     An empty string if category is not a default one, or couldn't find the game,
+        ///     or couldn't find the player, or couldn't find a word; or returns a correct word.
+        /// </returns>
         public string GetCategoryWord(string guidGame, string guidPlayer, string categoryName) {
             if (!Engine.CategoriesList.Any(list => list.Value.Contains(categoryName))) {
                 return string.Empty;

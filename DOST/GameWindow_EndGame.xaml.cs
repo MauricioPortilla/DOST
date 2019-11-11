@@ -123,7 +123,7 @@ namespace DOST {
         /// <summary>
         /// Closes actual window and establishes player in game status to false.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">Window event</param>
         protected override void OnClosed(EventArgs e) {
             base.OnClosed(e);
             IsClosed = true;

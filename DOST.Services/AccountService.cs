@@ -10,9 +10,18 @@ using System.Text;
 using DOST.DataAccess;
 
 namespace DOST.Services {
-
+    /// <summary>
+    /// Manages account operations through network.
+    /// </summary>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Single)]
     public class AccountService : IAccountService {
+        /// <summary>
+        /// Establishes a connection with database to try to find an account with username and password given.
+        /// If exists and is not verified, tries to verify it with webpage.
+        /// </summary>
+        /// <param name="username">Account username</param>
+        /// <param name="password">Account password</param>
+        /// <returns>Account found in database</returns>
         public Account TryLogin(string username, string password) {
             string hashedPassword = Engine.HashWithSHA256(password);
             Account account = new Account();
@@ -48,6 +57,11 @@ namespace DOST.Services {
             return account;
         }
 
+        /// <summary>
+        /// Establishes a connection with database to register a new account.
+        /// </summary>
+        /// <param name="account">Account to register</param>
+        /// <returns>True if account was registered successfully; False if not</returns>
         public bool SignUp(Account account) {
             try {
                 using (DostDatabase db = new DostDatabase()) {
@@ -74,6 +88,11 @@ namespace DOST.Services {
             return false;
         }
 
+        /// <summary>
+        /// Sends a request to webpage to try to validate an account.
+        /// </summary>
+        /// <param name="validationCode">Account validation code</param>
+        /// <returns>True if webpage database has validation code stored; False if not</returns>
         private static bool TryValidateAccount(string validationCode) {
             HttpWebResponse response = null;
             string result = string.Empty;
@@ -102,7 +121,13 @@ namespace DOST.Services {
             return string.IsNullOrWhiteSpace(result) ? false : ((result == "0") ? false : true);
         }
 
-        private static bool SendSignUpEmail(string email, string codigoValidacion) {
+        /// <summary>
+        /// Sends an email to verify the account recently registered.
+        /// </summary>
+        /// <param name="email">Account email</param>
+        /// <param name="validationCode">Account validation code</param>
+        /// <returns>True if email was sent successfully; False if not</returns>
+        private static bool SendSignUpEmail(string email, string validationCode) {
             var xmlElements = Engine.GetConfigFileElements();
             try {
                 SmtpClient client = new SmtpClient(xmlElements["Smtp"]["SMTPServer"]);
@@ -113,7 +138,7 @@ namespace DOST.Services {
                 mail.IsBodyHtml = true;
                 mail.Body = "<h3>¡Bienvenido a DOST!</h3><br>" +
                     "Da clic <a href=\"https://www.arkanapp.com/dost/dost.php?validationcode=" +
-                    codigoValidacion + "\" target=\"_blank\">AQUÍ</a> para activar tu cuenta." +
+                    validationCode + "\" target=\"_blank\">AQUÍ</a> para activar tu cuenta." +
                     "<br><br>¡Diviértete!<br>-El equipo de DOST";
                 if (int.TryParse(xmlElements["Smtp"]["Port"], out int port)) {
                     client.Port = port;
@@ -137,6 +162,10 @@ namespace DOST.Services {
             return false;
         }
 
+        /// <summary>
+        /// Establishes a connection with database to try to get all the best scores.
+        /// </summary>
+        /// <returns>List with best scores</returns>
         public List<UserScore> GetBestScores() {
             List<UserScore> bestScoresList = new List<UserScore>();
             try {
@@ -161,6 +190,11 @@ namespace DOST.Services {
             return bestScoresList;
         }
 
+        /// <summary>
+        /// Establishes a connection with database to try to get the account rank by identifier given.
+        /// </summary>
+        /// <param name="idaccount">Account identifier</param>
+        /// <returns>Rank with prefix #, or an empty string if couldn't find the account or games played.</returns>
         public string GetRank(int idaccount) {
             string rank = "";
             try {
@@ -180,6 +214,11 @@ namespace DOST.Services {
             return rank;
         }
 
+        /// <summary>
+        /// Establishes a connection with database to try to get account data by identifier given.
+        /// </summary>
+        /// <param name="idaccount">Account identifier</param>
+        /// <returns>Account found</returns>
         public Account GetAccount(int idaccount) {
             Account account = new Account();
             try {

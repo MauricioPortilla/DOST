@@ -2,6 +2,9 @@
 using System.ServiceModel;
 
 namespace DOST.Services {
+    /// <summary>
+    /// Interface for account service.
+    /// </summary>
     [ServiceContract]
     public interface IAccountService {
         [OperationContract]

@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace DOST {
     /// <summary>
-    /// Lógica de interacción para GameWindow_LetterSelection.xaml
+    /// Represents GameWindow_LetterSelection.xaml interaction logic.
     /// </summary>
     public partial class GameWindow_LetterSelection : Window {
         public bool IsClosed { get; private set; } = false;
@@ -16,6 +16,12 @@ namespace DOST {
         private bool showLetterSelectionOptions = false;
         private InGameServiceClient inGameService;
 
+        /// <summary>
+        /// Creates an instance and initializes it.
+        /// </summary>
+        /// <param name="game">Game to be used</param>
+        /// <param name="player">Player ingame</param>
+        /// <param name="showLetterSelectionOptions">True if should show letter selection options; False if not</param>
         public GameWindow_LetterSelection(ref Game game, ref Player player, bool showLetterSelectionOptions) {
             InitializeComponent();
             this.game = game;
@@ -33,9 +39,17 @@ namespace DOST {
             ShowLetterSelectionOptions(showLetterSelectionOptions);
         }
 
+        /// <summary>
+        /// Manages in-game callbacks through network.
+        /// </summary>
         public class InGameCallback : InGameCallbackHandler {
             private GameWindow_LetterSelection window;
 
+            /// <summary>
+            /// Creates an instance and initializes it.
+            /// </summary>
+            /// <param name="game">Game in course</param>
+            /// <param name="window">Window where instance will operate</param>
             public InGameCallback(Game game, GameWindow_LetterSelection window) {
                 this.game = game;
                 this.window = window;
@@ -47,6 +61,10 @@ namespace DOST {
             public override void StartRound(string guidGame, int playerSelectorIndex) {
             }
 
+            /// <summary>
+            /// Receives data about a game that just started.
+            /// </summary>
+            /// <param name="guidGame">Game global unique identifier</param>
             public override void StartGame(string guidGame) {
                 if (game.ActiveGuidGame == guidGame) {
                     window.StartGame();
@@ -66,6 +84,9 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Opens a new GameWindow.
+        /// </summary>
         private void StartGame() {
             DialogHost.Show(loadingStackPanel, "GameWindow_LetterSelection_WindowDialogHost", (openSender, openEventArgs) => {
                 EngineNetwork.DoNetworkOperation(onExecute: () => {
@@ -82,6 +103,10 @@ namespace DOST {
             }, null);
         }
 
+        /// <summary>
+        /// Manages letter selection options on UI.
+        /// </summary>
+        /// <param name="show">True if should show options; False if not</param>
         public void ShowLetterSelectionOptions(bool show) {
             if (show) {
                 letterSelectionOptionsGrid.Visibility = Visibility.Visible;
@@ -92,16 +117,33 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Handles SelectRandomLetterButton click event. Sends through network data to indicate that a random letter
+        /// was set and game should start.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void SelectRandomLetterButton_Click(object sender, RoutedEventArgs e) {
             IsEnabled = false;
-            if (game.SetLetter(true, Session.Account.Id)) {
-                inGameService.StartGame(game.ActiveGuidGame);
-                return;
-            }
-            MessageBox.Show(Properties.Resources.CouldntSelectLetterErrorText);
-            IsEnabled = true;
+            EngineNetwork.DoNetworkOperation<CommunicationException>(onExecute: () => {
+                if (game.SetLetter(true, Session.Account.Id)) {
+                    inGameService.StartGame(game.ActiveGuidGame);
+                    return true;
+                } else {
+                    Application.Current.Dispatcher.Invoke(delegate {
+                        MessageBox.Show(Properties.Resources.CouldntSelectLetterErrorText);
+                        IsEnabled = true;
+                    });
+                    return false;
+                }
+            }, null, null, true);
         }
 
+        /// <summary>
+        /// Handles SelectSpecificLetterButton click event. Loads all the letters that could be chosen.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void SelectSpecificLetterButton_Click(object sender, RoutedEventArgs e) {
             if (Session.Account.Coins < Session.ROUND_LETTER_SELECTION_COST) {
                 MessageBox.Show(Properties.Resources.YouDontHaveEnoughCoinsErrorText);
@@ -117,6 +159,12 @@ namespace DOST {
             letterSelectionSelectorGrid.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Handles SelectLetterButton click event. Sends through network data to indicate that a specific letter
+        /// was set and game should start.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void SelectLetterButton_Click(object sender, RoutedEventArgs e) {
             if (letterComboBox.SelectedItem == null) {
                 MessageBox.Show(Properties.Resources.MustSelectALetterErrorText);
@@ -132,6 +180,10 @@ namespace DOST {
             IsEnabled = true;
         }
 
+        /// <summary>
+        /// Closes actual window.
+        /// </summary>
+        /// <param name="e">Window event</param>
         protected override void OnClosed(EventArgs e) {
             base.OnClosed(e);
             IsClosed = true;

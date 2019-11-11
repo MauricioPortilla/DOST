@@ -8,7 +8,13 @@ using System.Text;
 using System.Xml.Linq;
 
 namespace DOST.Services {
+    /// <summary>
+    /// Manages useful functionality.
+    /// </summary>
     class Engine {
+        /// <summary>
+        /// Game categories name in languages supported.
+        /// </summary>
         public static readonly Dictionary<string, List<string>> CategoriesList = new Dictionary<string, List<string>>() {
             { "es-MX", new List<string>() {
                 "Nombre", "Apellido", "Color", "Animal", "Fruta"
@@ -18,6 +24,10 @@ namespace DOST.Services {
             } }
         };
 
+        /// <summary>
+        /// Gets all data from configuration file.
+        /// </summary>
+        /// <returns>A dictionary with element name and its value</returns>
         public static Dictionary<string, Dictionary<XName, string>> GetConfigFileElements() {
             string dir = AppDomain.CurrentDomain.BaseDirectory + "\\config.xml";
             if (!File.Exists(dir)) {
@@ -50,6 +60,11 @@ namespace DOST.Services {
             return xmlElements;
         }
 
+        /// <summary>
+        /// Hashes a string with sha256.
+        /// </summary>
+        /// <param name="text">Text to be hashed</param>
+        /// <returns>Text hashed with sha256</returns>
         public static string HashWithSHA256(string text) {
             return string.Join("", SHA256.Create().ComputeHash(
                 Encoding.UTF8.GetBytes(text)

@@ -1,6 +1,9 @@
 ﻿using System.ServiceModel;
 
 namespace DOST.Services {
+    /// <summary>
+    /// Interface for chat service.
+    /// </summary>
     [ServiceContract(CallbackContract = typeof(IChatServiceCallback))]
     public interface IChatService {
         [OperationContract(IsOneWay = true)]
@@ -13,7 +16,9 @@ namespace DOST.Services {
         void LeaveChat(string guidGame, string username);
     }
 
-
+    /// <summary>
+    /// Interface for chat service callback.
+    /// </summary>
     [ServiceContract]
     public interface IChatServiceCallback {
         [OperationContract(IsOneWay = true)]

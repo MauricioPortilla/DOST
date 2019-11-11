@@ -5,15 +5,25 @@ using System.Windows.Controls;
 
 namespace DOST {
     /// <summary>
-    /// Lógica de interacción para LoginWindow.xaml
+    /// Represents LoginWindow.xaml interaction logic.
     /// </summary>
     public partial class LoginWindow : Window {
+
+        /// <summary>
+        /// Creates an instance and initializes it.
+        /// </summary>
         public LoginWindow() {
             InitializeComponent();
             var language = Session.LANGUAGES.FirstOrDefault(languageItem => languageItem.Value == App.GetAppConfiguration()["DOST"]["Language"]).Key;
             languageSelectorComboBox.SelectedValue = language;
         }
 
+        /// <summary>
+        /// Handles LoginButton click event. Establishes a connection with account service to try login with
+        /// entered credentials.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void LoginButton_Click(object sender, RoutedEventArgs e) {
             if (string.IsNullOrWhiteSpace(usernameTextBox.Text) || string.IsNullOrWhiteSpace(passwordPasswordBox.Password)) {
                 MessageBox.Show(Properties.Resources.EmptyFieldsErrorText);
@@ -48,11 +58,21 @@ namespace DOST {
             }, null);
         }
 
+        /// <summary>
+        /// Handles RegisterButton click event. Shows a new register window.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void RegisterButton_Click(object sender, RoutedEventArgs e) {
             var registerWindow = new RegisterWindow();
             registerWindow.Show();
         }
 
+        /// <summary>
+        /// Handles LanguageSelectorComboBox selection changed event. Changes language in configuration file.
+        /// </summary>
+        /// <param name="sender">ComboBox object</param>
+        /// <param name="e">ComboBox selection changed event</param>
         private void LanguageSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             App.ChangeLanguage(Session.LANGUAGES[((ListBoxItem) e.AddedItems[0]).Content.ToString()]);
             MessageBox.Show(Properties.Resources.LanguageChangedText);
