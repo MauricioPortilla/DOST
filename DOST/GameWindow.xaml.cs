@@ -15,7 +15,7 @@ using System.Windows.Media;
 
 namespace DOST {
     /// <summary>
-    /// Lógica de interacción para GameWindow.xaml
+    /// Represents GameWindow.xaml interaction logic.
     /// </summary>
     public partial class GameWindow : Window {
         private Game game;
@@ -29,6 +29,10 @@ namespace DOST {
         private List<TextBlock> playersStatusTextBlock = new List<TextBlock>();
         private bool didPressDostButton = false;
 
+        /// <summary>
+        /// Creates an instance and initializes it.
+        /// </summary>
+        /// <param name="game">Game based to show game environment</param>
         public GameWindow(Game game) {
             InitializeComponent();
             this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
@@ -51,6 +55,9 @@ namespace DOST {
             LoadTimer();
         }
 
+        /// <summary>
+        /// Loads game timer and executes it.
+        /// </summary>
         private void LoadTimer() {
             Task.Run(() => {
                 bool isSoundPlaying = false;
@@ -72,6 +79,9 @@ namespace DOST {
             });
         }
 
+        /// <summary>
+        /// Loads game categories to show them as textboxes on UI.
+        /// </summary>
         private void LoadCategories() {
             Thickness textBlockMargin = new Thickness(30, 0, 0, 0);
             for (int index = 0; index < game.Categories.Count; index++) {
@@ -113,6 +123,11 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Handles CategoryGetWordButton click event.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void CategoryGetWordButton_Click(object sender, RoutedEventArgs e) {
             var getWordButton = sender as Button;
             player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
@@ -131,6 +146,11 @@ namespace DOST {
             getWordButton.IsEnabled = false;
         }
 
+        /// <summary>
+        /// Handles category textboxes input behaviour.
+        /// </summary>
+        /// <param name="sender">TextBox object</param>
+        /// <param name="e">TextBox key event</param>
         private void CategoryTextBox_KeyDown(object sender, KeyEventArgs e) {
             var categoryTextBox = sender as TextBox;
             if (string.IsNullOrWhiteSpace(categoryTextBox.Text)) {
@@ -141,6 +161,9 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Loads player data and their "DOST" status in game on UI.
+        /// </summary>
         private void LoadPlayers() {
             Thickness usernameMargin = new Thickness(20, 10, 0, 0);
             Thickness statusMargin = new Thickness(0, 10, 0, 0);
@@ -167,6 +190,11 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Handles DostButton click event.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Mouse button event</param>
         private void DostButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             if (didPressDostButton) {
                 return;
@@ -195,11 +223,21 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Manages in-game callbacks through network.
+        /// </summary>
         public class InGameCallback : InGameCallbackHandler {
             private Player player;
             private List<TextBox> categoriesTextBox;
             private GameWindow window;
 
+            /// <summary>
+            /// Creates an instance and initializes it.
+            /// </summary>
+            /// <param name="game"></param>
+            /// <param name="player"></param>
+            /// <param name="categoriesTextBox"></param>
+            /// <param name="window"></param>
             public InGameCallback(Game game, Player player, List<TextBox> categoriesTextBox, GameWindow window) {
                 this.game = game;
                 this.player = player;
@@ -216,6 +254,10 @@ namespace DOST {
             public override void StartRound(string guidGame, int playerSelectorIndex) {
             }
 
+            /// <summary>
+            /// Receives data about round ending and sends player category answers.
+            /// </summary>
+            /// <param name="guidGame">Game global unique identifier</param>
             public override void EndRound(string guidGame) {
                 if (guidGame != game.ActiveGuidGame) {
                     return;
@@ -223,6 +265,11 @@ namespace DOST {
                 window.SendCategoryAnswers();
             }
 
+            /// <summary>
+            /// Receives data about the player who pressed dost button and changes its status.
+            /// </summary>
+            /// <param name="guidGame">Game global unique identifier</param>
+            /// <param name="guidPlayer">Player global unique identifier</param>
             public override void PressDost(string guidGame, string guidPlayer) {
                 if (game.ActiveGuidGame != guidGame) {
                     return;
@@ -244,6 +291,10 @@ namespace DOST {
             public override void EndGame(string guidGame) {
             }
 
+            /// <summary>
+            /// Receives data about time reducing and reduces timer time.
+            /// </summary>
+            /// <param name="guidGame">Game global unique identifier</param>
             public override void ReduceTime(string guidGame) {
                 if (guidGame == game.ActiveGuidGame) {
                     if (window.timeRemaining > Session.ROUND_REDUCE_TIME_SECONDS) {
@@ -253,6 +304,9 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Sends to server the player answers and retries operation if it fails.
+        /// </summary>
         private void SendCategoryAnswers() {
             IsEnabled = false;
             DialogHost.Show(loadingStackPanel, "GameWindow_WindowDialogHost", (openSender, openEventArgs) => {
@@ -274,12 +328,22 @@ namespace DOST {
             }, null);
         }
 
+        /// <summary>
+        /// Manages window header to enable drag the window.
+        /// </summary>
+        /// <param name="sender">Window header element</param>
+        /// <param name="e">Mouse event handler</param>
         private void WindowHeader_MouseDown(object sender, MouseButtonEventArgs e) {
             if (e.ChangedButton == MouseButton.Left) {
                 DragMove();
             }
         }
 
+        /// <summary>
+        /// Handles reduceTimeButton click event.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void ReduceTimeButton_Click(object sender, RoutedEventArgs e) {
             if (!didPressDostButton) {
                 return;

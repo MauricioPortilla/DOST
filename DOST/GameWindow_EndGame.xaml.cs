@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace DOST {
     /// <summary>
-    /// Lógica de interacción para GameWindow_EndGame.xaml
+    /// Represents GameWindow_EndGame.xaml interaction logic.
     /// </summary>
     public partial class GameWindow_EndGame : Window {
         public bool IsClosed { get; private set; } = false;
@@ -22,6 +22,10 @@ namespace DOST {
         private List<TextBlock> lobbyPlayersPlaceTitleTextBlocks;
         private List<Player> playerPlaces = new List<Player>();
 
+        /// <summary>
+        /// Creates an instance and initializes it.
+        /// </summary>
+        /// <param name="game">Game reference to create lobby</param>
         public GameWindow_EndGame(Game game) {
             InitializeComponent();
             try {
@@ -55,11 +59,17 @@ namespace DOST {
             Session.Account.Coins += Session.MAX_COINS_PER_GAME_WIN / (playerPlaces.IndexOf(playerPlaces.Find(playerPlace => playerPlace.ActivePlayerGuid == player.ActivePlayerGuid)) + 1);
         }
 
+        /// <summary>
+        /// Calculates the position of all players depending of their score.
+        /// </summary>
         private void CalculatePlaces() {
             playerPlaces = game.Players.ToList();
             playerPlaces.OrderBy(playerPlace => playerPlace.Score);
         }
 
+        /// <summary>
+        /// Loads all players data on UI.
+        /// </summary>
         private void LoadPlayers() {
             var players = game.Players;
             for (int playerIndex = 0; playerIndex < players.Count; playerIndex++) {
@@ -73,6 +83,11 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Handles ExitButton click event.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void ExitButton_Click(object sender, RoutedEventArgs e) {
             if (player.LeaveGame(game)) {
                 try {
@@ -85,6 +100,11 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Handles ChatMessageTextBox key enter down. Sends through network a chat message.
+        /// </summary>
+        /// <param name="sender">TextBox object</param>
+        /// <param name="e">TextBox key event</param>
         private void ChatMessageTextBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
                 if (string.IsNullOrWhiteSpace(chatMessageTextBox.Text)) {
@@ -100,6 +120,10 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Closes actual window and establishes player in game status to false.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnClosed(EventArgs e) {
             base.OnClosed(e);
             IsClosed = true;
@@ -107,6 +131,11 @@ namespace DOST {
             Session.MainMenuWindow.Show();
         }
 
+        /// <summary>
+        /// Manages window header to enable drag the window.
+        /// </summary>
+        /// <param name="sender">Window header element</param>
+        /// <param name="e">Mouse event handler</param>
         private void WindowHeader_MouseDown(object sender, MouseButtonEventArgs e) {
             if (e.ChangedButton == MouseButton.Left) {
                 DragMove();

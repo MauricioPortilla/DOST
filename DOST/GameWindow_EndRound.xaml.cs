@@ -10,7 +10,7 @@ using System.ServiceModel;
 
 namespace DOST {
     /// <summary>
-    /// Lógica de interacción para GameWindow_EndRound.xaml
+    /// Represents GameWindow_EndRound.xaml interaction logic.
     /// </summary>
     public partial class GameWindow_EndRound : Window {
         private Game game;
@@ -19,6 +19,10 @@ namespace DOST {
         private InGameServiceClient inGameService;
         private List<TextBlock> playersStatusTextBlock = new List<TextBlock>();
 
+        /// <summary>
+        /// Creates an instance and initializes it.
+        /// </summary>
+        /// <param name="game">Game reference to create lobby</param>
         public GameWindow_EndRound(Game game) {
             InitializeComponent();
             this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
@@ -48,16 +52,31 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Manages in-game callbacks through network.
+        /// </summary>
         public class InGameCallback : InGameCallbackHandler {
             private GameWindow_EndRound window;
             private Player player;
 
+            /// <summary>
+            /// Creates an instance and initializes it.
+            /// </summary>
+            /// <param name="game">Game in course</param>
+            /// <param name="player">Session player in game</param>
+            /// <param name="window">Window where instance will operate</param>
             public InGameCallback(Game game, Player player, GameWindow_EndRound window) {
                 this.game = game;
                 this.player = player;
                 this.window = window;
             }
 
+            /// <summary>
+            /// Receives data about a player who changed his ready status and changes it on UI.
+            /// </summary>
+            /// <param name="guidGame">Game global unique identifier</param>
+            /// <param name="guidPlayer">Player global unique identifier</param>
+            /// <param name="isPlayerReady">True if player is ready; False if not</param>
             public override void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
                 if (guidGame == game.ActiveGuidGame) {
                     this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
@@ -77,6 +96,11 @@ namespace DOST {
             public override void StartGame(string guidGame) {
             }
 
+            /// <summary>
+            /// Receives data about round that just started.
+            /// </summary>
+            /// <param name="guidGame">Game global unique identifier</param>
+            /// <param name="playerSelectorIndex">Player index selected to select letter</param>
             public override void StartRound(string guidGame, int playerSelectorIndex) {
                 if (guidGame == game.ActiveGuidGame) {
                     this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
@@ -97,6 +121,10 @@ namespace DOST {
             public override void PressDost(string guidGame, string guidPlayer) {
             }
 
+            /// <summary>
+            /// Receives data about game ending.
+            /// </summary>
+            /// <param name="guidGame">Game global unique identifier</param>
             public override void EndGame(string guidGame) {
                 if (guidGame == game.ActiveGuidGame) {
                     window.Close();
@@ -108,6 +136,9 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Loads all category answers for players on UI.
+        /// </summary>
         private void LoadCategoryPlayerAnswers() {
             for (int categoryIndex = 0; categoryIndex < game.Categories.Count; categoryIndex++) {
                 var categoryStackPanel = new StackPanel {
@@ -145,6 +176,9 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Loads players data and their ready status on UI.
+        /// </summary>
         private void LoadPlayers() {
             Thickness usernameMargin = new Thickness(20, 10, 0, 0);
             Thickness statusMargin = new Thickness(0, 10, 0, 0);
@@ -171,6 +205,11 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Handles ChatMessageTextBox key enter down. Sends through network a chat message.
+        /// </summary>
+        /// <param name="sender">TextBox object</param>
+        /// <param name="e">TextBox key event</param>
         private void ChatMessageTextBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
                 if (string.IsNullOrWhiteSpace(chatMessageTextBox.Text)) {
@@ -186,12 +225,22 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Manages window header to enable drag the window.
+        /// </summary>
+        /// <param name="sender">Window header element</param>
+        /// <param name="e">Mouse event handler</param>
         private void WindowHeader_MouseDown(object sender, MouseButtonEventArgs e) {
             if (e.ChangedButton == MouseButton.Left) {
                 DragMove();
             }
         }
 
+        /// <summary>
+        /// Handles ReadyButton click event. Sends data to all players to indicate that this player is ready.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void ReadyButton_Click(object sender, RoutedEventArgs e) {
             if (player.IsHost) {
                 return;
@@ -209,6 +258,11 @@ namespace DOST {
             }, null, true);
         }
 
+        /// <summary>
+        /// Handles StartNextRoundButton click event. Sends data to all players to indicate that rounds is about to start.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void StartNextRoundButton_Click(object sender, RoutedEventArgs e) {
             this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
             if (game.Players.Find(playerInGame => playerInGame.IsReady == false && playerInGame.ActivePlayerGuid != player.ActivePlayerGuid) != null) {
@@ -223,6 +277,11 @@ namespace DOST {
             }
         }
 
+        /// <summary>
+        /// Handles ShowGameResultsButton click event. Sends data to all players to indicate that game results is about to show up.
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Button click event</param>
         private void ShowGameResultsButton_Click(object sender, RoutedEventArgs e) {
             this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
             if (game.Players.Find(playerInGame => playerInGame.IsReady == false && playerInGame.ActivePlayerGuid != player.ActivePlayerGuid) != null) {
