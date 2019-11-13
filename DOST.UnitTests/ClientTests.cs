@@ -8,15 +8,31 @@ namespace DOST.UnitTests {
     [TestClass]
     public class ClientTests {
         [TestMethod]
-        public void LoginCuentaTest() {
-            Account cuenta = new Account("Frey", "2506");
-            Assert.AreEqual(true, cuenta.Login());
+        public void RegisterAccountTest() {
+            Account account = new Account(0, "TestUsuario", "1234", "test@test.com", 0, DateTime.Now, false, null);
+            Assert.AreEqual(true, account.Register());
         }
 
         [TestMethod]
-        public void RegisterCuentaTest() {
-            Account cuenta = new Account(0, "TestUsuario", "1234", "test@test.com", 0, DateTime.Now, false, null);
-            Assert.AreEqual(true, cuenta.Register());
+        public void LoginAccountTest() {
+            Account account = new Account("TestUsuario", "1234");
+            Assert.AreEqual(true, account.Login());
+        }
+
+        [TestMethod]
+        public void ReloadAccountTest() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            Assert.AreEqual(true, account.Reload());
+        }
+
+        [TestMethod]
+        public void CreateGameAndJoinTest() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            var guidGame = string.Empty;
+            Assert.AreEqual(true, account.CreateGame(out guidGame));
+            Assert.AreNotEqual(string.Empty, guidGame);
         }
 
         [TestMethod]
