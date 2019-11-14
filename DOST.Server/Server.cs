@@ -14,7 +14,7 @@ namespace DOST.Server {
         /// <summary>
         /// Initializes server and creates host services.
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">Console arguments</param>
         static void Main(string[] args) {
             GetConfigFileElements();
             EngineNetwork.CreateHosts();
@@ -30,6 +30,11 @@ namespace DOST.Server {
             if (!File.Exists(dir)) {
                 new XDocument(
                     new XElement("Configuration",
+                        new XElement(
+                            "Connection",
+                            new XElement("IP", "localhost"),
+                            new XElement("Port", "25619")
+                        ),
                         new XElement(
                             "Smtp",
                             new XElement("SMTPServer", "smtp.live.com"),

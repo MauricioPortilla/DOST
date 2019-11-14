@@ -11,25 +11,32 @@ namespace DOST.Server {
         /// <summary>
         /// Service addresses.
         /// </summary>
-        public static readonly Dictionary<string, Uri[]> URIS_SERVICES = new Dictionary<string, Uri[]>() {
-            { "AccountService", new Uri[] {
-                new Uri("net.tcp://localhost:25618/AccountService")
-            } },
-            { "GameService", new Uri[] {
-                new Uri("net.tcp://localhost:25618/GameService")
-            } },
-            { "ChatService", new Uri[] {
-                new Uri("net.tcp://localhost:25618/ChatService")
-            } },
-            { "InGameService", new Uri[] {
-                new Uri("net.tcp://localhost:25618/InGameService")
-            } }
-        };
+        public static readonly Dictionary<string, Uri[]> URIS_SERVICES = new Dictionary<string, Uri[]>();
+
+        /// <summary>
+        /// Sets the connections to all server services.
+        /// </summary>
+        private static void SetUrisServices() {
+            var elements = Server.GetConfigFileElements();
+            URIS_SERVICES.Add("AccountService", new Uri[] {
+                new Uri("net.tcp://" + elements["Connection"]["IP"] + ":" + elements["Connection"]["Port"] + "/AccountService")
+            });
+            URIS_SERVICES.Add("GameService", new Uri[] {
+                new Uri("net.tcp://" + elements["Connection"]["IP"] + ":" + elements["Connection"]["Port"] + "/GameService")
+            });
+            URIS_SERVICES.Add("ChatService", new Uri[] {
+                new Uri("net.tcp://" + elements["Connection"]["IP"] + ":" + elements["Connection"]["Port"] + "/ChatService")
+            });
+            URIS_SERVICES.Add("InGameService", new Uri[] {
+                new Uri("net.tcp://" + elements["Connection"]["IP"] + ":" + elements["Connection"]["Port"] + "/InGameService")
+            });
+        }
 
         /// <summary>
         /// Creates the hosts for all the services to establish connections.
         /// </summary>
         public static void CreateHosts() {
+            SetUrisServices();
             try {
                 ServiceHost loginHost = new ServiceHost(typeof(AccountService));
                 loginHost.AddServiceEndpoint(typeof(IAccountService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["AccountService"][0]);

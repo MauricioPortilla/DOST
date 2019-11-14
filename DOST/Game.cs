@@ -126,7 +126,7 @@ namespace DOST {
         /// <param name="selectRandomLetter">True if letter should be selected randomly</param>
         /// <param name="idaccount">Account identifier who made the choice</param>
         /// <param name="letter">Letter to be selected if random option was not selected</param>
-        /// <returns></returns>
+        /// <returns>True if letter was set successfully; False if not</returns>
         public bool SetLetter(bool selectRandomLetter, int idaccount, string letter = null) {
             return EngineNetwork.EstablishChannel<IGameService>((service) => {
                 return service.SetGameLetter(ActiveGuidGame, idaccount, selectRandomLetter, letter);
