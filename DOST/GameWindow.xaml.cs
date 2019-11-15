@@ -53,6 +53,7 @@ namespace DOST {
             LoadCategories();
             LoadPlayers();
             LoadTimer();
+            reduceTimeButton.Content += " (" + Properties.Resources.CoinsText + Session.ROUND_REDUCE_TIME_COST + ")";
         }
 
         /// <summary>
