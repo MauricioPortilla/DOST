@@ -5,15 +5,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using DOST.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static DOST.GameLobbyWindow;
 
 namespace DOST.UnitTests {
     [TestClass]
     public class ClientTests {
+
         [TestMethod]
         public void RegisterAccountTest() {
             Account account = new Account(0, "TestUsuario", "1234", "test@test.com", 0, DateTime.Now, false, null);
             Assert.AreEqual(true, account.Register());
+        }
+
+        [TestMethod]
+        public void RegisterExistentAccountTest() {
+            Account account = new Account(0, "TestUsuario", "1234", "test@test.com", 0, DateTime.Now, false, null);
+            Assert.AreEqual(false, account.Register());
         }
 
         [TestMethod]

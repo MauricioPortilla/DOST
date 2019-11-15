@@ -65,6 +65,9 @@ namespace DOST.Services {
         public bool SignUp(Account account) {
             try {
                 using (DostDatabase db = new DostDatabase()) {
+                    if (db.Account.ToList().Find(accountRegistered => accountRegistered.email == account.Email) != null) {
+                        return false;
+                    }
                     var validationCode = Engine.HashWithSHA256(account.Username + DateTime.Now);
                     db.Account.Add(new DataAccess.Account {
                         username = account.Username,
