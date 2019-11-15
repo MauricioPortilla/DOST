@@ -109,8 +109,10 @@ namespace DOST.Services {
         /// <param name="idaccount">Account identifier</param>
         /// <param name="guidGame">Game global unique identifier</param>
         /// <param name="asHost">True if his rol is to be a host; False if not</param>
+        /// <param name="guidPlayer">Player global unique identifier generated</param>
         /// <returns>True if player was added successfully; False if not</returns>
-        public bool AddPlayer(int idaccount, string guidGame, bool asHost) {
+        public bool AddPlayer(int idaccount, string guidGame, bool asHost, out string guidPlayer) {
+            guidPlayer = string.Empty;
             try {
                 var foundGame = activeGames.Find(game => game.ActiveGameGuid == guidGame);
                 if (foundGame == null) {
@@ -124,6 +126,7 @@ namespace DOST.Services {
                     if (newPlayerAccount == null) {
                         return false;
                     }
+                    guidPlayer = Guid.NewGuid().ToString();
                     foundGame.Players.Add(new Player {
                         Account = new Account(
                             newPlayerAccount.idaccount, newPlayerAccount.username,
@@ -134,7 +137,7 @@ namespace DOST.Services {
                         Game = null,
                         IsHost = asHost,
                         Score = 0,
-                        ActivePlayerGuid = Guid.NewGuid().ToString()
+                        ActivePlayerGuid = guidPlayer
                     });
                     return true;
                 }

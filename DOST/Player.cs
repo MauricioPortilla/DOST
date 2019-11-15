@@ -101,7 +101,10 @@ namespace DOST {
         /// Establishes a connection with game service to get a game category word.
         /// </summary>
         /// <param name="category">GameCategory that needs the word</param>
-        /// <returns>True if operation was successful; False if not</returns>
+        /// <returns>
+        ///     Empty string if word couldn't be found; otherwise, a random word whose 
+        ///     first letter is accord to the selected for the actual round.
+        /// </returns>
         public string GetCategoryWord(GameCategory category) {
             var word = string.Empty;
             EngineNetwork.EstablishChannel<IGameService>((service) => {

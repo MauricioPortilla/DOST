@@ -35,36 +35,38 @@ namespace DOST.Server {
         /// <summary>
         /// Creates the hosts for all the services to establish connections.
         /// </summary>
-        public static void CreateHosts() {
+        /// <returns>True if hosts were created successfully; False if not</returns>
+        public static bool CreateHosts() {
             SetUrisServices();
             try {
                 ServiceHost loginHost = new ServiceHost(typeof(AccountService));
                 loginHost.AddServiceEndpoint(typeof(IAccountService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["AccountService"][0]);
                 loginHost.Opened += (sender, e) => {
-                    Console.WriteLine("Account service opened.");
+                    Console.WriteLine(">> Account service loaded.");
                 };
                 loginHost.Open();
 
                 ServiceHost gameHost = new ServiceHost(typeof(GameService));
                 gameHost.AddServiceEndpoint(typeof(IGameService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["GameService"][0]);
                 gameHost.Opened += (sender, e) => {
-                    Console.WriteLine("Game service opened.");
+                    Console.WriteLine(">> Game service loaded.");
                 };
                 gameHost.Open();
 
                 ServiceHost chatHost = new ServiceHost(typeof(ChatService));
                 chatHost.AddServiceEndpoint(typeof(IChatService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["ChatService"][0]);
                 chatHost.Opened += (sender, e) => {
-                    Console.WriteLine("Chat service opened.");
+                    Console.WriteLine(">> Chat service loaded.");
                 };
                 chatHost.Open();
 
                 ServiceHost inGameHost = new ServiceHost(typeof(InGameService));
                 inGameHost.AddServiceEndpoint(typeof(IInGameService), new NetTcpBinding(SecurityMode.None), URIS_SERVICES["InGameService"][0]);
                 inGameHost.Opened += (sender, e) => {
-                    Console.WriteLine("In Game service opened.");
+                    Console.WriteLine(">> In game service loaded.");
                 };
                 inGameHost.Open();
+                return true;
             } catch (ObjectDisposedException objectDisposedException) {
                 Console.WriteLine("Object disposed exception -> " + objectDisposedException.Message);
             } catch (InvalidOperationException invalidOperationException) {
@@ -76,6 +78,7 @@ namespace DOST.Server {
             } catch (Exception exception) {
                 Console.WriteLine("Exception -> " + exception.Message);
             }
+            return false;
         }
     }
 }

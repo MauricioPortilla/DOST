@@ -16,8 +16,18 @@ namespace DOST.Server {
         /// </summary>
         /// <param name="args">Console arguments</param>
         static void Main(string[] args) {
+            Console.WriteLine("The DOST Server - 2019");
+            Console.WriteLine("Created by: Mauricio Cruz Portilla and Raúl Condado González\n");
+            Console.WriteLine("> Loading configuration file...");
             GetConfigFileElements();
-            EngineNetwork.CreateHosts();
+            Console.WriteLine("> Setting hosts...");
+            if (EngineNetwork.CreateHosts()) {
+                Console.WriteLine("\n>> DOST Server is online.");
+                while (true) {
+                    continue;
+                }
+            }
+            Console.WriteLine("Press a key to close...");
             Console.ReadKey();
         }
 

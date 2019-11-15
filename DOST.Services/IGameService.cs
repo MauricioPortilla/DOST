@@ -15,7 +15,7 @@ namespace DOST.Services {
         Player GetPlayer(int idaccount, int idgame);
 
         [OperationContract]
-        bool AddPlayer(int idaccount, string guidGame, bool asHost);
+        bool AddPlayer(int idaccount, string guidGame, bool asHost, out string guidPlayer);
 
         [OperationContract]
         bool RemovePlayer(string guidPlayer, string guidGame);

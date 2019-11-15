@@ -155,11 +155,15 @@ namespace DOST {
         /// </summary>
         /// <param name="game">Game to join in</param>
         /// <param name="asAnfitrion">True to join as host; False to join as guest</param>
+        /// <param name="guidPlayer">Player global unique identifier generated</param>
         /// <returns>True if join request was successful; False if not</returns>
-        public bool JoinGame(Game game, bool asAnfitrion) {
-            return EngineNetwork.EstablishChannel<IGameService>((service) => {
-                return service.AddPlayer(id, game.ActiveGuidGame, asAnfitrion);
+        public bool JoinGame(Game game, bool asAnfitrion, out string guidPlayer) {
+            string guidNewPlayer = "";
+            bool returnedValue = EngineNetwork.EstablishChannel<IGameService>((service) => {
+                return service.AddPlayer(id, game.ActiveGuidGame, asAnfitrion, out guidNewPlayer);
             });
+            guidPlayer = guidNewPlayer;
+            return returnedValue;
         }
 
         /// <summary>

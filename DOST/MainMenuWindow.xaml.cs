@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -26,7 +27,10 @@ namespace DOST {
             DataContext = this;
             InitializeComponent();
             GamesList.CollectionChanged += GamesList_CollectionChanged;
-            new Thread(Session.GetGamesList).Start();
+            Task.Run(() => {
+                Session.GetGamesList();
+            });
+            //new Thread().Start();
             new Thread(JoinGameIfNeeded).Start();
             IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => {
                 if ((bool) e.NewValue) {
@@ -65,7 +69,7 @@ namespace DOST {
                 return;
             }
             var selectedGame = (Game) gamesListView.SelectedItem;
-            if (Session.Account.JoinGame(selectedGame, false)) {
+            if (Session.Account.JoinGame(selectedGame, false, out string guidPlayer)) {
                 Session.GameLobbyWindow = new GameLobbyWindow(ref selectedGame);
                 Session.GameLobbyWindow.Show();
                 Hide();
@@ -129,7 +133,7 @@ namespace DOST {
                     }
                     didCreateGame = false;
                     lastGuidGameCreated = "";
-                    if (Session.Account.JoinGame(gameCreated, true)) {
+                    if (Session.Account.JoinGame(gameCreated, true, out string guidPlayer)) {
                         Session.GameLobbyWindow = new GameLobbyWindow(ref gameCreated);
                         Session.GameLobbyWindow.Show();
                         new GameConfigurationWindow(ref gameCreated).Show();

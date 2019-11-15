@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
+using System.Threading;
 using System.Threading.Tasks;
 using DOST.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,12 +33,11 @@ namespace DOST.UnitTests {
         public void CreateGameAndJoinTest() {
             Account account = new Account("TestUsuario", "1234");
             account.Login();
-            var guidGame = string.Empty;
-            Assert.AreEqual(true, account.CreateGame(out guidGame));
+            Assert.AreEqual(true, account.CreateGame(out string guidGame));
             Assert.AreNotEqual(string.Empty, guidGame);
-            Game game = new Game(0, 0, DateTime.Now, new System.Collections.Generic.List<Player>());
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
             game.ActiveGuidGame = guidGame;
-            Assert.AreEqual(true, account.JoinGame(game, true));
+            Assert.AreEqual(true, account.JoinGame(game, true, out string guidPlayer));
         }
 
         [TestMethod]
@@ -47,10 +48,182 @@ namespace DOST.UnitTests {
         }
 
         [TestMethod]
+        public void AddGameCategoryTest() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            account.CreateGame(out string guidGame);
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = guidGame;
+            Assert.AreEqual(true, game.AddCategory(new GameCategory(0, game, "Category test name")));
+        }
+
+        [TestMethod]
+        public void RemoveGameCategoryTest() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            account.CreateGame(out string guidGame);
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = guidGame;
+            game.AddCategory(new GameCategory(0, game, "Category test name"));
+            Assert.AreEqual(true, game.RemoveCategory(new GameCategory(0, game, "Category test name")));
+        }
+
+        [TestMethod]
+        public void StartGameTest() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            account.CreateGame(out string guidGame);
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = guidGame;
+
+            account.JoinGame(game, true, out string guidPlayer1);
+            Player player1 = new Player(0, account, game, 0, true);
+            player1.ActivePlayerGuid = guidPlayer1;
+            player1.SetPlayerReady(true);
+
+            Account account2 = new Account("Frey", "2506");
+            account2.Login();
+            account2.JoinGame(game, false, out string guidPlayer2);
+            Player player2 = new Player(0, account2, game, 0, false);
+            player2.ActivePlayerGuid = guidPlayer2;
+            player2.SetPlayerReady(true);
+
+            Assert.AreEqual(true, game.Start());
+        }
+
+        [TestMethod]
+        public void SetGameLetterRandomTest() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            account.CreateGame(out string guidGame);
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = guidGame;
+
+            account.JoinGame(game, true, out string guidPlayer1);
+            Player player1 = new Player(0, account, game, 0, true);
+            player1.ActivePlayerGuid = guidPlayer1;
+            player1.SetPlayerReady(true);
+
+            Account account2 = new Account("Frey", "2506");
+            account2.Login();
+            account2.JoinGame(game, false, out string guidPlayer2);
+            Player player2 = new Player(0, account2, game, 0, false);
+            player2.ActivePlayerGuid = guidPlayer2;
+            player2.SetPlayerReady(true);
+
+            game.Start();
+            Assert.AreEqual(true, game.SetLetter(true, account.Id));
+        }
+
+        [TestMethod]
+        public void SetGameLetterSelectedTest() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            account.CreateGame(out string guidGame);
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = guidGame;
+
+            account.JoinGame(game, true, out string guidPlayer1);
+            Player player1 = new Player(0, account, game, 0, true);
+            player1.ActivePlayerGuid = guidPlayer1;
+            player1.SetPlayerReady(true);
+
+            Account account2 = new Account("Frey", "2506");
+            account2.Login();
+            account2.JoinGame(game, false, out string guidPlayer2);
+            Player player2 = new Player(0, account2, game, 0, false);
+            player2.ActivePlayerGuid = guidPlayer2;
+            player2.SetPlayerReady(true);
+
+            game.Start();
+            Assert.AreEqual(true, game.SetLetter(false, account2.Id, "S"));
+        }
+
+        [TestMethod]
+        public void LeaveGamePlayerTest() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            account.CreateGame(out string guidGame);
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = guidGame;
+            account.JoinGame(game, true, out string guidPlayer);
+            Player player = new Player(0, account, game, 0, true);
+            player.ActivePlayerGuid = guidPlayer;
+            Assert.AreEqual(true, player.LeaveGame(game));
+        }
+
+        [TestMethod]
+        public void SetPlayerReadyTest() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            account.CreateGame(out string guidGame);
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = guidGame;
+            account.JoinGame(game, true, out string guidPlayer1);
+            Account account2 = new Account("Frey", "2506");
+            account2.Login();
+            account2.JoinGame(game, false, out string guidPlayer2);
+            Player player = new Player(0, account2, game, 0, false);
+            player.ActivePlayerGuid = guidPlayer2;
+            Assert.AreEqual(true, player.SetPlayerReady(true));
+        }
+
+        [TestMethod]
+        public void SendPlayerCategoryAnswersTest() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            account.CreateGame(out string guidGame);
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = guidGame;
+
+            account.JoinGame(game, true, out string guidPlayer1);
+            Player player1 = new Player(0, account, game, 0, true);
+            player1.ActivePlayerGuid = guidPlayer1;
+            player1.SetPlayerReady(true);
+
+            Account account2 = new Account("Frey", "2506");
+            account2.Login();
+            account2.JoinGame(game, false, out string guidPlayer2);
+            Player player2 = new Player(0, account2, game, 0, false);
+            player2.ActivePlayerGuid = guidPlayer2;
+            player2.SetPlayerReady(true);
+
+            game.Start();
+            game.SetLetter(false, account.Id, "M");
+            List<CategoryPlayerAnswer> answers = new List<CategoryPlayerAnswer>();
+            answers.Add(new CategoryPlayerAnswer(0, player1, new GameCategory(0, game, "Nombre"), "Mauricio", 1));
+            Assert.AreEqual(true, player1.SendCategoryAnswers(answers));
+        }
+
+        [TestMethod]
+        public void GetCategoryWordTest() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            account.CreateGame(out string guidGame);
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = guidGame;
+
+            account.JoinGame(game, true, out string guidPlayer1);
+            Player player1 = new Player(0, account, game, 0, true);
+            player1.ActivePlayerGuid = guidPlayer1;
+            player1.SetPlayerReady(true);
+
+            Account account2 = new Account("Frey", "2506");
+            account2.Login();
+            account2.JoinGame(game, false, out string guidPlayer2);
+            Player player2 = new Player(0, account2, game, 0, false);
+            player2.ActivePlayerGuid = guidPlayer2;
+            player2.SetPlayerReady(true);
+            game.Start();
+            game.SetLetter(false, account2.Id, "M");
+            Assert.AreNotEqual(string.Empty, player2.GetCategoryWord(new GameCategory(0, game, "Nombre")));
+        }
+
+        [TestMethod]
         public void BroadcastChatMessage() {
             System.Windows.Controls.ListBox listBox = new System.Windows.Controls.ListBox();
             var callbackHandler = new ChatCallbackHandler(
-                new Game(0, 0, DateTime.Now, new System.Collections.Generic.List<Player>()), listBox
+                new Game(0, 0, DateTime.Now, new List<Player>()), listBox
             );
             InstanceContext chatInstance = new InstanceContext(callbackHandler);
             ChatServiceClient chatService = new ChatServiceClient(chatInstance);
@@ -60,7 +233,7 @@ namespace DOST.UnitTests {
                     chatService.EnterChat("", "Frey");
                     chatService.BroadcastMessage("", "Frey", "Mensaje de prueba");
                 }
-                System.Threading.Thread.Sleep(2000);
+                Thread.Sleep(2000);
             }).Wait();
             Assert.AreEqual("Mensaje de prueba", callbackHandler.LastMessageReceived);
         }
