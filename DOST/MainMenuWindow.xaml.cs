@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -27,16 +28,38 @@ namespace DOST {
             DataContext = this;
             InitializeComponent();
             GamesList.CollectionChanged += GamesList_CollectionChanged;
-            Task.Run(() => {
-                Session.GetGamesList();
-            });
-            //new Thread().Start();
-            new Thread(JoinGameIfNeeded).Start();
             IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => {
                 if ((bool) e.NewValue) {
                     LoadAccountDataUI();
                 }
             };
+        }
+
+        /// <summary>
+        /// Handles DialogHost loaded event. Tries to execute get games list method until it gets successful.
+        /// </summary>
+        /// <param name="sender">DialogHost object</param>
+        /// <param name="e">DialogHost event</param>
+        private void DialogHost_Loaded(object sender, RoutedEventArgs e) {
+            IsEnabled = false;
+            var dialog = DialogHost.Show(loadingStackPanel, "MainMenuWindow_WindowDialogHost", (openSender, openEventArgs) => {
+                EngineNetwork.DoNetworkOperation(onExecute: () => {
+                    var getGamesListTask = Task.Run(() => {
+                        Session.GetGamesList();
+                    });
+                    Thread.Sleep(1000);
+                    if (getGamesListTask.Status != TaskStatus.Running) {
+                        return false;
+                    }
+                    new Thread(JoinGameIfNeeded).Start();
+                    return true;
+                }, onSuccess: () => {
+                    Application.Current.Dispatcher.Invoke(delegate {
+                        openEventArgs.Session.Close(true);
+                        IsEnabled = true;
+                    });
+                }, null, true);
+            }, null);
         }
 
         /// <summary>

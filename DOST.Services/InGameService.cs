@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.Threading.Tasks;
 
 namespace DOST.Services {
     /// <summary>
@@ -10,7 +11,8 @@ namespace DOST.Services {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class InGameService : IInGameService {
         /// <summary>
-        /// Stores active players in games.
+        ///     Stores active players in games. Stores guidGame as key and a value as a dictionary
+        ///     where key is guidPlayer and value is player connection.
         /// </summary>
         private static readonly Dictionary<string, Dictionary<string, IInGameServiceCallback>> gamesClients =
             new Dictionary<string, Dictionary<string, IInGameServiceCallback>>();
@@ -18,9 +20,61 @@ namespace DOST.Services {
             get { return gamesClients; }
         }
         /// <summary>
-        /// Manages player letter selectors for each active game.
+        /// Manages player letter selectors for each active game. Key is the guidGame and value is the index.
         /// </summary>
         private static Dictionary<string, int> gamesPlayerSelectorIndexHandler = new Dictionary<string, int>();
+        private static Task checkClientsConnectionStatus;
+
+        /// <summary>
+        /// Creates an instance and initializes it. Loads check clients connection status method.
+        /// </summary>
+        public InGameService() {
+            if (checkClientsConnectionStatus == null || checkClientsConnectionStatus.Status == TaskStatus.Faulted) {
+                checkClientsConnectionStatus = Task.Run(() => {
+                    CheckClientsConnectionStatus();
+                });
+            }
+        }
+
+        /// <summary>
+        /// Verifies connection status of every client connection of every active game. If any connection is closed, it will be removed
+        /// from respective active game and from connections list.
+        /// </summary>
+        private void CheckClientsConnectionStatus() {
+            var connectionsToRemove = new List<string>();
+            while (true) {
+                try {
+                    foreach (var gameClient in gamesClients) {
+                        connectionsToRemove.Clear();
+                        foreach (var activeGameClient in gameClient.Value) {
+                            if (((ICommunicationObject) activeGameClient.Value).State == CommunicationState.Closed) {
+                                connectionsToRemove.Add(activeGameClient.Key);
+                            }
+                        }
+                        foreach (var connectionToRemove in connectionsToRemove) {
+                            var gameOwner = GameService.ActiveGames.Find(game => game.Players.Find(player => player.ActivePlayerGuid == connectionToRemove) != null);
+                            if (gameOwner == null) {
+                                continue;
+                            }
+                            var playerOwner = gameOwner.Players.Find(player => player.ActivePlayerGuid == connectionToRemove);
+                            if (playerOwner == null) {
+                                continue;
+                            }
+                            var isPlayerHost = playerOwner.IsHost;
+                            gameOwner.Players.Remove(playerOwner);
+                            gameOwner.Players.First().IsHost = isPlayerHost;
+                            if (ChatService.GamesClients[gameOwner.ActiveGameGuid].ContainsKey(playerOwner.Account.Username)) {
+                                ChatService.GamesClients[gameOwner.ActiveGameGuid].Remove(playerOwner.Account.Username);
+                            }
+                            gameClient.Value.Remove(connectionToRemove);
+                        }
+                    }
+                } catch (System.Exception e) {
+                    System.Console.WriteLine("Exception (InGameService) -> " + e.Message);
+                }
+                System.Threading.Thread.Sleep(500);
+            }
+        }
 
         /// <summary>
         /// Joins a new player to an ingame environment.
@@ -88,10 +142,14 @@ namespace DOST.Services {
                 gamesPlayerSelectorIndexHandler.Add(guidGame, 1);
             }
             int playerSelectorIndexHandler = gamesPlayerSelectorIndexHandler[guidGame];
-            if (game.Round != 1 || game.Round % game.Players.Count != 0) {
-                while (game.Round % (game.Players.Count + playerSelectorIndexHandler) == 0) {
-                    playerSelectorIndexHandler += game.Players.Count;
+            if (game.Players.Count > 1) {
+                if (game.Round != 1 || game.Round % game.Players.Count != 0) {
+                    while (game.Round % (game.Players.Count + playerSelectorIndexHandler) == 0) {
+                        playerSelectorIndexHandler += game.Players.Count;
+                    }
                 }
+            } else {
+                playerSelectorIndexHandler = game.Round;
             }
             gamesPlayerSelectorIndexHandler[guidGame] = playerSelectorIndexHandler;
             int nextPlayerIndexLetterSelector = game.Round - playerSelectorIndexHandler;
@@ -205,6 +263,9 @@ namespace DOST.Services {
             foreach (var player in gamesClients[guidGame]) {
                 player.Value.EndGame(guidGame);
             }
+            System.Threading.Thread.Sleep(2000);
+            gamesClients.Remove(guidGame);
+            GameService.ActiveGames.Remove(game);
         }
 
         /// <summary>

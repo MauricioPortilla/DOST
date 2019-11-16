@@ -21,8 +21,7 @@ namespace DOST {
         private Game game;
         private Player player;
         private InGameServiceClient inGameService;
-        public static readonly int SECONDS_PER_ROUND = 40;
-        private int timeRemaining = SECONDS_PER_ROUND;
+        private int timeRemaining = Session.SECONDS_PER_ROUND;
         private List<StackPanel> categoriesStackPanels = new List<StackPanel>();
         private List<TextBox> categoriesTextBox = new List<TextBox>();
         private List<Button> categoriesButton = new List<Button>();
@@ -37,9 +36,10 @@ namespace DOST {
             InitializeComponent();
             this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
             this.player = this.game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
-            Title = Properties.Resources.RoundText + game.Round + " - DOST";
+            Title = Properties.Resources.RoundText + game.Round + " - " + Session.Account.Username + " - DOST";
             roundTextBlock.Text = game.Round.ToString();
             scoreTextBlock.Text = player.Score.ToString();
+            reduceTimeButton.Content += " (" + Properties.Resources.CoinsText + Session.ROUND_REDUCE_TIME_COST + ")";
             try {
                 InstanceContext gameInstance = new InstanceContext(new InGameCallback(
                     this.game, this.game.Players.Find(player => player.Account.Id == Session.Account.Id), categoriesTextBox, this
@@ -53,7 +53,6 @@ namespace DOST {
             LoadCategories();
             LoadPlayers();
             LoadTimer();
-            reduceTimeButton.Content += " (" + Properties.Resources.CoinsText + Session.ROUND_REDUCE_TIME_COST + ")";
         }
 
         /// <summary>
@@ -61,10 +60,10 @@ namespace DOST {
         /// </summary>
         private void LoadTimer() {
             Task.Run(() => {
+                SoundPlayer soundPlayer = new SoundPlayer(Properties.SoundResources.HurrySFX as Stream);
                 bool isSoundPlaying = false;
                 while (timeRemaining >= 0) {
                     if (timeRemaining <= 10 && !isSoundPlaying) {
-                        SoundPlayer soundPlayer = new SoundPlayer(Properties.SoundResources.HurrySFX as Stream);
                         soundPlayer.Play();
                         isSoundPlaying = true;
                         Application.Current.Dispatcher.Invoke(delegate {
@@ -77,6 +76,7 @@ namespace DOST {
                     timeRemaining--;
                     Thread.Sleep(1000);
                 }
+                soundPlayer.Stop();
             });
         }
 
@@ -319,6 +319,13 @@ namespace DOST {
                     return player.SendCategoryAnswers(categoryPlayerAnswers);
                 }, onSuccess: () => {
                     Thread.Sleep(2500);
+                    game = Session.AllGamesAvailable.Find(thisGame => thisGame.ActiveGuidGame == game.ActiveGuidGame);
+                    DateTime waitingTimeout = DateTime.Now.AddSeconds(8);
+                    while (game.Categories[0].CategoryPlayerAnswer.Count < game.Players.Count) {
+                        if (DateTime.Now >= waitingTimeout) {
+                            break;
+                        }
+                    }
                     Application.Current.Dispatcher.Invoke(delegate {
                         openEventArgs.Session.Close(true);
                         Session.GameWindow.Close();

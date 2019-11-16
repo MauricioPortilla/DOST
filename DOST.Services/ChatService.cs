@@ -13,6 +13,9 @@ namespace DOST.Services {
         /// </summary>
         private static readonly Dictionary<string, Dictionary<string, IChatServiceCallback>> gamesClients = 
             new Dictionary<string, Dictionary<string, IChatServiceCallback>>();
+        public static Dictionary<string, Dictionary<string, IChatServiceCallback>> GamesClients {
+            get { return gamesClients; }
+        }
 
         /// <summary>
         /// Broadcasts to all clients connected to the chat in a specific game a new message.

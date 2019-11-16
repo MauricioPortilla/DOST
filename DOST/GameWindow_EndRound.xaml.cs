@@ -266,13 +266,19 @@ namespace DOST {
             if (game.Players.Find(playerInGame => playerInGame.IsReady == false && playerInGame.ActivePlayerGuid != player.ActivePlayerGuid) != null) {
                 MessageBox.Show(Properties.Resources.PlayersNotReadyErrorText);
                 return;
-            } else if (player.SetPlayerReady(true)) {
-                if (!game.Start()) {
-                    MessageBox.Show(Properties.Resources.StartGameErrorText);
-                    return;
-                }
-                inGameService.StartRound(game.ActiveGuidGame, 0);
             }
+            startNextRoundButton.IsEnabled = false;
+            EngineNetwork.DoNetworkOperation(onExecute: () => {
+                if (player.SetPlayerReady(true)) {
+                    if (!game.Start()) {
+                        MessageBox.Show(Properties.Resources.StartGameErrorText);
+                        return false;
+                    }
+                    inGameService.StartRound(game.ActiveGuidGame, 0);
+                    return true;
+                }
+                return false;
+            }, null, null, true);
         }
 
         /// <summary>
@@ -285,9 +291,15 @@ namespace DOST {
             if (game.Players.Find(playerInGame => playerInGame.IsReady == false && playerInGame.ActivePlayerGuid != player.ActivePlayerGuid) != null) {
                 MessageBox.Show(Properties.Resources.PlayersNotReadyErrorText);
                 return;
-            } else if (player.SetPlayerReady(true)) {
-                inGameService.EndGame(game.ActiveGuidGame);
             }
+            showGameResultsButton.IsEnabled = false;
+            EngineNetwork.DoNetworkOperation(onExecute: () => {
+                if (player.SetPlayerReady(true)) {
+                    inGameService.EndGame(game.ActiveGuidGame);
+                    return true;
+                }
+                return false;
+            }, null, null, true);
         }
     }
 }

@@ -144,10 +144,11 @@ namespace DOST {
         /// Reloads players data in UI if the number of players in game changed.
         /// </summary>
         private void LoadPlayersJoinedData() {
+            var activeGuidGame = game.ActiveGuidGame;
             while (!IsClosed) {
                 try {
                     List<Game> games = Session.AllGamesAvailable;
-                    this.game = games.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+                    this.game = games.Find(gameInList => gameInList.ActiveGuidGame == activeGuidGame);
                     if (game == null) {
                         continue;
                     }

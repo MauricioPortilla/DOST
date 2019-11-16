@@ -10,6 +10,13 @@
         x:Name="MainMenu"
         Title="{x:Static p:Resources.MainMenuWindowTitle}" Height="687" Width="1073" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
+        <materialDesign:DialogHost Identifier="MainMenuWindow_WindowDialogHost" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center" Loaded="DialogHost_Loaded">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="16" x:Name="loadingStackPanel">
+                    <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}" HorizontalAlignment="Center" Margin="16" IsIndeterminate="True" Value="0" />
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
         <Image HorizontalAlignment="Left" Height="687" VerticalAlignment="Top" Width="1073" Source="Images/DOST_MainMenu.png" Stretch="Fill"/>
         <Rectangle HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="1074" MouseDown="WindowHeader_MouseDown" Fill="#00000000" />
         <TextBlock x:Name="usernameTextBlock" Style="{StaticResource MaterialDesignDisplay1TextBlock}" Foreground="White" Margin="0,32,38,607" HorizontalAlignment="Right">

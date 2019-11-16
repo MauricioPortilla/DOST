@@ -24,6 +24,7 @@ namespace DOST {
         public static readonly int ROUND_REDUCE_TIME_COST = 50;
         public static readonly int ROUND_REDUCE_TIME_SECONDS = 5;
         public static readonly int MAX_COINS_PER_GAME_WIN = 80;
+        public static readonly int SECONDS_PER_ROUND = 40;
         private static Account account;
         public static Account Account {
             get { return account; }

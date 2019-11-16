@@ -29,6 +29,7 @@ namespace DOST {
                 MessageBox.Show(Properties.Resources.EmptyFieldsErrorText);
                 return;
             }
+            IsEnabled = false;
             Account account = new Account(usernameTextBox.Text, passwordPasswordBox.Password);
             DialogHost.Show(loadingStackPanel, "LoginWindow_WindowDialogHost", (openSender, openEventArgs) => {
                 EngineNetwork.DoNetworkOperation(onExecute: () => {
@@ -53,6 +54,7 @@ namespace DOST {
                 }, onFinish: () => {
                     Application.Current.Dispatcher.Invoke(delegate {
                         openEventArgs.Session.Close(true);
+                        IsEnabled = true;
                     });
                 }, false);
             }, null);
