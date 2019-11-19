@@ -10,7 +10,7 @@ namespace DOST.Services {
     /// <summary>
     /// Manages game operations through network.
     /// </summary>
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Single)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Single)]
     public class GameService : IGameService {
         /// <summary>
         /// Stores active games ID with players lists.

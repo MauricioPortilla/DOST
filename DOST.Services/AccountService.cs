@@ -13,7 +13,7 @@ namespace DOST.Services {
     /// <summary>
     /// Manages account operations through network.
     /// </summary>
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Single)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Single)]
     public class AccountService : IAccountService {
         /// <summary>
         /// Establishes a connection with database to try to find an account with username and password given.

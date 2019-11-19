@@ -9,7 +9,7 @@ namespace DOST {
     /// <summary>
     /// Manages connections between client and server services.
     /// </summary>
-    static class EngineNetwork {
+    public static class EngineNetwork {
 
         /// <summary>
         /// Server services

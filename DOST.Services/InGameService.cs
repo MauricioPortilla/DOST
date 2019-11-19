@@ -8,7 +8,7 @@ namespace DOST.Services {
     /// <summary>
     /// Manages ingame operations through network.
     /// </summary>
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class InGameService : IInGameService {
         /// <summary>
         ///     Stores active players in games. Stores guidGame as key and a value as a dictionary
@@ -252,7 +252,7 @@ namespace DOST.Services {
                     });
                 });
                 var playerPlaces = game.Players.ToList();
-                playerPlaces.OrderBy(playerPlace => playerPlace.Score);
+                playerPlaces = playerPlaces.OrderBy(playerPlace => playerPlace.Score).ToList();
                 for (int index = 0; index < playerPlaces.Count; index++) {
                     db.Account.Find(playerPlaces[index].Account.Id).coins += GameService.MAX_COINS_PER_GAME_WIN / (index + 1);
                 }

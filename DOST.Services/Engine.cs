@@ -11,7 +11,7 @@ namespace DOST.Services {
     /// <summary>
     /// Manages useful functionality.
     /// </summary>
-    class Engine {
+    public static class Engine {
         /// <summary>
         /// Game categories name in languages supported.
         /// </summary>

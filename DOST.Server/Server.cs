@@ -9,7 +9,7 @@ namespace DOST.Server {
     /// <summary>
     /// Main server class.
     /// </summary>
-    class Server {
+    public static class Server {
 
         /// <summary>
         /// Initializes server and creates host services.

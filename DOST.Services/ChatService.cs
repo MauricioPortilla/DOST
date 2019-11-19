@@ -6,7 +6,7 @@ namespace DOST.Services {
     /// <summary>
     /// Manages chat service operations through network.
     /// </summary>
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class ChatService : IChatService {
         /// <summary>
         /// Represents user connections in every game.

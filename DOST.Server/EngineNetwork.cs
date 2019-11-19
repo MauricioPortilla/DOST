@@ -7,7 +7,7 @@ namespace DOST.Server {
     /// <summary>
     /// Manages server network.
     /// </summary>
-    static class EngineNetwork {
+    public static class EngineNetwork {
         /// <summary>
         /// Service addresses.
         /// </summary>
