@@ -263,6 +263,7 @@ namespace DOST {
                 if (guidGame != game.ActiveGuidGame) {
                     return;
                 }
+                MessageReceived = true;
                 window.SendCategoryAnswers();
             }
 
@@ -280,6 +281,7 @@ namespace DOST {
                     return;
                 }
                 try {
+                    MessageReceived = true;
                     var playerStatus = window.playersStatusTextBlock[game.Players.IndexOf(findPlayer)];
                     playerStatus.Opacity = 1;
                     playerStatus.Foreground = Brushes.LimeGreen;
@@ -298,6 +300,7 @@ namespace DOST {
             /// <param name="guidGame">Game global unique identifier</param>
             public override void ReduceTime(string guidGame) {
                 if (guidGame == game.ActiveGuidGame) {
+                    MessageReceived = true;
                     if (window.timeRemaining > Session.ROUND_REDUCE_TIME_SECONDS) {
                         window.timeRemaining -= Session.ROUND_REDUCE_TIME_SECONDS;
                     }

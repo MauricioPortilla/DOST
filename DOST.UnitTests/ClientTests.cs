@@ -260,5 +260,145 @@ namespace DOST.UnitTests {
             Assert.AreEqual("Mensaje de prueba", callbackHandlerTester.LastMessageReceived);
             Assert.AreEqual(string.Empty, callbackHandlerFrey.LastMessageReceived);
         }
+
+        [TestMethod]
+        public void InGame_StartGame() {
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = "testguid";
+            Player player = new Player(0, null, game, 0, true);
+            player.ActivePlayerGuid = "testplayerguid";
+            var callbackHandler = new GameWindow_LetterSelection.InGameCallback(game, new GameWindow_LetterSelection(ref game, ref player, false));
+            var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
+            inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.StartGame(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            Assert.AreEqual(true, callbackHandler.MessageReceived);
+        }
+
+        [TestMethod]
+        public void InGame_PressDost() {
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = "testguid";
+            Player player = new Player(0, null, game, 0, true);
+            player.ActivePlayerGuid = "testplayerguid";
+            var callbackHandler = new GameWindow.InGameCallback(game, player, null, new GameWindow(game));
+            var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
+            inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.PressDost(game.ActiveGuidGame, player.ActivePlayerGuid);
+            Thread.Sleep(1000);
+            Assert.AreEqual(true, callbackHandler.MessageReceived);
+        }
+
+        [TestMethod]
+        public void InGame_ReduceTime() {
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = "testguid";
+            Player player = new Player(0, null, game, 0, true);
+            player.ActivePlayerGuid = "testplayerguid";
+            var callbackHandler = new GameWindow.InGameCallback(game, player, null, new GameWindow(game));
+            var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
+            inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.StartGame(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.ReduceTime(game.ActiveGuidGame, player.ActivePlayerGuid);
+            Thread.Sleep(1000);
+            Assert.AreEqual(true, callbackHandler.MessageReceived);
+        }
+
+        [TestMethod]
+        public void InGame_EndRound() {
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = "testguid";
+            Player player = new Player(0, null, game, 0, true);
+            player.ActivePlayerGuid = "testplayerguid";
+            var callbackHandler = new GameWindow.InGameCallback(game, player, null, new GameWindow(game));
+            var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
+            inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.StartGame(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.EndRound(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            Assert.AreEqual(true, callbackHandler.MessageReceived);
+        }
+
+        [TestMethod]
+        public void InGame_SetPlayerReady() {
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = "testguid";
+            Player player = new Player(0, null, game, 0, true);
+            player.ActivePlayerGuid = "testplayerguid";
+            var callbackHandler = new GameWindow_EndRound.InGameCallback(game, new GameWindow_EndRound(game));
+            var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
+            inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.StartGame(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.EndRound(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.SetPlayerReady(game.ActiveGuidGame, player.ActivePlayerGuid, true);
+            Thread.Sleep(1000);
+            Assert.AreEqual(true, callbackHandler.MessageReceived);
+        }
+
+        [TestMethod]
+        public void InGame_StartRound() {
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = "testguid";
+            Player player = new Player(0, null, game, 0, true);
+            player.ActivePlayerGuid = "testplayerguid";
+            var callbackHandler = new GameWindow_EndRound.InGameCallback(game, new GameWindow_EndRound(game));
+            var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
+            inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.StartGame(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.EndRound(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.SetPlayerReady(game.ActiveGuidGame, player.ActivePlayerGuid, true);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.StartRound(game.ActiveGuidGame, 0);
+            Assert.AreEqual(true, callbackHandler.MessageReceived);
+        }
+
+        [TestMethod]
+        public void InGame_EndGame() {
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = "testguid";
+            Player player = new Player(0, null, game, 0, true);
+            player.ActivePlayerGuid = "testplayerguid";
+            var callbackHandler = new GameWindow_EndRound.InGameCallback(game, new GameWindow_EndRound(game));
+            var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
+            inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.StartGame(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.EndRound(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.SetPlayerReady(game.ActiveGuidGame, player.ActivePlayerGuid, true);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.EndGame(game.ActiveGuidGame);
+            Assert.AreEqual(true, callbackHandler.MessageReceived);
+        }
     }
 }

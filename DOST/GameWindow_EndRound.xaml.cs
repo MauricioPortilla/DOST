@@ -77,6 +77,7 @@ namespace DOST {
             /// <param name="isPlayerReady">True if player is ready; False if not</param>
             public override void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
                 if (guidGame == game.ActiveGuidGame) {
+                    MessageReceived = true;
                     this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
                     var playerToInteract = game.Players.Find(playerInGame => playerInGame.ActivePlayerGuid == guidPlayer);
                     if (playerToInteract == null) {
@@ -101,6 +102,7 @@ namespace DOST {
             /// <param name="playerSelectorIndex">Player index selected to select letter</param>
             public override void StartRound(string guidGame, int playerSelectorIndex) {
                 if (guidGame == game.ActiveGuidGame) {
+                    MessageReceived = true;
                     this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
                     var findHost = game.Players.Find(player => player.IsHost);
                     if (findHost != null) {
@@ -125,6 +127,7 @@ namespace DOST {
             /// <param name="guidGame">Game global unique identifier</param>
             public override void EndGame(string guidGame) {
                 if (guidGame == game.ActiveGuidGame) {
+                    MessageReceived = true;
                     window.Close();
                     new GameWindow_EndGame(game).Show();
                 }

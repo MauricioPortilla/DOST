@@ -67,6 +67,7 @@ namespace DOST {
             /// <param name="guidGame">Game global unique identifier</param>
             public override void StartGame(string guidGame) {
                 if (game.ActiveGuidGame == guidGame) {
+                    MessageReceived = true;
                     window.StartGame();
                 }
             }
