@@ -9,7 +9,7 @@ namespace DOST {
     public class ChatCallbackHandler : IChatServiceCallback {
         private Game game;
         private ListBox chatListBox;
-        public string LastMessageReceived;
+        public string LastMessageReceived = "";
 
         /// <summary>
         /// Creates a ChatCallbackHandler instance given a game and a chat list box.

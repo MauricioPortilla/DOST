@@ -226,22 +226,39 @@ namespace DOST.UnitTests {
         }
 
         [TestMethod]
-        public void BroadcastChatMessage() {
+        public void BroadcastChatMessageTest() {
             System.Windows.Controls.ListBox listBox = new System.Windows.Controls.ListBox();
-            var callbackHandler = new ChatCallbackHandler(
-                new Game(0, 0, DateTime.Now, new List<Player>()), listBox
-            );
-            InstanceContext chatInstance = new InstanceContext(callbackHandler);
-            ChatServiceClient chatService = new ChatServiceClient(chatInstance);
-            Task.Run(() => {
-                chatService.Open();
-                if (chatService.State == CommunicationState.Opened) {
-                    chatService.EnterChat("", "Frey");
-                    chatService.BroadcastMessage("", "Frey", "Mensaje de prueba");
-                }
-                Thread.Sleep(2000);
-            }).Wait();
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = "testguid";
+            var callbackHandler = new ChatCallbackHandler(game, listBox);
+            ChatServiceClient chatService = new ChatServiceClient(new InstanceContext(callbackHandler));
+            chatService.EnterChat("testguid", "Frey");
+            Thread.Sleep(1000);
+            chatService.BroadcastMessage("testguid", "Frey", "Mensaje de prueba");
+            Thread.Sleep(1000);
             Assert.AreEqual("Mensaje de prueba", callbackHandler.LastMessageReceived);
+        }
+
+        [TestMethod]
+        public void BroadcastChatMessage_NotFromAnotherGame() {
+            Game game = new Game(0, 0, DateTime.Now, new List<Player>());
+            game.ActiveGuidGame = "testguid";
+            var callbackHandlerFrey = new ChatCallbackHandler(game, new System.Windows.Controls.ListBox());
+            ChatServiceClient chatServiceFrey = new ChatServiceClient(new InstanceContext(callbackHandlerFrey));
+            chatServiceFrey.EnterChat("testguid", "Frey");
+            Thread.Sleep(1000);
+
+            Game game2 = new Game(0, 0, DateTime.Now, new List<Player>());
+            game2.ActiveGuidGame = "testguid2";
+            var callbackHandlerTester = new ChatCallbackHandler(game2, new System.Windows.Controls.ListBox());
+            ChatServiceClient chatServiceTester = new ChatServiceClient(new InstanceContext(callbackHandlerTester));
+            chatServiceTester.EnterChat("testguid2", "Tester");
+            Thread.Sleep(1000);
+
+            chatServiceTester.BroadcastMessage("testguid2", "Tester", "Mensaje de prueba");
+            Thread.Sleep(1000);
+            Assert.AreEqual("Mensaje de prueba", callbackHandlerTester.LastMessageReceived);
+            Assert.AreEqual(string.Empty, callbackHandlerFrey.LastMessageReceived);
         }
     }
 }
