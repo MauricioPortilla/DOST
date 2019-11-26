@@ -10,7 +10,7 @@ namespace DOST {
     /// <summary>
     /// Manages the current session in the application.
     /// </summary>
-    class Session {
+    public class Session {
         /// <summary>
         /// Languages available as language name and its culture.
         /// </summary>

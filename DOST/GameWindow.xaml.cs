@@ -34,7 +34,12 @@ namespace DOST {
         /// <param name="game">Game based to show game environment</param>
         public GameWindow(Game game) {
             InitializeComponent();
-            this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+            try {
+                this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+            } catch (Exception exception) {
+                Console.WriteLine("Exception (GameWindow) -> " + exception.Message);
+                this.game = game;
+            }
             this.player = this.game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
             Title = Properties.Resources.RoundText + game.Round + " - " + Session.Account.Username + " - DOST";
             roundTextBlock.Text = game.Round.ToString();
@@ -304,7 +309,7 @@ namespace DOST {
                     if (window.timeRemaining > Session.ROUND_REDUCE_TIME_SECONDS) {
                         window.timeRemaining -= Session.ROUND_REDUCE_TIME_SECONDS;
                     }
-                } 
+                }
             }
         }
 

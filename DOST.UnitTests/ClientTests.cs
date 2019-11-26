@@ -263,9 +263,11 @@ namespace DOST.UnitTests {
 
         [TestMethod]
         public void InGame_StartGame() {
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
             Game game = new Game(0, 0, DateTime.Now, new List<Player>());
             game.ActiveGuidGame = "testguid";
-            Player player = new Player(0, null, game, 0, true);
+            Player player = new Player(0, account, game, 0, true);
             player.ActivePlayerGuid = "testplayerguid";
             var callbackHandler = new GameWindow_LetterSelection.InGameCallback(game, new GameWindow_LetterSelection(ref game, ref player, false));
             var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
@@ -281,9 +283,14 @@ namespace DOST.UnitTests {
         public void InGame_PressDost() {
             Game game = new Game(0, 0, DateTime.Now, new List<Player>());
             game.ActiveGuidGame = "testguid";
-            Player player = new Player(0, null, game, 0, true);
+            game.Categories = new List<GameCategory>();
+            Account account = new Account("TestUsuario", "1234");
+            account.Login();
+            Session.Account = account;
+            Player player = new Player(0, account, game, 0, true);
             player.ActivePlayerGuid = "testplayerguid";
-            var callbackHandler = new GameWindow.InGameCallback(game, player, null, new GameWindow(game));
+            game.Players.Add(player);
+            var callbackHandler = new GameWindow.InGameCallback(game, player, new List<System.Windows.Controls.TextBox>(), new GameWindow(game));
             var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
             inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
             Thread.Sleep(1000);
@@ -297,14 +304,28 @@ namespace DOST.UnitTests {
         public void InGame_ReduceTime() {
             Game game = new Game(0, 0, DateTime.Now, new List<Player>());
             game.ActiveGuidGame = "testguid";
-            Player player = new Player(0, null, game, 0, true);
-            player.ActivePlayerGuid = "testplayerguid";
-            var callbackHandler = new GameWindow.InGameCallback(game, player, null, new GameWindow(game));
+            game.Categories = new List<GameCategory>();
+            Account account = new Account("Frey", "2506");
+            account.Login();
+            account.CreateGame(out game.ActiveGuidGame);
+            Session.Account = account;
+            Player player = new Player(0, account, game, 0, true);
+            account.JoinGame(game, true, out string guidPlayer);
+            player.ActivePlayerGuid = guidPlayer;
+            game.Players.Add(player);
+            game.Start();
+            var callbackHandler = new GameWindow.InGameCallback(game, player, new List<System.Windows.Controls.TextBox>(), new GameWindow(game));
             var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
             inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
             Thread.Sleep(1000);
             callbackHandler.MessageReceived = false;
             inGameService.StartGame(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            game.SetLetter(true, account.Id);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.StartRound(game.ActiveGuidGame, 0);
             Thread.Sleep(1000);
             callbackHandler.MessageReceived = false;
             inGameService.ReduceTime(game.ActiveGuidGame, player.ActivePlayerGuid);
@@ -316,14 +337,28 @@ namespace DOST.UnitTests {
         public void InGame_EndRound() {
             Game game = new Game(0, 0, DateTime.Now, new List<Player>());
             game.ActiveGuidGame = "testguid";
-            Player player = new Player(0, null, game, 0, true);
-            player.ActivePlayerGuid = "testplayerguid";
-            var callbackHandler = new GameWindow.InGameCallback(game, player, null, new GameWindow(game));
+            game.Categories = new List<GameCategory>();
+            Account account = new Account("Frey", "2506");
+            account.Login();
+            account.CreateGame(out game.ActiveGuidGame);
+            Session.Account = account;
+            Player player = new Player(0, account, game, 0, true);
+            account.JoinGame(game, true, out string guidPlayer);
+            player.ActivePlayerGuid = guidPlayer;
+            game.Players.Add(player);
+            game.Start();
+            var callbackHandler = new GameWindow.InGameCallback(game, player, new List<System.Windows.Controls.TextBox>(), new GameWindow(game));
             var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
             inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
             Thread.Sleep(1000);
             callbackHandler.MessageReceived = false;
             inGameService.StartGame(game.ActiveGuidGame);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            game.SetLetter(true, account.Id);
+            Thread.Sleep(1000);
+            callbackHandler.MessageReceived = false;
+            inGameService.StartRound(game.ActiveGuidGame, 0);
             Thread.Sleep(1000);
             callbackHandler.MessageReceived = false;
             inGameService.EndRound(game.ActiveGuidGame);
@@ -335,8 +370,16 @@ namespace DOST.UnitTests {
         public void InGame_SetPlayerReady() {
             Game game = new Game(0, 0, DateTime.Now, new List<Player>());
             game.ActiveGuidGame = "testguid";
-            Player player = new Player(0, null, game, 0, true);
-            player.ActivePlayerGuid = "testplayerguid";
+            game.Categories = new List<GameCategory>();
+            Account account = new Account("Frey", "2506");
+            account.Login();
+            account.CreateGame(out game.ActiveGuidGame);
+            Session.Account = account;
+            Player player = new Player(0, account, game, 0, true);
+            account.JoinGame(game, true, out string guidPlayer);
+            player.ActivePlayerGuid = guidPlayer;
+            game.Players.Add(player);
+            game.Start();
             var callbackHandler = new GameWindow_EndRound.InGameCallback(game, new GameWindow_EndRound(game));
             var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
             inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
@@ -357,23 +400,29 @@ namespace DOST.UnitTests {
         public void InGame_StartRound() {
             Game game = new Game(0, 0, DateTime.Now, new List<Player>());
             game.ActiveGuidGame = "testguid";
-            Player player = new Player(0, null, game, 0, true);
-            player.ActivePlayerGuid = "testplayerguid";
+            game.Categories = new List<GameCategory>();
+            Account account = new Account("Frey", "2506");
+            account.Login();
+            account.CreateGame(out game.ActiveGuidGame);
+            Session.Account = account;
+            Player player = new Player(0, account, game, 0, true);
+            account.JoinGame(game, true, out string guidPlayer);
+            player.ActivePlayerGuid = guidPlayer;
+            game.Players.Add(player);
+            game.Start();
             var callbackHandler = new GameWindow_EndRound.InGameCallback(game, new GameWindow_EndRound(game));
             var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
             inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
             Thread.Sleep(1000);
-            callbackHandler.MessageReceived = false;
             inGameService.StartGame(game.ActiveGuidGame);
             Thread.Sleep(1000);
-            callbackHandler.MessageReceived = false;
             inGameService.EndRound(game.ActiveGuidGame);
             Thread.Sleep(1000);
-            callbackHandler.MessageReceived = false;
             inGameService.SetPlayerReady(game.ActiveGuidGame, player.ActivePlayerGuid, true);
             Thread.Sleep(1000);
             callbackHandler.MessageReceived = false;
             inGameService.StartRound(game.ActiveGuidGame, 0);
+            Thread.Sleep(5000);
             Assert.AreEqual(true, callbackHandler.MessageReceived);
         }
 
@@ -381,23 +430,29 @@ namespace DOST.UnitTests {
         public void InGame_EndGame() {
             Game game = new Game(0, 0, DateTime.Now, new List<Player>());
             game.ActiveGuidGame = "testguid";
-            Player player = new Player(0, null, game, 0, true);
-            player.ActivePlayerGuid = "testplayerguid";
+            game.Categories = new List<GameCategory>();
+            Account account = new Account("Frey", "2506");
+            account.Login();
+            account.CreateGame(out game.ActiveGuidGame);
+            Session.Account = account;
+            Player player = new Player(0, account, game, 0, true);
+            account.JoinGame(game, true, out string guidPlayer);
+            player.ActivePlayerGuid = guidPlayer;
+            game.Players.Add(player);
+            game.Start();
             var callbackHandler = new GameWindow_EndRound.InGameCallback(game, new GameWindow_EndRound(game));
             var inGameService = new InGameServiceClient(new InstanceContext(callbackHandler));
             inGameService.EnterPlayer(game.ActiveGuidGame, player.ActivePlayerGuid);
             Thread.Sleep(1000);
-            callbackHandler.MessageReceived = false;
             inGameService.StartGame(game.ActiveGuidGame);
             Thread.Sleep(1000);
-            callbackHandler.MessageReceived = false;
             inGameService.EndRound(game.ActiveGuidGame);
             Thread.Sleep(1000);
-            callbackHandler.MessageReceived = false;
             inGameService.SetPlayerReady(game.ActiveGuidGame, player.ActivePlayerGuid, true);
             Thread.Sleep(1000);
             callbackHandler.MessageReceived = false;
             inGameService.EndGame(game.ActiveGuidGame);
+            Thread.Sleep(1000);
             Assert.AreEqual(true, callbackHandler.MessageReceived);
         }
     }

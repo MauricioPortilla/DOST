@@ -25,7 +25,12 @@ namespace DOST {
         /// <param name="game">Game reference to create lobby</param>
         public GameWindow_EndRound(Game game) {
             InitializeComponent();
-            this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+            try {
+                this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+            } catch (Exception exception) {
+                Console.WriteLine("Exception (GameWindow_EndRound) -> " + exception.Message);
+                this.game = game;
+            }
             try {
                 player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
                 Session.JoinGameChat(game, player, chatListBox, ref chatService);
@@ -78,7 +83,11 @@ namespace DOST {
             public override void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady) {
                 if (guidGame == game.ActiveGuidGame) {
                     MessageReceived = true;
-                    this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+                    try {
+                        this.game = Session.AllGamesAvailable.First(gameList => gameList.ActiveGuidGame == game.ActiveGuidGame);
+                    } catch (Exception exception) {
+                        Console.WriteLine("Exception (GameWindow_EndRound -> SetPlayerReady) -> " + exception.Message);
+                    }
                     var playerToInteract = game.Players.Find(playerInGame => playerInGame.ActivePlayerGuid == guidPlayer);
                     if (playerToInteract == null) {
                         return;
