@@ -136,88 +136,17 @@ namespace DOST {
         /// </summary>
         public static void GetGamesList() {
             while (true) {
-                var valueReturned = EngineNetwork.EstablishChannel<IGameService>((service) => {
+                bool valueReturned = EngineNetwork.EstablishChannel<IGameService>((service) => {
                     while (mainMenuWindow != null) {
                         if (IsPlayerInGame) {
                             GetGameBeingPlayedData(service);
                             continue;
                         }
                         List<Services.Game> serviceGamesList = service.GetGamesList();
-                        foreach (var serviceGame in serviceGamesList) {
-                            List<Player> playersList = new List<Player>();
-                            Game game = new Game(
-                                serviceGame.Id,
-                                serviceGame.Round,
-                                serviceGame.Date,
-                                playersList
-                            ) {
-                                ActiveGuidGame = serviceGame.ActiveGameGuid,
-                                LetterSelected = serviceGame.LetterSelected,
-                                RoundStartingTime = serviceGame.RoundStartingTime
-                            };
-                            serviceGame.Players.ForEach((player) => {
-                                playersList.Add(new Player(
-                                    id: 0,
-                                    new Account(player.Account.Id) {
-                                        Username = player.Account.Username,
-                                        Password = player.Account.Password,
-                                        Email = player.Account.Email,
-                                        Coins = player.Account.Coins,
-                                        CreationDate = player.Account.CreationDate,
-                                        IsVerified = player.Account.IsVerified,
-                                        ValidationCode = player.Account.ValidationCode
-                                    },
-                                    game,
-                                    player.Score,
-                                    player.IsHost
-                                ) {
-                                    ActivePlayerGuid = player.ActivePlayerGuid,
-                                    IsReady = player.IsReady
-                                });
-                            });
-                            var gameCategories = new List<GameCategory>();
-                            serviceGame.GameCategories.ForEach((category) => {
-                                gameCategories.Add(new GameCategory(0, game, category.Name));
-                            });
-                            game.Categories = gameCategories;
-                            game.Players = playersList;
-                            game.PropertyChanged += Game_PropertyChanged;
-                            if (gamesList.ToList().Exists(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid)) {
-                                var existentGame = gamesList.ToList().Find(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid);
-                                existentGame.Players = playersList;
-                                existentGame.Categories = gameCategories;
-                                existentGame.LetterSelected = serviceGame.LetterSelected;
-                                continue;
-                            }
-                            if (allGamesAvailable.Exists(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid)) {
-                                var existentGame = allGamesAvailable.ToList().Find(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid);
-                                existentGame.Players = playersList;
-                                existentGame.Categories = gameCategories;
-                                existentGame.LetterSelected = serviceGame.LetterSelected;
-                                existentGame.RoundStartingTime = serviceGame.RoundStartingTime;
-                                existentGame.Round = serviceGame.Round;
-                            } else {
-                                allGamesAvailable.Add(game);
-                            }
-                            Application.Current.Dispatcher.Invoke(delegate {
-                                gamesList.Add(game);
-                            });
+                        foreach (Services.Game serviceGame in serviceGamesList) {
+                            SetServiceGame(serviceGame);
                         }
-                        List<Game> gamesToRemove = new List<Game>();
-                        foreach (var game in gamesList) {
-                            var getGame = serviceGamesList.Find(gameInServiceList => gameInServiceList.ActiveGameGuid == game.ActiveGuidGame);
-                            if (getGame == null) {
-                                gamesToRemove.Add(game);
-                                allGamesAvailable.Remove(allGamesAvailable.Find(gameAvailable => gameAvailable.ActiveGuidGame == game.ActiveGuidGame));
-                            } else if (getGame.Round != 0 || getGame.Players.Count >= MAX_PLAYERS_IN_GAME) {
-                                gamesToRemove.Add(game);
-                            }
-                        }
-                        gamesToRemove.ForEach((game) => {
-                            Application.Current.Dispatcher.Invoke(delegate {
-                                gamesList.Remove(game);
-                            });
-                        });
+                        RemoveUnnecesaryGames(serviceGamesList);
                     }
                     return true;
                 });
@@ -225,6 +154,95 @@ namespace DOST {
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Sets all the data to a Game object from a Service Game object and
+        /// adds or replace it in the game list.
+        /// </summary>
+        /// <param name="serviceGame">Game from service</param>
+        private static void SetServiceGame(Services.Game serviceGame) {
+            List<Player> playersList = new List<Player>();
+            Game game = new Game(
+                serviceGame.Id,
+                serviceGame.Round,
+                serviceGame.Date,
+                playersList
+            ) {
+                ActiveGuidGame = serviceGame.ActiveGameGuid,
+                LetterSelected = serviceGame.LetterSelected,
+                RoundStartingTime = serviceGame.RoundStartingTime
+            };
+            serviceGame.Players.ForEach((player) => {
+                playersList.Add(new Player(
+                    id: 0,
+                    new Account(player.Account.Id) {
+                        Username = player.Account.Username,
+                        Password = player.Account.Password,
+                        Email = player.Account.Email,
+                        Coins = player.Account.Coins,
+                        CreationDate = player.Account.CreationDate,
+                        IsVerified = player.Account.IsVerified,
+                        ValidationCode = player.Account.ValidationCode
+                    },
+                    game,
+                    player.Score,
+                    player.IsHost
+                ) {
+                    ActivePlayerGuid = player.ActivePlayerGuid,
+                    IsReady = player.IsReady
+                });
+            });
+            var gameCategories = new List<GameCategory>();
+            serviceGame.GameCategories.ForEach((category) => {
+                gameCategories.Add(new GameCategory(0, game, category.Name));
+            });
+            game.Categories = gameCategories;
+            game.Players = playersList;
+            game.PropertyChanged += Game_PropertyChanged;
+            if (gamesList.ToList().Exists(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid)) {
+                var existentGame = gamesList.ToList().Find(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid);
+                existentGame.Players = playersList;
+                existentGame.Categories = gameCategories;
+                existentGame.LetterSelected = serviceGame.LetterSelected;
+                return;
+            }
+            if (allGamesAvailable.Exists(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid)) {
+                var existentGame = allGamesAvailable.ToList().Find(findGame => findGame.ActiveGuidGame == serviceGame.ActiveGameGuid);
+                existentGame.Players = playersList;
+                existentGame.Categories = gameCategories;
+                existentGame.LetterSelected = serviceGame.LetterSelected;
+                existentGame.RoundStartingTime = serviceGame.RoundStartingTime;
+                existentGame.Round = serviceGame.Round;
+            } else {
+                allGamesAvailable.Add(game);
+            }
+            Application.Current.Dispatcher.Invoke(delegate {
+                gamesList.Add(game);
+            });
+        }
+
+        /// <summary>
+        /// Removes games from games list whose round is different than zero, or limit of players have been
+        /// reached, or doesn't exist anymore.
+        /// </summary>
+        /// <param name="serviceGamesList">Games service list</param>
+        private static void RemoveUnnecesaryGames(List<Services.Game> serviceGamesList) {
+            List<Game> gamesToRemove = new List<Game>();
+            foreach (var game in gamesList) {
+                var getGame = serviceGamesList.Find(gameInServiceList => gameInServiceList.ActiveGameGuid == game.ActiveGuidGame);
+                if (getGame == null) {
+                    gamesToRemove.Add(game);
+                    allGamesAvailable.Remove(allGamesAvailable.Find(gameAvailable => gameAvailable.ActiveGuidGame == game.ActiveGuidGame));
+                } else if (getGame.Round != 0 || getGame.Players.Count >= MAX_PLAYERS_IN_GAME) {
+                    gamesToRemove.Add(game);
+                }
+            }
+            gamesToRemove.ForEach((game) => {
+                Application.Current.Dispatcher.Invoke(delegate {
+                    gamesList.Remove(game);
+                });
+            });
         }
 
         /// <summary>

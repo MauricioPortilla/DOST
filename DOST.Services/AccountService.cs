@@ -97,11 +97,12 @@ namespace DOST.Services {
         /// <param name="validationCode">Account validation code</param>
         /// <returns>True if webpage database has validation code stored; False if not</returns>
         private static bool TryValidateAccount(string validationCode) {
+            var xmlElements = Engine.GetConfigFileElements();
             HttpWebResponse response = null;
             string result = string.Empty;
             try {
                 HttpWebRequest dostWebRequest = (HttpWebRequest) WebRequest.Create(
-                    "https://www.arkanapp.com/dost/dost.php?checkValidationCode=" + validationCode
+                    xmlElements["Smtp"]["WebVerificationCode"] + validationCode
                 );
                 dostWebRequest.Method = "GET";
                 response = (HttpWebResponse) dostWebRequest.GetResponse();
@@ -140,9 +141,9 @@ namespace DOST.Services {
                 mail.Subject = "Activa tu cuenta en DOST";
                 mail.IsBodyHtml = true;
                 mail.Body = "<h3>¡Bienvenido a DOST!</h3><br>" +
-                    "Da clic <a href=\"https://www.arkanapp.com/dost/dost.php?validationcode=" +
+                    "Da clic <a href=\"" + xmlElements["Smtp"]["WebVerificationCode"] +
                     validationCode + "\" target=\"_blank\">AQUÍ</a> para activar tu cuenta." +
-                    "<br><br>¡Diviértete!<br>-El equipo de DOST";
+                    "<br><br>¡Diviértete!<br>- El equipo de DOST";
                 if (int.TryParse(xmlElements["Smtp"]["Port"], out int port)) {
                     client.Port = port;
                 } else {

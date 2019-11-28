@@ -414,4 +414,7 @@
   <data name="ReduceTimeButton" xml:space="preserve">
     <value>Reduce time</value>
   </data>
+  <data name="RegisterAccountTitle" xml:space="preserve">
+    <value>Register account</value>
+  </data>
 </root>

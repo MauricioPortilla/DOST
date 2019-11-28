@@ -7,16 +7,15 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:p="clr-namespace:DOST.Properties"
         mc:Ignorable="d"
-        Title="{x:Static p:Resources.RegisterWindowTitle}" Height="380.672" Width="592.017">
+        Title="{x:Static p:Resources.RegisterWindowTitle}" Height="292" Width="565" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}" Margin="177,5,0,0" HorizontalAlignment="Left" Width="244" Height="51" VerticalAlignment="Top">
-            Registrar cuenta
-        </TextBlock>
-        <TextBox x:Name="usernameTextBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.UsernameText}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="21,68,0,0" HorizontalAlignment="Left" Width="252" Height="38" VerticalAlignment="Top" />
-        <PasswordBox x:Name="passwordPasswordBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.PasswordText}" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="21,122,0,0" Height="38" VerticalAlignment="Top" HorizontalAlignment="Left" Width="252" />
-        <PasswordBox x:Name="confirmPasswordPasswordBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.ConfirmPasswordText}" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="307,122,0,0" Height="38" VerticalAlignment="Top" HorizontalAlignment="Left" Width="252" />
-        <TextBox x:Name="emailTextBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.EmailText}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="21,181,0,0" HorizontalAlignment="Left" Width="252" Height="38" VerticalAlignment="Top" />
-        <TextBox x:Name="confirmEmailTextBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.ConfirmEmailText}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="307,181,0,0" HorizontalAlignment="Left" Width="252" Height="38" VerticalAlignment="Top" />
-        <Button x:Name="registerButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.RegisterButton}" Margin="124,262,0,0" Click="RegisterButton_Click" HorizontalAlignment="Left" Width="312" VerticalAlignment="Top"/>
+        <Image HorizontalAlignment="Left" Height="265" VerticalAlignment="Top" Width="561" Source="Images/DOST_RegisterWindow.png" Stretch="Fill" Margin="-2,-2,0,0"/>
+        <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}" Margin="10,5,0,0" HorizontalAlignment="Left" Width="539" Height="51" Text="{x:Static p:Resources.RegisterAccountTitle}" VerticalAlignment="Top" TextAlignment="Center" Foreground="White"/>
+        <TextBox x:Name="usernameTextBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.UsernameText}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="21,68,0,0" HorizontalAlignment="Left" Width="252" Height="38" VerticalAlignment="Top" Foreground="White" BorderBrush="#89FFFFFF" MaxLength="15" />
+        <PasswordBox x:Name="passwordPasswordBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.PasswordText}" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="21,111,0,0" Height="38" VerticalAlignment="Top" HorizontalAlignment="Left" Width="252" Foreground="White" BorderBrush="#89FFFFFF" />
+        <PasswordBox x:Name="confirmPasswordPasswordBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.ConfirmPasswordText}" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="285,111,0,0" Height="38" VerticalAlignment="Top" HorizontalAlignment="Left" Width="252" Foreground="White" BorderBrush="#89FFFFFF" />
+        <TextBox x:Name="emailTextBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.EmailText}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="21,154,0,0" HorizontalAlignment="Left" Width="252" Height="38" VerticalAlignment="Top" Foreground="White" BorderBrush="#89FFFFFF" MaxLength="50" />
+        <TextBox x:Name="confirmEmailTextBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.ConfirmEmailText}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="285,154,0,0" HorizontalAlignment="Left" Width="252" Height="38" VerticalAlignment="Top" Foreground="White" BorderBrush="#89FFFFFF" MaxLength="50" />
+        <Button x:Name="registerButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.RegisterButton}" Margin="358,213,0,0" Click="RegisterButton_Click" HorizontalAlignment="Left" Width="179" VerticalAlignment="Top"/>
     </Grid>
 </Window>

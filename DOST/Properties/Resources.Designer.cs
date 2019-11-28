@@ -322,15 +322,6 @@ namespace DOST.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Faltan campos por completar..
-        /// </summary>
-        public static string EmptyFieldsErrorText {
-            get {
-                return ResourceManager.GetString("EmptyFieldsErrorText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a Fin de la partida.
         /// </summary>
         public static string EndOfTheGameText {
@@ -696,6 +687,15 @@ namespace DOST.Properties {
         public static string ReduceTimeButton {
             get {
                 return ResourceManager.GetString("ReduceTimeButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Registrar cuenta.
+        /// </summary>
+        public static string RegisterAccountTitle {
+            get {
+                return ResourceManager.GetString("RegisterAccountTitle", resourceCulture);
             }
         }
         

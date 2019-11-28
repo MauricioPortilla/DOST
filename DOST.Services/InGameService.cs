@@ -62,7 +62,9 @@ namespace DOST.Services {
                             }
                             var isPlayerHost = playerOwner.IsHost;
                             gameOwner.Players.Remove(playerOwner);
-                            gameOwner.Players.First().IsHost = isPlayerHost;
+                            if (gameOwner.Players.Count > 0) {
+                                gameOwner.Players.First().IsHost = isPlayerHost;
+                            }
                             if (ChatService.GamesClients[gameOwner.ActiveGameGuid].ContainsKey(playerOwner.Account.Username)) {
                                 ChatService.GamesClients[gameOwner.ActiveGameGuid].Remove(playerOwner.Account.Username);
                             }

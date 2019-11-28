@@ -50,7 +50,8 @@ namespace DOST.Server {
                             new XElement("SMTPServer", "smtp.live.com"),
                             new XElement("Email", ""),
                             new XElement("EmailPassword", ""),
-                            new XElement("Port", "587")
+                            new XElement("Port", "587"),
+                            new XElement("WebVerificationCode", "https://www.arkanapp.com/dost/dost.php?validationcode=")
                         )
                     )
                 ).Save(dir);

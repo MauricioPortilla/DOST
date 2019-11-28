@@ -105,7 +105,7 @@ namespace DOST {
             }
 
             /// <summary>
-            /// Receives data about round that just started.
+            /// Receives data about the round that just started.
             /// </summary>
             /// <param name="guidGame">Game global unique identifier</param>
             /// <param name="playerSelectorIndex">Player index selected to select letter</param>

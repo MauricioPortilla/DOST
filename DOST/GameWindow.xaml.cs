@@ -106,7 +106,8 @@ namespace DOST {
                     Height = 38,
                     Margin = new Thickness(0, 0, 10, 10),
                     Foreground = Brushes.White,
-                    Tag = index
+                    Tag = index,
+                    MaxLength = 25
                 });
                 categoriesTextBox.Last().KeyDown += CategoryTextBox_KeyDown;
                 HintAssist.SetHint(categoriesTextBox[index], game.LetterSelected + "...");

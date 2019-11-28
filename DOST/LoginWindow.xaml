@@ -7,7 +7,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:p="clr-namespace:DOST.Properties"
         mc:Ignorable="d"
-        Title="{x:Static p:Resources.LoginWindowTitle}" Height="399.283" Width="504.918" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="{x:Static p:Resources.LoginWindowTitle}" Height="400" Width="505" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <materialDesign:DialogHost Identifier="LoginWindow_WindowDialogHost" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
             <materialDesign:DialogHost.DialogContent>
@@ -16,13 +16,18 @@
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
-        <TextBox x:Name="usernameTextBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.UsernameText}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,146,244" HorizontalAlignment="Right" Width="200" Height="38" VerticalAlignment="Bottom" />
-        <PasswordBox x:Name="passwordPasswordBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.PasswordText}" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,146,201" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="200" />
-        <Button x:Name="loginButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.LoginButton}" Margin="182,189,182,147" Click="LoginButton_Click"/>
-        <Button x:Name="registerButton" Style="{StaticResource MaterialDesignFlatButton}" Content="{x:Static p:Resources.RegisterButton}" Margin="195,226,195,110" Click="RegisterButton_Click"/>
-        <ComboBox x:Name="languageSelectorComboBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.LanguageText}" HorizontalAlignment="Left" Margin="367,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="LanguageSelectorComboBox_SelectionChanged" Foreground="Black">
+        <Image HorizontalAlignment="Left" Height="373" VerticalAlignment="Top" Width="501" Source="Images/DOST_LoginWindow.png" Stretch="Fill" Margin="-2,-2,0,0"/>
+        <TextBox x:Name="usernameTextBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.UsernameText}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,141,213" HorizontalAlignment="Right" Width="200" Height="38" VerticalAlignment="Bottom" Foreground="White" BorderBrush="#89FFFFFF" CaretBrush="White" SelectionBrush="White" MaxLength="15" />
+        <PasswordBox x:Name="passwordPasswordBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.PasswordText}" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,141,170" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="200" Foreground="White" BorderBrush="#89FFFFFF" CaretBrush="White" SelectionBrush="White" />
+        <Button x:Name="loginButton"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="{x:Static p:Resources.LoginButton}" Margin="188,212,176,118" Click="LoginButton_Click" Height="Auto"/>
+        <Button x:Name="registerButton" Style="{StaticResource MaterialDesignFlatButton}" Content="{x:Static p:Resources.RegisterButton}" Margin="188,258,176,75" Click="RegisterButton_Click" Foreground="White" Height="Auto"/>
+        <ComboBox x:Name="languageSelectorComboBox" materialDesign:HintAssist.Hint="{x:Static p:Resources.LanguageText}" HorizontalAlignment="Left" Margin="367,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="LanguageSelectorComboBox_SelectionChanged" Foreground="White" BorderBrush="#89FFFFFF" Background="#00000000">
             <ListBoxItem Content="Español"/>
             <ListBoxItem Content="English"/>
         </ComboBox>
+        <StackPanel Orientation="Horizontal" Margin="96,345,86,10" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="{x:Static p:Resources.CreatedByText}" Foreground="White"></TextBlock>
+            <TextBlock Text=": Mauricio Cruz Portilla - Raúl Condado González" Foreground="White"></TextBlock>
+        </StackPanel>
     </Grid>
 </Window>

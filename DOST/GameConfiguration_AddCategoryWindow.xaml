@@ -10,7 +10,7 @@
         Title="{x:Static p:Resources.AddCategoryWindowTitle}" Height="189.474" Width="300.94" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Content="{x:Static p:Resources.AddCategoryNameText}" HorizontalAlignment="Left" Margin="38,26,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="categoryNameTextBox" HorizontalAlignment="Left" Height="23" Margin="43,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="216"/>
+        <TextBox x:Name="categoryNameTextBox" HorizontalAlignment="Left" Height="23" Margin="43,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="216" MaxLength="45" />
         <Button x:Name="addButton" Content="{x:Static p:Resources.AddButton}" HorizontalAlignment="Left" Margin="90,95,0,0" VerticalAlignment="Top" Width="120" Height="33" Click="AddButton_Click" />
     </Grid>
 </Window>

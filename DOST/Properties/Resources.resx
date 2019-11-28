@@ -249,9 +249,6 @@
   <data name="AccountNotConfirmedErrorText" xml:space="preserve">
     <value>Debes confirmar tu cuenta para iniciar sesión. Verifica tu correo electrónico.</value>
   </data>
-  <data name="EmptyFieldsErrorText" xml:space="preserve">
-    <value>Faltan campos por completar.</value>
-  </data>
   <data name="LanguageChangedText" xml:space="preserve">
     <value>Idioma cambiado. Reinicie el juego para aplicar los cambios.</value>
   </data>
@@ -416,5 +413,8 @@
   </data>
   <data name="ReduceTimeButton" xml:space="preserve">
     <value>Reducir tiempo</value>
+  </data>
+  <data name="RegisterAccountTitle" xml:space="preserve">
+    <value>Registrar cuenta</value>
   </data>
 </root>

@@ -26,7 +26,7 @@ namespace DOST {
         /// <param name="e">Button click event</param>
         private void LoginButton_Click(object sender, RoutedEventArgs e) {
             if (string.IsNullOrWhiteSpace(usernameTextBox.Text) || string.IsNullOrWhiteSpace(passwordPasswordBox.Password)) {
-                MessageBox.Show(Properties.Resources.EmptyFieldsErrorText);
+                MessageBox.Show(Properties.Resources.UncompletedFieldsErrorText);
                 return;
             }
             IsEnabled = false;
