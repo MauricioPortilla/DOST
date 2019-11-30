@@ -289,7 +289,7 @@ namespace DOST.Services {
                 return false;
             } else if (findGame.Round >= MAX_ROUNDS_PER_GAME) {
                 return false;
-            } else if (findGame.Players.Find(player => player.IsReady == false) != null) {
+            } else if (findGame.Players.Find(player => !player.IsReady) != null) {
                 return false;
             }
             findGame.Round += 1;
@@ -316,10 +316,7 @@ namespace DOST.Services {
             } else if (!selectRandomLetter) {
                 using (DostDatabase db = new DostDatabase()) {
                     var account = db.Account.Find(idaccount);
-                    if (account == null) {
-                        return false;
-                    }
-                    if (account.coins < ROUND_LETTER_SELECTION_COST) {
+                    if (account == null || account.coins < ROUND_LETTER_SELECTION_COST) {
                         return false;
                     }
                     account.coins -= ROUND_LETTER_SELECTION_COST;
@@ -339,8 +336,10 @@ namespace DOST.Services {
                 } else {
                     GamesTimer[findGame.ActiveGameGuid] = new DateTime(findGame.RoundStartingTime).AddSeconds(roundTimeInSeconds);
                 }
-                while (GamesTimer[findGame.ActiveGameGuid] > DateTime.Now) {
-                    continue;
+                while (true) {
+                    if (!(GamesTimer[findGame.ActiveGameGuid] > DateTime.Now)) {
+                        break;
+                    }
                 }
                 var gamesClients = InGameService.GamesClients;
                 if (!gamesClients.ContainsKey(guidGame)) {
@@ -461,7 +460,7 @@ namespace DOST.Services {
                 var categoryFileWords = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\Categories\\" + categoryName + ".txt").ToList();
                 var matchedWords = categoryFileWords.Where(word => word[0] == Convert.ToChar(findGame.LetterSelected))
                     .Union(categoryFileWords.Where(lowerWord => lowerWord[0] == Convert.ToChar(findGame.LetterSelected.ToLower()))).ToList();
-                var wordFound = matchedWords[new Random().Next(0, matchedWords.Count() - 1)];
+                var wordFound = matchedWords[new Random().Next(0, matchedWords.Count - 1)];
                 findPlayer.Score -= ROUND_GET_WORD_COST;
                 return wordFound.ToUpperInvariant();
             } catch (FileNotFoundException fileNotFoundException) {

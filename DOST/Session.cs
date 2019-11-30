@@ -11,12 +11,16 @@ namespace DOST {
     /// Manages the current session in the application.
     /// </summary>
     public class Session {
+
+        private static readonly Dictionary<string, string> languages = new Dictionary<string, string>() {
+            { "Español", "es-MX" }, { "English", "en-US" }
+        };
         /// <summary>
         /// Languages available as language name and its culture.
         /// </summary>
-        public static readonly Dictionary<string, string> LANGUAGES = new Dictionary<string, string>() {
-            { "Español", "es-MX" }, { "English", "en-US" }
-        };
+        public static Dictionary<string, string> LANGUAGES {
+            get { return languages; }
+        }
         public static readonly int MAX_PLAYERS_IN_GAME = 4;
         public static readonly int MAX_ROUNDS_PER_GAME = 5;
         public static readonly int ROUND_LETTER_SELECTION_COST = 20;
@@ -78,7 +82,11 @@ namespace DOST {
         public static readonly List<string> DefaultCategoriesNameList = new List<string>() {
             "Nombre", "Name", "Apellido", "Last name", "Color", "Animal", "Fruta", "Fruit"
         };
-        public static bool IsPlayerInGame = false;
+        private static bool isPlayerInGame = false;
+        public static bool IsPlayerInGame {
+            get { return isPlayerInGame; }
+            set { isPlayerInGame = value; }
+        }
 
         /// <summary>
         /// Sets all the data from game that is being played in this session.

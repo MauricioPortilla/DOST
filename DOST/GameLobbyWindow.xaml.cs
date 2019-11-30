@@ -1,7 +1,6 @@
 ﻿using DOST.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using System.Windows;
@@ -248,7 +247,7 @@ namespace DOST {
                 MessageBox.Show(Properties.Resources.MustHaveAtLeastTwoPlayersErrorText);
                 return;
             }
-            if (game.Players.Find(playerInGame => playerInGame.IsReady == false && playerInGame.ActivePlayerGuid != player.ActivePlayerGuid) != null) {
+            if (game.Players.Find(playerInGame => !playerInGame.IsReady && playerInGame.ActivePlayerGuid != player.ActivePlayerGuid) != null) {
                 MessageBox.Show(Properties.Resources.PlayersNotReadyErrorText);
                 return;
             } else if (player.SetPlayerReady(true)) {

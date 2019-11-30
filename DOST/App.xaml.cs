@@ -12,16 +12,20 @@ namespace DOST {
     /// Lógica de interacción para App.xaml
     /// </summary>
     public partial class App : Application {
-        public static string Language = "es-MX";
+        private static string language = "es-MX";
+        public static string Language {
+            get { return language; }
+            set { language = value; }
+        }
 
         /// <summary>
         /// Starts application with language selected in configuration file.
         /// </summary>
         public App() {
             var appConfig = GetAppConfiguration();
-            Language = appConfig["DOST"]["Language"];
-            if (Language == "en-US") {
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(Language);
+            language = appConfig["DOST"]["Language"];
+            if (language == "en-US") {
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
             }
         }
 
@@ -50,7 +54,7 @@ namespace DOST {
             string dir = AppDomain.CurrentDomain.BaseDirectory;
             CheckForConfigurationFile();
             XDocument configXml = XDocument.Load(dir + "config.xml");
-            var elements = configXml.Root.Descendants("Language").FirstOrDefault().Value = language;
+            configXml.Root.Descendants("Language").FirstOrDefault().Value = language;
             configXml.Save("config.xml");
         }
 

@@ -42,7 +42,7 @@ namespace DOST {
         /// <param name="sender">SaveButton object</param>
         /// <param name="e">Button click event</param>
         private void SaveButton_Click(object sender, RoutedEventArgs e) {
-            if (!categoriesList.ToList().Exists(category => category.IsSelected == true)) {
+            if (!categoriesList.ToList().Exists(category => category.IsSelected)) {
                 MessageBox.Show(Properties.Resources.MustSelectAtLeastOneCategoryErrorText);
                 return;
             }

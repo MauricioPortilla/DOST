@@ -9,7 +9,11 @@ namespace DOST {
         public string CategoryName {
             get { return categoryNameTextBox.Text; }
         }
-        public bool CategoryAdded = false;
+        private bool categoryAdded = false;
+        public bool CategoryAdded {
+            get { return categoryAdded; }
+            set { categoryAdded = value; }
+        }
 
         /// <summary>
         /// Creates an instance and initializes it.
@@ -28,7 +32,7 @@ namespace DOST {
                 MessageBox.Show(Properties.Resources.NewCategoryNameEmptyErrorText);
                 return;
             }
-            CategoryAdded = true;
+            categoryAdded = true;
             Close();
         }
     }

@@ -28,7 +28,7 @@ namespace DOST {
             get { return players; }
             set {
                 players = value;
-                var host = players.Find(player => player.IsHost == true);
+                var host = players.Find(player => player.IsHost);
                 if (host != null) {
                     if (App.Language == "en-US") {
                         Name = host.Account.Username + Properties.Resources.GameNameText;
@@ -55,9 +55,21 @@ namespace DOST {
             get { return categories; }
             set { categories = value; }
         }
-        public string ActiveGuidGame;
-        public string LetterSelected;
-        public long RoundStartingTime;
+        private string activeGuidGame;
+        public string ActiveGuidGame {
+            get { return activeGuidGame; }
+            set { activeGuidGame = value; }
+        }
+        private string letterSelected;
+        public string LetterSelected {
+            get { return letterSelected; }
+            set { letterSelected = value; }
+        }
+        private long roundStartingTime;
+        public long RoundStartingTime {
+            get { return roundStartingTime; }
+            set { roundStartingTime = value; }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>

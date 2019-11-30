@@ -70,7 +70,7 @@ namespace DOST {
                 while (true) {
                     if (!didStart) {
                         didStart = true;
-                        var taskToExecute = Task.Run(() => {
+                        Task.Run(() => {
                             try {
                                 if (onExecute != null) {
                                     resultOnExecute = onExecute();
@@ -94,12 +94,10 @@ namespace DOST {
                         });
                     }
                     if (didStart && didFinish) {
-                        if (didThrowException) {
-                            if (retryOnFail) {
-                                didStart = false;
-                                didFinish = false;
-                                continue;
-                            }
+                        if (didThrowException && retryOnFail) {
+                            didStart = false;
+                            didFinish = false;
+                            continue;
                         }
                         try {
                             onFinish?.Invoke();

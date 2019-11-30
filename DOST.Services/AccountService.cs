@@ -39,12 +39,10 @@ namespace DOST.Services {
                         account.CreationDate = accountDb.creationDate;
                         account.IsVerified = accountDb.isVerified == 1;
                         account.ValidationCode = accountDb.validationCode;
-                        if (account.IsVerified == false) {
-                            if (TryValidateAccount(account.ValidationCode)) {
-                                accountDb.isVerified = 1;
-                                if (db.SaveChanges() != 0) {
-                                    account.IsVerified = true;
-                                }
+                        if (!account.IsVerified && TryValidateAccount(account.ValidationCode)) {
+                            accountDb.isVerified = 1;
+                            if (db.SaveChanges() != 0) {
+                                account.IsVerified = true;
                             }
                         }
                     }

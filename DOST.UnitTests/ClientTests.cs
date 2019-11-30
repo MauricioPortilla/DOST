@@ -307,7 +307,8 @@ namespace DOST.UnitTests {
             game.Categories = new List<GameCategory>();
             Account account = new Account("Frey", "2506");
             account.Login();
-            account.CreateGame(out game.ActiveGuidGame);
+            account.CreateGame(out string gameGuid);
+            game.ActiveGuidGame = gameGuid;
             Session.Account = account;
             Player player = new Player(0, account, game, 0, true);
             account.JoinGame(game, true, out string guidPlayer);
@@ -340,7 +341,8 @@ namespace DOST.UnitTests {
             game.Categories = new List<GameCategory>();
             Account account = new Account("Frey", "2506");
             account.Login();
-            account.CreateGame(out game.ActiveGuidGame);
+            account.CreateGame(out string gameGuid);
+            game.ActiveGuidGame = gameGuid;
             Session.Account = account;
             Player player = new Player(0, account, game, 0, true);
             account.JoinGame(game, true, out string guidPlayer);
@@ -373,7 +375,8 @@ namespace DOST.UnitTests {
             game.Categories = new List<GameCategory>();
             Account account = new Account("Frey", "2506");
             account.Login();
-            account.CreateGame(out game.ActiveGuidGame);
+            account.CreateGame(out string gameGuid);
+            game.ActiveGuidGame = gameGuid;
             Session.Account = account;
             Player player = new Player(0, account, game, 0, true);
             account.JoinGame(game, true, out string guidPlayer);

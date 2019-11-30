@@ -7,7 +7,11 @@ namespace DOST {
     /// </summary>
     public abstract class InGameCallbackHandler : IInGameServiceCallback {
         protected Game game;
-        public bool MessageReceived;
+        private bool messageReceived;
+        public bool MessageReceived {
+            get { return messageReceived; }
+            set { messageReceived = value; }
+        }
 
         public abstract void SetPlayerReady(string guidGame, string guidPlayer, bool isPlayerReady);
         public abstract void StartRound(string guidGame, int playerSelectorIndex);

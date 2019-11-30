@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace DOST.Server {
@@ -23,8 +24,8 @@ namespace DOST.Server {
             Console.WriteLine("> Setting hosts...");
             if (EngineNetwork.CreateHosts()) {
                 Console.WriteLine("\n>> DOST Server is online.");
-                while (true) {
-                    continue;
+                for (; true; ) {
+                    Task.Run(() => true).Wait();
                 }
             }
             Console.WriteLine("Press a key to close...");

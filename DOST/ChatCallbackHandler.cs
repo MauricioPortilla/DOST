@@ -7,9 +7,13 @@ namespace DOST {
     /// Handles client-side callback operations for the chat service.
     /// </summary>
     public class ChatCallbackHandler : IChatServiceCallback {
-        private Game game;
-        private ListBox chatListBox;
-        public string LastMessageReceived = "";
+        private readonly Game game;
+        private readonly ListBox chatListBox;
+        private string lastMessageReceived = "";
+        public string LastMessageReceived {
+            get { return lastMessageReceived; }
+            set { lastMessageReceived = value; }
+        }
 
         /// <summary>
         /// Creates a ChatCallbackHandler instance given a game and a chat list box.
@@ -29,7 +33,7 @@ namespace DOST {
         /// <param name="message">Message content</param>
         public void BroadcastMessage(string guidGame, string username, string message) {
             if (guidGame == game.ActiveGuidGame) {
-                LastMessageReceived = message;
+                lastMessageReceived = message;
                 chatListBox.Items.Add(new TextBlock() {
                     Text = username + ": " + message
                 });

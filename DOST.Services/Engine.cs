@@ -15,7 +15,7 @@ namespace DOST.Services {
         /// <summary>
         /// Game categories name in languages supported.
         /// </summary>
-        public static readonly Dictionary<string, List<string>> CategoriesList = new Dictionary<string, List<string>>() {
+        private static readonly Dictionary<string, List<string>> categoriesList = new Dictionary<string, List<string>>() {
             { "es-MX", new List<string>() {
                 "Nombre", "Apellido", "Color", "Animal", "Fruta"
             } },
@@ -23,6 +23,10 @@ namespace DOST.Services {
                 "Name", "Last name", "Color", "Animal", "Fruit"
             } }
         };
+
+        public static Dictionary<string, List<string>> CategoriesList {
+            get { return categoriesList; }
+        }
 
         /// <summary>
         /// Gets all data from configuration file.

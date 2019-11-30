@@ -3,9 +3,21 @@
     /// Represents a score from a player.
     /// </summary>
     public class UserScore {
-        public int Ranking;
-        public string Username;
-        public int Score;
+        private int ranking;
+        public int Ranking {
+            get { return ranking; }
+            set { ranking = value; }
+        }
+        private string username;
+        public string Username {
+            get { return username; }
+            set { username = value; }
+        }
+        private int score;
+        public int Score {
+            get { return score; }
+            set { score = value; }
+        }
 
         /// <summary>
         /// Creates and initializes a new instance.
@@ -20,9 +32,9 @@
         /// <param name="username">Player username</param>
         /// <param name="score">Player score</param>
         public UserScore(int ranking, string username, int score) {
-            Ranking = ranking;
-            Username = username;
-            Score = score;
+            this.ranking = ranking;
+            this.username = username;
+            this.score = score;
         }
     }
 }

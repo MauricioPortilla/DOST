@@ -78,7 +78,7 @@ namespace DOST {
         /// <param name="validationCode">Account validation code</param>
         public Account(
             int id, string username, string password, string email, int coins,
-            DateTime creationDate, bool verified, string validationCode
+            DateTime creationDate, bool isVerified, string validationCode
         ) {
             this.id = id;
             this.username = username;
@@ -86,7 +86,7 @@ namespace DOST {
             this.email = email;
             this.coins = coins;
             this.creationDate = creationDate;
-            this.isVerified = verified;
+            this.isVerified = isVerified;
             this.validationCode = validationCode;
         }
 

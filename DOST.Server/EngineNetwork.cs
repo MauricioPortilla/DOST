@@ -11,13 +11,14 @@ namespace DOST.Server {
         /// <summary>
         /// Service addresses.
         /// </summary>
-        public static readonly Dictionary<string, Uri[]> URIS_SERVICES = new Dictionary<string, Uri[]>();
+        private static Dictionary<string, Uri[]> URIS_SERVICES;
 
         /// <summary>
         /// Sets the connections to all server services.
         /// </summary>
         private static void SetUrisServices() {
             var elements = Server.GetConfigFileElements();
+            URIS_SERVICES = new Dictionary<string, Uri[]>();
             URIS_SERVICES.Add("AccountService", new Uri[] {
                 new Uri("net.tcp://" + elements["Connection"]["IP"] + ":" + elements["Connection"]["Port"] + "/AccountService")
             });

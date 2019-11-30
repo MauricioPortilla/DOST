@@ -38,12 +38,24 @@ namespace DOST.Services {
             get { return gameCategories; }
             set { gameCategories = value; }
         }
+        private string activeGameGuid;
         [DataMember]
-        public string ActiveGameGuid;
+        public string ActiveGameGuid {
+            get { return activeGameGuid; }
+            set { activeGameGuid = value; }
+        }
+        private string letterSelected;
         [DataMember]
-        public string LetterSelected;
+        public string LetterSelected {
+            get { return letterSelected; }
+            set { letterSelected = value; }
+        }
+        private long roundStartingTime;
         [DataMember]
-        public long RoundStartingTime;
+        public long RoundStartingTime {
+            get { return roundStartingTime; }
+            set { roundStartingTime = value; }
+        }
 
         /// <summary>
         /// Creates and initializes a new instance.
