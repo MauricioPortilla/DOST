@@ -58,7 +58,7 @@ namespace DOST {
                         openEventArgs.Session.Close(true);
                         IsEnabled = true;
                     });
-                }, null, true);
+                }, null, null, true);
             }, null);
         }
 
@@ -91,12 +91,16 @@ namespace DOST {
             if (gamesListView.SelectedItem == null) {
                 return;
             }
+            joinGameButton.IsEnabled = false;
             var selectedGame = (Game) gamesListView.SelectedItem;
             if (Session.Account.JoinGame(selectedGame, false, out string guidPlayer)) {
                 Session.GameLobbyWindow = new GameLobbyWindow(ref selectedGame);
                 Session.GameLobbyWindow.Show();
                 Hide();
+            } else {
+                MessageBox.Show(Properties.Resources.CouldntJoinToGameErrorText);
             }
+            joinGameButton.IsEnabled = true;
         }
 
         /// <summary>
@@ -131,10 +135,13 @@ namespace DOST {
                 MessageBox.Show(Properties.Resources.YouAreAlreadyInAGame);
                 return;
             }
+            createGameButton.IsEnabled = false;
             if (!Session.Account.CreateGame(out guidGame)) {
                 MessageBox.Show(Properties.Resources.CouldntCreateGameErrorText);
+                createGameButton.IsEnabled = true;
                 return;
             }
+            createGameButton.IsEnabled = true;
             didCreateGame = true;
             lastGuidGameCreated = guidGame;
         }
@@ -159,6 +166,7 @@ namespace DOST {
                     if (Session.Account.JoinGame(gameCreated, true, out string guidPlayer)) {
                         Session.GameLobbyWindow = new GameLobbyWindow(ref gameCreated);
                         Session.GameLobbyWindow.Show();
+                        createGameButton.IsEnabled = true;
                         new GameConfigurationWindow(ref gameCreated).Show();
                         Hide();
                     }

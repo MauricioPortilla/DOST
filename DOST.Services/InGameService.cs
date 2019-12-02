@@ -267,7 +267,6 @@ namespace DOST.Services {
             }
             System.Threading.Thread.Sleep(2000);
             gamesClients.Remove(guidGame);
-            GameService.ActiveGames.Remove(game);
         }
 
         /// <summary>

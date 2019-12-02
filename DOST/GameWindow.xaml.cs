@@ -341,7 +341,7 @@ namespace DOST {
                         Session.GameWindow = null;
                         new GameWindow_EndRound(game).Show();
                     });
-                }, onFinish: null, true);
+                }, onFinish: null, onFail: null, true);
             }, null);
         }
 

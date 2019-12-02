@@ -460,7 +460,7 @@ namespace DOST.Services {
                 var categoryFileWords = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\Categories\\" + categoryName + ".txt").ToList();
                 var matchedWords = categoryFileWords.Where(word => word[0] == Convert.ToChar(findGame.LetterSelected))
                     .Union(categoryFileWords.Where(lowerWord => lowerWord[0] == Convert.ToChar(findGame.LetterSelected.ToLower()))).ToList();
-                var wordFound = matchedWords[new Random().Next(0, matchedWords.Count - 1)];
+                var wordFound = matchedWords[new Random().Next(matchedWords.Count)];
                 findPlayer.Score -= ROUND_GET_WORD_COST;
                 return wordFound.ToUpperInvariant();
             } catch (FileNotFoundException fileNotFoundException) {

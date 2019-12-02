@@ -64,7 +64,7 @@ namespace DOST {
         /// </summary>
         private void CalculatePlaces() {
             playerPlaces = game.Players.ToList();
-            playerPlaces = playerPlaces.OrderBy(playerPlace => playerPlace.Score).ToList();
+            playerPlaces = playerPlaces.OrderByDescending(playerPlace => playerPlace.Score).ToList();
         }
 
         /// <summary>

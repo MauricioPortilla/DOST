@@ -44,11 +44,13 @@ namespace DOST {
                 0, usernameTextBox.Text, passwordPasswordBox.Password,
                 emailTextBox.Text, 0, DateTime.Now, false, null
             );
+            registerButton.IsEnabled = false;
             if (newAccount.Register()) {
                 MessageBox.Show(Properties.Resources.AccountRegisteredText);
                 Close();
             } else {
                 MessageBox.Show(Properties.Resources.AccountExistsRegisterErrorText);
+                registerButton.IsEnabled = true;
             }
         }
     }

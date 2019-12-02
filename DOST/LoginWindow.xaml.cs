@@ -56,7 +56,7 @@ namespace DOST {
                         openEventArgs.Session.Close(true);
                         IsEnabled = true;
                     });
-                }, false);
+                }, null, false);
             }, null);
         }
 

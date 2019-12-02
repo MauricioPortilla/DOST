@@ -170,8 +170,8 @@ namespace DOST {
         /// Establishes a connnection with game service to try to create a new game.
         /// </summary>
         /// <param name="guidGame">
-        ///     Stores a global unique identifier that identifies the new game created.
-        ///     If game couldn't be created, this value will be empty.
+        /// Stores a global unique identifier that identifies the new game created.
+        /// If game couldn't be created, this value will be empty.
         /// </param>
         /// <returns>True if creation request was successful; False if not</returns>
         public bool CreateGame(out string guidGame) {
@@ -187,8 +187,8 @@ namespace DOST {
         /// Establishes a connnection with account service to get the account rank.
         /// </summary>
         /// <returns>
-        ///     If this account has games played, will return rank as #N, where N is the place.
-        ///     If it has no games played, will return a "Not ranked" string.
+        /// If this account has games played, will return rank as #N, where N is the place.
+        /// If it has no games played, will return a "Not ranked" string.
         /// </returns>
         public string GetRank() {
             var rank = Properties.Resources.NotRankedText;

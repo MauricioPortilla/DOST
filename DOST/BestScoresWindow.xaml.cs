@@ -26,7 +26,7 @@ namespace DOST {
         /// Establishes a connection with account service to load the scores list.
         /// </summary>
         private void LoadScoresList() {
-            EngineNetwork.EstablishChannel<IAccountService>((service) => {
+            if (!EngineNetwork.EstablishChannel<IAccountService>((service) => {
                 var scoresList = service.GetBestScores();
                 scoresList.ForEach((userScore) => {
                     bestScoresList.Add(new UserScore {
@@ -36,7 +36,10 @@ namespace DOST {
                     });
                 });
                 return true;
-            });
+            })) {
+                MessageBox.Show(Properties.Resources.AnErrorHasOcurredErrorText);
+                Close();
+            }
         }
 
         /// <summary>

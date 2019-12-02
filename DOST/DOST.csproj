@@ -37,7 +37,7 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>DOST_Logo_Fondo.ico</ApplicationIcon>
+    <ApplicationIcon>DOST_Logo_Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MaterialDesignColors, Version=1.2.0.325, Culture=neutral, processorArchitecture=MSIL">
@@ -244,7 +244,7 @@
     <Resource Include="Images\DOST_RegisterWindow.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="DOST_Logo_Fondo.ico" />
+    <Resource Include="DOST_Logo_Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

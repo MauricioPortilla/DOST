@@ -46,13 +46,18 @@ namespace DOST {
                 MessageBox.Show(Properties.Resources.MustSelectAtLeastOneCategoryErrorText);
                 return;
             }
+            bool didErrorHappen = false;
             categoriesList.ToList().ForEach((category) => {
-                if (category.IsSelected) {
-                    game.AddCategory(category.GameCategory);
-                } else {
-                    game.RemoveCategory(category.GameCategory);
+                if ((category.IsSelected && !game.AddCategory(category.GameCategory)) ||
+                    (!category.IsSelected && !game.RemoveCategory(category.GameCategory))
+                ) {
+                    didErrorHappen = true;
                 }
             });
+            if (didErrorHappen) {
+                MessageBox.Show(Properties.Resources.AnErrorHasOcurredErrorText);
+                return;
+            }
             MessageBox.Show(Properties.Resources.ChangesSavedText);
             Close();
         }

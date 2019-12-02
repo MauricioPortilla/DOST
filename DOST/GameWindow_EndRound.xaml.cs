@@ -265,7 +265,7 @@ namespace DOST {
                 Application.Current.Dispatcher.Invoke(delegate {
                     readyButton.IsEnabled = false;
                 });
-            }, null, true);
+            }, null, onFail: null, true);
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace DOST {
                     return true;
                 }
                 return false;
-            }, null, null, true);
+            }, null, null, null, true);
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace DOST {
                     return true;
                 }
                 return false;
-            }, null, null, true);
+            }, null, null, null, true);
         }
     }
 }

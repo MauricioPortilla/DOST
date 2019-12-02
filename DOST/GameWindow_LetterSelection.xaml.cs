@@ -100,7 +100,7 @@ namespace DOST {
                         Session.GameWindow.Show();
                         Close();
                     });
-                }, onFinish: null, false);
+                }, onFinish: null, null, false);
             }, null);
         }
 
@@ -137,7 +137,7 @@ namespace DOST {
                     });
                     return false;
                 }
-            }, null, null, true);
+            }, null, null, null, true);
         }
 
         /// <summary>

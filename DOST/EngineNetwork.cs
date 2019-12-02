@@ -49,8 +49,8 @@ namespace DOST {
         /// <param name="onSuccess">Operation to execute if onExecute operation was successful</param>
         /// <param name="onFinish">Operation to execute if onExecute and onSuccess operation was successful</param>
         /// <param name="retryOnFail">True if should retry onExecute operation if an exception is throwed in onExecute or onSuccess operation</param>
-        public static void DoNetworkOperation(Func<bool> onExecute, Action onSuccess = null, Action onFinish = null, bool retryOnFail = false) {
-            DoNetworkOperation<Exception>(onExecute, onSuccess, onFinish, retryOnFail);
+        public static void DoNetworkOperation(Func<bool> onExecute, Action onSuccess = null, Action onFinish = null, Action onFail = null, bool retryOnFail = false) {
+            DoNetworkOperation<Exception>(onExecute, onSuccess, onFinish, onFail, retryOnFail);
         }
 
         /// <summary>
@@ -61,7 +61,9 @@ namespace DOST {
         /// <param name="onSuccess">Operation to execute if onExecute operation was successful</param>
         /// <param name="onFinish">Operation to execute if onExecute and onSuccess operation was successful</param>
         /// <param name="retryOnFail">True if should retry onExecute operation if an exception is throwed in onExecute or onSuccess operation</param>
-        public static void DoNetworkOperation<TException>(Func<bool> onExecute, Action onSuccess = null, Action onFinish = null, bool retryOnFail = false) where TException : Exception {
+        public static void DoNetworkOperation<TException>(
+            Func<bool> onExecute, Action onSuccess = null, Action onFinish = null, Action onFail = null, bool retryOnFail = false
+        ) where TException : Exception {
             Task.Run(() => {
                 bool resultOnExecute = false;
                 bool didStart = false;
@@ -97,6 +99,7 @@ namespace DOST {
                         if (didThrowException && retryOnFail) {
                             didStart = false;
                             didFinish = false;
+                            onFail?.Invoke();
                             continue;
                         }
                         try {
