@@ -48,8 +48,12 @@ namespace DOST {
             }
             bool didErrorHappen = false;
             categoriesList.ToList().ForEach((category) => {
-                if ((category.IsSelected && !game.AddCategory(category.GameCategory)) ||
+                if ((game.Categories.Find(categoryInGame => categoryInGame.Name == category.Name) != null) && 
                     (!category.IsSelected && !game.RemoveCategory(category.GameCategory))
+                ) {
+                    didErrorHappen = true;
+                } else if ((game.Categories.Find(categoryInGame => categoryInGame.Name == category.Name) == null) && 
+                    category.IsSelected && !game.AddCategory(category.GameCategory)
                 ) {
                     didErrorHappen = true;
                 }

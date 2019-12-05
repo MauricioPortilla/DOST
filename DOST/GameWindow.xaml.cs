@@ -206,16 +206,11 @@ namespace DOST {
             if (didPressDostButton) {
                 return;
             }
-            bool areAllCategoryTextBoxFilled = true;
             foreach (var categoryTextBox in categoriesTextBox) {
                 if (categoryTextBox.Text == string.Empty) {
-                    areAllCategoryTextBoxFilled = false;
-                    break;
+                    MessageBox.Show(Properties.Resources.UncompletedFieldsErrorText);
+                    return;
                 }
-            }
-            if (!areAllCategoryTextBoxFilled) {
-                MessageBox.Show(Properties.Resources.UncompletedFieldsErrorText);
-                return;
             }
             try {
                 inGameService.PressDost(game.ActiveGuidGame, player.ActivePlayerGuid);
@@ -366,7 +361,10 @@ namespace DOST {
                 return;
             }
             player = game.Players.Find(playerInGame => playerInGame.Account.Id == Session.Account.Id);
-            if (player.Account.Coins < Session.ROUND_REDUCE_TIME_COST) {
+            if (player == null) {
+                return;
+            }
+            if (Session.Account.Coins < Session.ROUND_REDUCE_TIME_COST) {
                 MessageBox.Show(Properties.Resources.YouDontHaveEnoughCoinsErrorText);
                 return;
             } else if (timeRemaining <= Session.ROUND_REDUCE_TIME_SECONDS) {
@@ -378,6 +376,7 @@ namespace DOST {
             }, onSuccess: () => {
                 Application.Current.Dispatcher.Invoke(delegate {
                     reduceTimeButton.IsEnabled = false;
+                    Session.Account.Coins -= Session.ROUND_REDUCE_TIME_COST;
                 });
             });
         }
