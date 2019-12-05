@@ -32,7 +32,7 @@
             </ListBox.ItemContainerStyle>
             <TextBlock Text="{x:Static p:Resources.ChatWelcomeText}" Margin="0,0,0,10" Focusable="False" />
         </ListBox>
-        <TextBox x:Name="chatMessageTextBox" Margin="42,648,15,15" Foreground="White" materialDesign:HintAssist.Hint="Escribe un mensaje..." KeyDown="ChatMessageTextBox_KeyDown" />
+        <TextBox x:Name="chatMessageTextBox" Margin="42,648,15,15" Foreground="White" materialDesign:HintAssist.Hint="Escribe un mensaje..." KeyDown="ChatMessageTextBox_KeyDown" MaxLength="50"/>
         <Button x:Name="readyButton" Content="{x:Static p:Resources.ReadyButton}" HorizontalAlignment="Left" Margin="920,12,0,0" Visibility="Hidden" VerticalAlignment="Top" Width="120" Click="ReadyButton_Click"/>
         <Button x:Name="startNextRoundButton" Content="{x:Static p:Resources.StartNextRoundButton}" HorizontalAlignment="Left" Visibility="Hidden" Margin="863,12,0,0" VerticalAlignment="Top" Width="177" Click="StartNextRoundButton_Click"/>
         <Button x:Name="showGameResultsButton" Content="{x:Static p:Resources.ShowGameResultsButton}" HorizontalAlignment="Left" Visibility="Hidden" Margin="802,12,0,0" VerticalAlignment="Top" Width="238" Click="ShowGameResultsButton_Click"/>

@@ -46,6 +46,6 @@
             </ListBox.ItemContainerStyle>
             <TextBlock Text="{x:Static p:Resources.ChatWelcomeText}" Margin="0,0,0,10" Focusable="False" />
         </ListBox>
-        <TextBox x:Name="chatMessageTextBox" Margin="19,643,15,19" Foreground="White" materialDesign:HintAssist.Hint="Escribe un mensaje..." KeyDown="ChatMessageTextBox_KeyDown" />
+        <TextBox x:Name="chatMessageTextBox" Margin="19,643,15,19" Foreground="White" materialDesign:HintAssist.Hint="Escribe un mensaje..." KeyDown="ChatMessageTextBox_KeyDown" MaxLength="50"/>
     </Grid>
 </Window>
